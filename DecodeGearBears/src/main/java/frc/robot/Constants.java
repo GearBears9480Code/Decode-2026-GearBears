@@ -16,4 +16,10 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class ShooterConstants {
+    public static final int numGearTurretMotor = 12;
+    public static final int numGearTurretTrack = 24;
+    public static final double turretRotationGearRatio = (double)numGearTurretMotor / (double)numGearTurretTrack;
+  }
 }
