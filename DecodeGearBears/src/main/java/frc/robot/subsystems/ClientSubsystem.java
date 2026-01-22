@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClientSubsystem extends SubsystemBase {
     DoubleArraySubscriber targetPose;
+    DoubleArraySubscriber rawFiducials;
    
     double[] position = new double[3];
     int tagID;
@@ -14,11 +15,13 @@ public class ClientSubsystem extends SubsystemBase {
     public ClientSubsystem() {
         NetworkTable limelightData = NetworkTableInstance.getDefault().getTable("limelight");
         targetPose = limelightData.getDoubleArrayTopic("targetpose_robotspace").subscribe(new double[] {});
+        rawFiducials = limelightData.getDoubleArrayTopic("rawfiducials").subscribe(new double[] {});
     }
 
     private void getAprilTag() {
         double[] aprilTagData = targetPose.get();
-        System.out.print("Apriltag Data: ");
+        double[] aprilTagID = rawFiducials.get();
+        System.out.print("Apriltag Data - ID: " + aprilTagID[0] + ". Target Pose: ");
         for (double x : aprilTagData) {
             System.out.print(x + " ");
         }
