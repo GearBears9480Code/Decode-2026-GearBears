@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.GoToPoint;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -24,6 +25,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
+
+  private final GoToPoint goToPoint = new GoToPoint(m_SwerveSubsystem, 2, 0);
 
   private SwerveInputStream driveAngularVelocity;
   private SwerveInputStream driveDirectAngle;
@@ -72,11 +75,13 @@ public class RobotContainer {
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
 
+    m_driverController.a().onTrue(goToPoint);
+
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
+    // cancelling on release
 
   }
 

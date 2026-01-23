@@ -19,7 +19,7 @@ public class GoToPoint extends Command {
     private Pose2d setPoint;
 
     private double minimumAxisSpeed = 0.5;
-    private double maxSpeed = 3/5; // numerator denotes m/s denominator denotes how many times it will update per second
+    private double maxSpeed = 3; // numerator denotes m/s denominator denotes how many times it will update per second
 
     public GoToPoint(SwerveSubsystem swerveDrive, double deltaX, double deltaY) {
         xPIDControl = new PIDController(0.9, 0.0, 0.0);
