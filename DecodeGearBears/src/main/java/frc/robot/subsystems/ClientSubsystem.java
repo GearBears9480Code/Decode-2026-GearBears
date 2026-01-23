@@ -4,10 +4,11 @@ import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;
+import frc.robot.LimelightHelpers.RawFiducial;
 
 public class ClientSubsystem extends SubsystemBase {
     DoubleArraySubscriber targetPose;
-    DoubleArraySubscriber rawFiducials;
    
     double[] position = new double[3];
     int tagID;
@@ -15,15 +16,19 @@ public class ClientSubsystem extends SubsystemBase {
     public ClientSubsystem() {
         NetworkTable limelightData = NetworkTableInstance.getDefault().getTable("limelight");
         targetPose = limelightData.getDoubleArrayTopic("targetpose_robotspace").subscribe(new double[] {});
-        rawFiducials = limelightData.getDoubleArrayTopic("rawfiducials").subscribe(new double[] {});
     }
 
     private void getAprilTag() {
+        RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("");
         double[] aprilTagData = targetPose.get();
-        double[] aprilTagID = rawFiducials.get();
-        System.out.print("Apriltag Data - ID: " + aprilTagID[0] + ". Target Pose: ");
+        System.out.print("Apriltag Data: ");
         for (double x : aprilTagData) {
             System.out.print(x + " ");
+        }
+
+        for (RawFiducial fiducial : fiducials) {
+            int id = fiducial.id;
+            System.out.println("Tag ID: " + id + "");
         }
         System.out.println();
     }
