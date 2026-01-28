@@ -1,8 +1,12 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.LimelightHelpers;
 import frc.robot.LimelightHelpers.RawFiducial;
@@ -15,6 +19,11 @@ public class ClientSubsystem extends SubsystemBase {
 
     public ClientSubsystem() {
         NetworkTable limelightData = NetworkTableInstance.getDefault().getTable("limelight");
+        int[] redCrucialID = {2, 11, 3, 4, 5, 8, 9, 10};
+        int[] blueCrucialID = {19, 20, 21, 24, 25, 26, 27, 18};
+        Optional<Alliance> alliance = DriverStation.getAlliance();
+        boolean isRed = alliance.isPresent() && alliance.get() == Alliance.Red;
+        LimelightHelpers.SetFiducialIDFiltersOverride("", isRed ? redCrucialID : blueCrucialID);
         targetPose = limelightData.getDoubleArrayTopic("targetpose_robotspace").subscribe(new double[] {});
     }
 
