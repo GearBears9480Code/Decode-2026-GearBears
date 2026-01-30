@@ -15,12 +15,13 @@ public class ClientSubsystem extends SubsystemBase {
     DoubleArraySubscriber targetPose;
    
     double[] position = new double[3];
+    double yaw = 0;
     int tagID;
 
     public ClientSubsystem() {
         NetworkTable limelightData = NetworkTableInstance.getDefault().getTable("limelight");
-        int[] redCrucialID = {2, 11, 3, 4, 5, 8, 9, 10};
-        int[] blueCrucialID = {19, 20, 21, 24, 25, 26, 27, 18};
+        int[] redCrucialID = {8, 9, 10, 11};
+        int[] blueCrucialID = {24, 25, 26, 27};
         Optional<Alliance> alliance = DriverStation.getAlliance();
         boolean isRed = alliance.isPresent() && alliance.get() == Alliance.Red;
         LimelightHelpers.SetFiducialIDFiltersOverride("", isRed ? redCrucialID : blueCrucialID);
@@ -29,17 +30,11 @@ public class ClientSubsystem extends SubsystemBase {
 
     private void getAprilTag() {
         RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("");
+        tagID = fiducials[0].id;
         double[] aprilTagData = targetPose.get();
-        System.out.print("Apriltag Data: ");
-        for (double x : aprilTagData) {
-            System.out.print(x + " ");
-        }
 
-        for (RawFiducial fiducial : fiducials) {
-            int id = fiducial.id;
-            System.out.println("Tag ID: " + id + "");
-        }
-        System.out.println();
+        position[0] = aprilTagData[0]; position[1] = aprilTagData[1]; position[2] = aprilTagData[2]; // set the current position
+        yaw = aprilTagData[4];
     }
 
     public double[] getPose() {
@@ -52,5 +47,51 @@ public class ClientSubsystem extends SubsystemBase {
 
     public void periodic() {
         getAprilTag();
+    }
+
+    public double[] rawOffsets(int ID) {
+        double offsets[] = new double[2];
+
+        switch (ID) {
+            case 8:
+                offsets[0] = 23.5;
+                offsets[1] = 14;
+            case 24:
+                offsets[0] = 23.5;
+                offsets[1] = 14;
+            case 9:
+                offsets[0] = 0;
+                offsets[1] = 23.5;
+            case 25:
+                offsets[0] = 0;
+                offsets[1] = 23.5;
+            case 10:
+                offsets[0] = -14;
+                offsets[1] = 23.5;
+            case 26:
+                offsets[0] = -14;
+                offsets[1] = 23.5;
+            case 11:
+                offsets[0] = -23.5;
+                offsets[1] = 0;
+            case 27:
+                offsets[0] = -23.5;
+                offsets[1] = 0;
+            default:
+                break;
+        }
+
+        return offsets;
+    }
+
+    public double[] getActualOffset(double[] offset, double angle) {
+        double x = offset[0]; double y = offset[1];
+        double a = Math.toRadians(angle);
+
+        double xPrime = x * Math.cos(a) - y * Math.sin(a);
+        double yPrime = y * Math.cos(a) + x * Math.sin(a);
+
+        double[] ret = {xPrime, yPrime};
+        return ret;
     }
 }

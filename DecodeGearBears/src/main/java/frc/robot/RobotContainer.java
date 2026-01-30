@@ -12,6 +12,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import frc.robot.subsystems.ClientSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -40,6 +41,15 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureSwerveInputs();
     configureBindings();
+  }
+
+  private void printPosition() {
+    double[] pos = m_ClientSubsystem.getPose();
+    System.out.print("position: ");
+    for (int i = 0; i < 3; i++) {
+      System.out.print(pos[i] + " ");
+    }
+    System.out.println();
   }
 
   private void configureSwerveInputs() {
@@ -73,6 +83,8 @@ public class RobotContainer {
   private void configureBindings() {
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
+
+    m_driverController.a().onTrue(new InstantCommand(() -> printPosition()));
 
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
