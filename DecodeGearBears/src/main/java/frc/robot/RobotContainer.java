@@ -7,8 +7,10 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.GetAprilTagAngleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import swervelib.SwerveInputStream;
 import frc.robot.subsystems.ClientSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -75,6 +77,14 @@ public class RobotContainer {
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
 
 
+    
+    // Bind to a button - get angle to tag ID 2 and print i
+    m_driverController.x()
+        .onTrue(new GetAprilTagAngleCommand(m_Limelight, 2,
+            (angle) -> System.out.println("Angle to tag 2: " + angle)));
+
+
+
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
@@ -91,4 +101,7 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return Autos.exampleAuto(m_exampleSubsystem);
   }
+  
+    // Add the subsystem
+    private final LimelightSubsystem m_Limelight = new LimelightSubsystem();
 }
