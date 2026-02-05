@@ -94,4 +94,12 @@ public class ClientSubsystem extends SubsystemBase {
         double[] ret = {xPrime, yPrime};
         return ret;
     }
+
+    public double getDesiredAngle() {
+        double[] offset = getActualOffset(rawOffsets(tagID), yaw);
+        double xLeg = position[1] - offset[0];
+        double yLeg = position[2] - offset[1];
+
+        return Math.atan2(yLeg, xLeg);
+    }
 }
