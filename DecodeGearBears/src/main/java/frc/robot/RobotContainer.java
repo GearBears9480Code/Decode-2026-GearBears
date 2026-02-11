@@ -12,6 +12,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
+import frc.robot.subsystems.ClientSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -28,6 +29,7 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
   final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+  private final ClientSubsystem m_ClientSubsystem = new ClientSubsystem();
 
   private SwerveInputStream driveAngularVelocity;
   private SwerveInputStream driveDirectAngle;
@@ -75,9 +77,6 @@ public class RobotContainer {
   private void configureBindings() {
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
-
-    // m_driverController.x().onTrue(new InstantCommand(() -> m_ShooterSubsystem.shoot())); //GARy
-    // m_driverController.y().onTrue(new InstantCommand(() -> m_ShooterSubsystem.stop())); //GARy
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
