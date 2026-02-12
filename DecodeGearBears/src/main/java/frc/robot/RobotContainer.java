@@ -28,8 +28,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
-  final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final ClientSubsystem m_ClientSubsystem = new ClientSubsystem();
+  final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_ClientSubsystem);
 
   private SwerveInputStream driveAngularVelocity;
   private SwerveInputStream driveDirectAngle;

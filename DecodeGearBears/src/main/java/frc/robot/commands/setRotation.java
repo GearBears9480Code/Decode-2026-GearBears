@@ -31,6 +31,7 @@ public class setRotation extends Command{
     public void changeSetpoint(double angle) {
         setPoint = angle;
         pid.setSetpoint(angle);
+        SmartDashboard.putNumber("setpoint", setPoint);
     }
 
     public void initialize() {
@@ -55,6 +56,6 @@ public class setRotation extends Command{
 
     public boolean isFinished() {
         double rotation = getRotation.getAsDouble();
-        return (setPoint - 1 <= rotation && rotation <= setPoint + 1) && runConstant;
+        return (setPoint - 1 <= rotation && rotation <= setPoint + 1) &&! runConstant;
     }
 }

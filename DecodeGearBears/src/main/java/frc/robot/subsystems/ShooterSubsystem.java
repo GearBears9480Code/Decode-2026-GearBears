@@ -23,13 +23,18 @@ public class ShooterSubsystem extends SubsystemBase {
     // encoders
     private RelativeEncoder rotationEncoder = rotationMotor.getEncoder();
     private RelativeEncoder hoodEncoder;
+    public setRotation turretPID;
 
-    public ShooterSubsystem() {
+    private ClientSubsystem client;
+
+    public ShooterSubsystem(ClientSubsystem cli) {
         // initialize stuff possibly
         rotationEncoder.setPosition(0);
         rotateTurret(0);
-        setRotation turretPID = new setRotation(this::getRotation, this::rotateTurret, 0, this, true);
-        CommandScheduler.getInstance().schedule(turretPID);
+        turretPID = new setRotation(this::getRotation, this::rotateTurret, 0, this, true);
+        
+
+        client = cli;
     }
 
     public void resetMotors() {
@@ -68,5 +73,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
+        double angle = (getRotation() + client.getDesiredAngle(false)) % 360;
+        turretPID.changeSetpoint(angle);
     }
 }

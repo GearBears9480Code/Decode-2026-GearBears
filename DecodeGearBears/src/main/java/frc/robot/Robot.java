@@ -74,6 +74,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     m_robotContainer.m_ShooterSubsystem.resetMotors();
+    CommandScheduler.getInstance().schedule(m_robotContainer.m_ShooterSubsystem.turretPID);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

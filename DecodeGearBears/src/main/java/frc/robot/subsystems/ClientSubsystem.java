@@ -20,7 +20,7 @@ public class ClientSubsystem extends SubsystemBase {
 
     public ClientSubsystem() {
         NetworkTable limelightData = NetworkTableInstance.getDefault().getTable("limelight");
-        int[] redCrucialID = {8, 9, 10, 11};
+        int[] redCrucialID = {2, 8, 9, 10, 11};
         int[] blueCrucialID = {24, 25, 26, 27};
         Optional<Alliance> alliance = DriverStation.getAlliance();
         boolean isRed = alliance.isPresent() && alliance.get() == Alliance.Red;
@@ -29,12 +29,17 @@ public class ClientSubsystem extends SubsystemBase {
     }
 
     private void getAprilTag() {
-        RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("");
-        tagID = fiducials[0].id;
-        double[] aprilTagData = targetPose.get();
+        try {
+            RawFiducial[] fiducials = LimelightHelpers.getRawFiducials("");
+        
+            tagID = fiducials[0].id;
+            double[] aprilTagData = targetPose.get();
 
-        position[0] = aprilTagData[0]; position[1] = aprilTagData[1]; position[2] = aprilTagData[2]; // set the current position
-        yaw = aprilTagData[4];
+            position[0] = aprilTagData[0]; position[1] = aprilTagData[1]; position[2] = aprilTagData[2]; // set the current position
+            yaw = aprilTagData[4];
+        } catch (IndexOutOfBoundsException e) {
+            
+        }
     }
 
     public double[] getPose() {
@@ -95,11 +100,20 @@ public class ClientSubsystem extends SubsystemBase {
         return ret;
     }
 
-    public double getDesiredAngle() {
+    public double getDesiredAngle(boolean includeOffset) {
         double[] offset = getActualOffset(rawOffsets(tagID), yaw);
-        double xLeg = position[1] - offset[0];
-        double yLeg = position[2] - offset[1];
+        double xLeg;
+        double yLeg;
 
-        return Math.atan2(yLeg, xLeg);
+        if (includeOffset) {
+            xLeg = position[1] - offset[0];
+            yLeg = position[2] - offset[1];
+        }
+        else {
+            xLeg = position[1];
+            yLeg = position[2];
+        }
+
+        return Math.toDegrees(Math.atan2(yLeg, xLeg));
     }
 }
