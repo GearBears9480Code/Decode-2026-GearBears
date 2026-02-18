@@ -4,7 +4,7 @@
         "id" : 0,
         "canbus" : null
     },
-    "inverted" : false,
+    "inverted" : true,
     "modules" : [
         "frontleft.json",
         "frontright.json",
