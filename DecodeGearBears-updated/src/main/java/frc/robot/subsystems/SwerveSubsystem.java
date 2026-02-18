@@ -33,7 +33,6 @@ public class SwerveSubsystem extends SubsystemBase{
     private RobotConfig config;
     public SwerveSubsystem() {    
         try { // you need a try catch statement because SwerveParser throws an exception that must be catched
-            System.out.println("got here");
             swerveDrive = new SwerveParser(directory).createSwerveDrive(maxSpeedMeters);
         } catch(IOException e) {
             e.printStackTrace();
@@ -42,7 +41,6 @@ public class SwerveSubsystem extends SubsystemBase{
 
         try {
             config = RobotConfig.fromGUISettings();
-            System.out.println("got here - config");
         } catch (Exception e) {
             e.printStackTrace();
         }
