@@ -72,8 +72,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    Command driveAngularVelocityCommand = m_SwerveSubsystem.driveFieldOriented(driveAngularVelocity);
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
-		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
+		m_SwerveSubsystem.setDefaultCommand(driveAngularVelocityCommand);
 
     m_driverController.a().onTrue(goToPoint);
 
