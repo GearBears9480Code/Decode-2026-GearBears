@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.time.chrono.MinguoEra;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 
@@ -25,6 +27,10 @@ public class ShooterSubsystem extends SubsystemBase {
     private RelativeEncoder hoodEncoder;
     public setRotation turretPID;
 
+    // angle limits
+    private double minRotation = -90;
+    private double maxRotation = 90;
+
     private ClientSubsystem client;
 
     public ShooterSubsystem(ClientSubsystem cli) {
@@ -33,7 +39,6 @@ public class ShooterSubsystem extends SubsystemBase {
         rotateTurret(0);
         turretPID = new setRotation(this::getRotation, this::rotateTurret, 0, this, true);
         
-
         client = cli;
     }
 
@@ -73,7 +78,15 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        double angle = (getRotation() + client.getDesiredAngle(false)) % 360;
+        double angle = getRotation() + client.getDesiredAngle(false);
+        
+        if (angle < minRotation) {
+            angle = minRotation;
+        } else if (angle > maxRotation) {
+            angle = maxRotation;
+        }
+
         turretPID.changeSetpoint(angle);
+        // turretPID.changeSetpoint(angle);
     }
 }

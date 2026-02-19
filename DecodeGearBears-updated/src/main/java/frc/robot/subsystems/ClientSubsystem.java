@@ -38,7 +38,9 @@ public class ClientSubsystem extends SubsystemBase {
             position[0] = aprilTagData[0]; position[1] = aprilTagData[1]; position[2] = aprilTagData[2]; // set the current position
             yaw = aprilTagData[4];
         } catch (IndexOutOfBoundsException e) {
-            
+            tagID = 0;
+            position[0] = 0; position[1] = 0; position[2] = 0;
+            yaw = 0;
         }
     }
 
@@ -106,14 +108,16 @@ public class ClientSubsystem extends SubsystemBase {
         double yLeg;
 
         if (includeOffset) {
-            xLeg = position[1] - offset[0];
+            xLeg = position[0] - offset[0];
             yLeg = position[2] - offset[1];
         }
         else {
-            xLeg = position[1];
+            xLeg = position[0];
             yLeg = position[2];
         }
 
-        return Math.toDegrees(Math.atan2(yLeg, xLeg));
+        System.out.println(xLeg + " " + yLeg);
+
+        return Math.toDegrees(Math.atan2(xLeg, yLeg));
     }
 }
