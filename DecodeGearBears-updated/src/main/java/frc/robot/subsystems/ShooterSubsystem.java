@@ -17,14 +17,13 @@ public class ShooterSubsystem extends SubsystemBase {
     // the starting number = 4
 
     // motors
-    private final SparkMax rotationMotor = new SparkMax(45, MotorType.kBrushed);
-    // private final SparkMax hoodMotor = new SparkMax(41, MotorType.kBrushless);
-    // private final SparkMax shooterMotor = new SparkMax(42, MotorType.kBrushless);
-    private SparkMax hoodMotor;
-    private SparkMax shooterMotor;
+    private final SparkMax rotationMotor = new SparkMax(40, MotorType.kBrushless);
+    private SparkMax hoodMotor = new SparkMax(41, MotorType.kBrushed);
+    private SparkMax shooterMotor = new SparkMax(42, MotorType.kBrushless);
     // encoders
-    private RelativeEncoder rotationEncoder = rotationMotor.getEncoder();
-    private RelativeEncoder hoodEncoder;
+    private RelativeEncoder rotationEncoder = rotationMotor.getAlternateEncoder();
+    private RelativeEncoder hoodEncoder = hoodMotor.getEncoder();
+    private RelativeEncoder velocityEncoder = shooterMotor.getAlternateEncoder();
     public setRotation turretPID;
 
     // angle limits
@@ -37,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // initialize stuff possibly
         rotationEncoder.setPosition(0);
         rotateTurret(0);
-        turretPID = new setRotation(this::getRotation, this::rotateTurret, 0, this, true);
+        turretPID = new setRotation(this::getRotation, this::rotateTurret, 0, this, true, 0.015, 0.003, 0.000005);
         
         client = cli;
     }
@@ -55,8 +54,14 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     // starts the shooter
-    public void shoot() {
-        shooterMotor.set(-1);
+    public void shoot(double velocity) {
+        shooterMotor.set(velocity);
+    }
+
+    public double getVelocity() {
+        // equation to convert RPM -> m/s or velocity
+        // the encoder reads RPM for velocity not actually m/s
+        return (velocityEncoder.getVelocity() * ShooterConstants.flyWheelCircumfrance) / 60;
     }
     
     // stops the shooter
@@ -74,7 +79,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getHoodRotation() {
-        return hoodEncoder.getPosition() * 360;
+        return (hoodEncoder.getPosition() / 4) * -360;
     }
 
     public void periodic() {

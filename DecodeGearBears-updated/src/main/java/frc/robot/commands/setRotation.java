@@ -18,14 +18,14 @@ public class setRotation extends Command{
 
     private boolean runConstant;
 
-    public setRotation(DoubleSupplier getRotation, DoubleConsumer setRotation, double setPoint, Subsystem subsyst, boolean runConstantly) {
+    public setRotation(DoubleSupplier getRotation, DoubleConsumer setRotation, double setPoint,
+                        Subsystem subsyst, boolean runConstantly, double kp, double ki, double kd) {
         this.getRotation = getRotation; // gets the rotation in degrees
         this.setRotation = setRotation; // sets the rotation in degrees
 
         this.setPoint = setPoint; // setpoint in degrees
-        pid = new PIDController(0.015, 0.003, 0.000005); // sets up the pid constants
+        pid = new PIDController(kp, ki, kd); // sets up the pid constants
         runConstant = runConstantly;
-        addRequirements(subsyst);
     }
 
     public void changeSetpoint(double angle) {

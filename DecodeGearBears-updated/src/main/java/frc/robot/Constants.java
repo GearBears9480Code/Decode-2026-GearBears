@@ -21,5 +21,6 @@ public final class Constants {
     public static final int numGearTurretMotor = 12;
     public static final int numGearTurretTrack = 24;
     public static final double turretRotationGearRatio = 1; // 1/5.41
+    public static final double flyWheelCircumfrance = 2;
   }
 }
