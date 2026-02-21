@@ -18,12 +18,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // motors
     private final SparkMax rotationMotor = new SparkMax(40, MotorType.kBrushless);
-    private SparkMax hoodMotor = new SparkMax(41, MotorType.kBrushed);
-    private SparkMax shooterMotor = new SparkMax(42, MotorType.kBrushless);
+    private final SparkMax hoodMotor = new SparkMax(41, MotorType.kBrushed);
+    private final SparkMax shooterMotor = new SparkMax(42, MotorType.kBrushless);
     // encoders
-    private RelativeEncoder rotationEncoder = rotationMotor.getAlternateEncoder();
-    private RelativeEncoder hoodEncoder = hoodMotor.getEncoder();
-    private RelativeEncoder velocityEncoder = shooterMotor.getAlternateEncoder();
+    private final RelativeEncoder rotationEncoder = rotationMotor.getAlternateEncoder();
+    private final RelativeEncoder hoodEncoder = hoodMotor.getEncoder();
+    private final RelativeEncoder velocityEncoder = shooterMotor.getAlternateEncoder();
     public setRotation turretPID;
 
     // angle limits
@@ -31,6 +31,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private double maxRotation = 90;
 
     private ClientSubsystem client;
+
+    private double velocity = 0;
 
     public ShooterSubsystem(ClientSubsystem cli) {
         // initialize stuff possibly
@@ -43,6 +45,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void resetMotors() {
         rotationMotor.set(0);
+        velocity = 0;
+        hoodMotor.set(0);
+        shooterMotor.set(0);
     }
     
     // used to get rotation of the turret based on the current rotation of the motor
@@ -55,7 +60,8 @@ public class ShooterSubsystem extends SubsystemBase {
     
     // starts the shooter
     public void shoot(double velocity) {
-        shooterMotor.set(velocity);
+        this.velocity += velocity;
+        shooterMotor.set(this.velocity);
     }
 
     public double getVelocity() {
