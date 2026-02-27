@@ -115,7 +115,7 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.resetOdometry(initialHolonomicPos);
     }
 
-    public Command getAutonamasCommand(String path) {
+    public Command getAutonomousCommand(String path) {
         return new PathPlannerAuto(path);
     }
 }
