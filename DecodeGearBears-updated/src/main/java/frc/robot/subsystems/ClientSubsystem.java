@@ -116,8 +116,6 @@ public class ClientSubsystem extends SubsystemBase {
             yLeg = position[2];
         }
 
-        System.out.println(xLeg + " " + yLeg);
-
         return Math.toDegrees(Math.atan2(xLeg, yLeg));
     }
 }

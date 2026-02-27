@@ -15,12 +15,13 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kMechanismControllerPort = 1;
   }
 
   public static class ShooterConstants {
     public static final int numGearTurretMotor = 12;
     public static final int numGearTurretTrack = 24;
-    public static final double turretRotationGearRatio = 1; // 1/5.41
+    public static final double turretRotationGearRatio = (double)23/(double)130; // 1/5.41
     public static final double flyWheelCircumfrance = 2;
 
     public static final double turretKp = 0.1;

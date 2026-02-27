@@ -7,12 +7,13 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.setRotation;
+import frc.robot.commands.ShooterPIDCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import frc.robot.subsystems.ClientSubsystem;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -33,11 +34,12 @@ public class RobotContainer {
 
   private SwerveInputStream driveAngularVelocity;
   private SwerveInputStream driveDirectAngle;
-  private SwerveInputStream driveRobotOriented;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final XboxController m_mechanismController =
+      new XboxController(OperatorConstants.kMechanismControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -59,9 +61,6 @@ public class RobotContainer {
 																					m_driverController::getRightY
 																				)
 																				.headingWhile(true);
-		driveRobotOriented = driveAngularVelocity.copy()
-														.robotRelative(false)
-														.allianceRelativeControl(true);
 	}
 
 
@@ -77,8 +76,9 @@ public class RobotContainer {
   private void configureBindings() {
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
-
     
+    m_driverController.a().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeTurretAngle(0)));
+    m_driverController.b().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeTurretAngle(60)));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
@@ -94,6 +94,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return m_SwerveSubsystem.getAutonamasCommand("test path");
   }
 }
