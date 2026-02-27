@@ -16,4 +16,11 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class IntakeConstants {
+    // PID CONSTANTS
+    public static final double armMotor_kP = 0.1;
+    public static final double armMotor_kI = 0.0;
+    public static final double armMotor_kD = 0.0;
+  }
 }
