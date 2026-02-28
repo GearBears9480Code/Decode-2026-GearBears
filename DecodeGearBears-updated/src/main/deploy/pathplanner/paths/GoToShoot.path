@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.7459277108433735,
+        "y": 0.5818433734939765
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8991445783132535,
+        "y": 1.0954457831325293
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.8663614457831326,
+        "y": 1.6964698795180722
+      },
+      "prevControl": {
+        "x": 1.8485496832861548,
+        "y": 1.4471052045603885
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ShootPathEnd"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": "OrbitSteal2Shoot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
