@@ -30,6 +30,7 @@ public class ShooterPIDCommand extends Command {
         turretSetpoint = angle;
         turretPID.setSetpoint(angle);
         SmartDashboard.putNumber("turret setpoint", angle);
+        System.out.println("got here");
     }
 
     public void initialize() {

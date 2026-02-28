@@ -79,6 +79,7 @@ public class RobotContainer {
     
     m_driverController.a().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeTurretAngle(0)));
     m_driverController.b().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeTurretAngle(60)));
+    m_driverController.x().onTrue(new InstantCommand(() -> System.out.println("hello")));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
