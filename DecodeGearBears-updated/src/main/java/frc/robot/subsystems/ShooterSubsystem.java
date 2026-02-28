@@ -15,12 +15,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // motors
     private final SparkMax rotationMotor = new SparkMax(40, MotorType.kBrushless);
-    private SparkMax hoodMotor;
-    private SparkMax shooterMotor;
+    private final SparkMax hoodMotor = new SparkMax(41, MotorType.kBrushed);
+    private final SparkMax shooterMotor = new SparkMax(42, MotorType.kBrushless);
     // encoders
     private final RelativeEncoder rotationEncoder = rotationMotor.getEncoder();
-    private RelativeEncoder hoodEncoder;
-    private RelativeEncoder velocityEncoder;
+    private final RelativeEncoder hoodEncoder = hoodMotor.getEncoder();
+    private final RelativeEncoder velocityEncoder = shooterMotor.getEncoder();
 
     public ShooterPIDCommand pid;
 
@@ -36,6 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // initialize stuff possibly
         rotationEncoder.setPosition(0);
         rotateTurret(0);
+        shoot(0.5);
         
         client = cli;
         pid = new ShooterPIDCommand(this);
@@ -86,13 +87,29 @@ public class ShooterSubsystem extends SubsystemBase {
         return (hoodEncoder.getPosition() / 4) * -360;
     }
 
+    private double getHoodAngle() {
+        double distance = client.getDistance();
+        double time = distance / ShooterConstants.constantHorizontalVelocity;
+        double input = ((2 * time * ShooterConstants.height) + (9.8 * (Math.pow(time, 3)))) / (2 * distance * time);
+        return Math.toDegrees(Math.atan(input));
+    }
+
+    private double getFlywheelVelocity(double angle) {
+        return ShooterConstants.constantHorizontalVelocity / Math.cos(angle);
+    }
+
     public void periodic() {
-        double angle = getRotation() + client.getDesiredAngle(false);
+        double angle = -1 * (getRotation() + client.getDesiredAngle(false));
         
         if (angle < minRotation) {
             angle = minRotation;
         } else if (angle > maxRotation) {
             angle = maxRotation;
         }
+
+        double hoodRotation = getHoodAngle();
+        double flywheelVelocity = getFlywheelVelocity(hoodRotation);
+
+        //pid.changeTurretAngle(angle);
     }
 }

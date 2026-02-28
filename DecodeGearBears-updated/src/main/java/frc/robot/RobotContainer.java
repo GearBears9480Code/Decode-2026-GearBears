@@ -38,8 +38,6 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final XboxController m_mechanismController =
-      new XboxController(OperatorConstants.kMechanismControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -78,8 +76,8 @@ public class RobotContainer {
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
     
     m_driverController.a().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeTurretAngle(0)));
-    m_driverController.b().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeTurretAngle(60)));
-    m_driverController.x().onTrue(new InstantCommand(() -> System.out.println("hello")));
+    m_driverController.b().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeTurretAngle(10)));
+    // m_driverController.x().onTrue(new InstantCommand(() -> System.out.println("hello")));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 

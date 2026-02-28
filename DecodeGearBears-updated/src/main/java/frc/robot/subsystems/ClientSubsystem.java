@@ -48,6 +48,10 @@ public class ClientSubsystem extends SubsystemBase {
         return position;
     }
 
+    public double getDistance() {
+        return Math.sqrt((position[0]*position[0]) + (position[2]*position[2]));
+    }
+
     public int aprilTagID() {
         return tagID;
     }
