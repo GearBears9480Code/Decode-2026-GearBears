@@ -28,8 +28,8 @@ public final class Constants {
     public static final double height = 1.1176;
 
     public static final double turretKp = 0.005;
-    public static final double turretKi = 0.01;
-    public static final double turretKd = 0.00021;
+    public static final double turretKi = 0.0;
+    public static final double turretKd = 0.000;
 
     public static final double hoodKp = 0.1;
     public static final double hoodKi = 0.0;

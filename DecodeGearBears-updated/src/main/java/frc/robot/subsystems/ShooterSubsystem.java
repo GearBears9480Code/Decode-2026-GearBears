@@ -18,7 +18,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SparkMax hoodMotor = new SparkMax(41, MotorType.kBrushed);
     private final SparkMax shooterMotor = new SparkMax(42, MotorType.kBrushless);
     // encoders
-    private final RelativeEncoder rotationEncoder = rotationMotor.getEncoder();
+    private final RelativeEncoder rotationEncoder = rotationMotor.getAlternateEncoder();
     private final RelativeEncoder hoodEncoder = hoodMotor.getEncoder();
     private final RelativeEncoder velocityEncoder = shooterMotor.getEncoder();
 
@@ -36,7 +36,6 @@ public class ShooterSubsystem extends SubsystemBase {
         // initialize stuff possibly
         rotationEncoder.setPosition(0);
         rotateTurret(0);
-        shoot(0.5);
         
         client = cli;
         pid = new ShooterPIDCommand(this);
@@ -99,7 +98,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        double angle = -1 * (getRotation() + client.getDesiredAngle(false));
+        double desiredAngle = client.getDesiredAngle(false);
+        SmartDashboard.putNumber("apriltag-angle", desiredAngle);
+        double angle = -1 * (getRotation() + desiredAngle);
         
         if (angle < minRotation) {
             angle = minRotation;
@@ -110,6 +111,6 @@ public class ShooterSubsystem extends SubsystemBase {
         double hoodRotation = getHoodAngle();
         double flywheelVelocity = getFlywheelVelocity(hoodRotation);
 
-        //pid.changeTurretAngle(angle);
+        pid.changeTurretAngle(angle);
     }
 }
