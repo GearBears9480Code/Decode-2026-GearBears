@@ -75,8 +75,8 @@ public class RobotContainer {
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
     
-    m_driverController.a().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeHoodAngle(0)));
-    m_driverController.b().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeHoodAngle(30)));
+    m_driverController.a().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0.2))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0)));
+    m_driverController.b().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(-0.2))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0)));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
