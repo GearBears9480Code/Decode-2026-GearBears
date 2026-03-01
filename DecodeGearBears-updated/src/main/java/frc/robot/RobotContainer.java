@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.ActivateShooting;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -12,6 +13,7 @@ import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -73,6 +75,10 @@ public class RobotContainer {
   private void configureBindings() {
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
+
+    ActivateShooting shooting = new ActivateShooting(m_HopperSubsystem);
+    m_driverController.a().onTrue(shooting);
+    m_driverController.b().onTrue(new InstantCommand(() -> shooting.stop()));
 
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
