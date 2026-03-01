@@ -8,9 +8,11 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -24,6 +26,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
+  private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
 
   private SwerveInputStream driveAngularVelocity;
   private SwerveInputStream driveDirectAngle;
@@ -72,6 +75,9 @@ public class RobotContainer {
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
 
+    m_driverController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0.2))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
+    m_driverController.b().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(-0.2))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
+    m_driverController.x().onTrue(new InstantCommand(() -> m_IntakeSubsystem.startVacMotor())).onFalse(new InstantCommand(() -> m_IntakeSubsystem.stopVacMotor()));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
