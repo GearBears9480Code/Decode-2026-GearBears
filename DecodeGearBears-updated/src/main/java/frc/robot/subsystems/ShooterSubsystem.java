@@ -75,6 +75,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void rotateHood(double velocity) {
         hoodMotor.set(velocity);
+        SmartDashboard.putNumber("hood velocity", velocity);
     }
 
     public void rotateTurret(double velocity) {
@@ -83,7 +84,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getHoodRotation() {
-        return (hoodEncoder.getPosition() / 4) * -360;
+        double angle = (hoodEncoder.getPosition() / 4) * -360;
+        SmartDashboard.putNumber("hood angle", angle);
+        return angle;
     }
 
     private double getHoodAngle() {

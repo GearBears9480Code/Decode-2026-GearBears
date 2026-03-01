@@ -33,19 +33,25 @@ public class ShooterPIDCommand extends Command {
         SmartDashboard.putNumber("turret setpoint", angle);
     }
 
+    public void changeHoodAngle(double angle) {
+        hoodSetpoint = angle;
+        hoodPID.setSetpoint(angle);
+        SmartDashboard.putNumber("hood setpoint", angle);
+    }
+
     public void initialize() {
 
     }
 
     public void execute() {
         double turretPosition = shooter.getRotation();
-        // double hoodRotation = shooter.getHoodRotation();
+        double hoodRotation = shooter.getHoodRotation();
 
         double turretVelocity = turretPID.calculate(turretPosition);
-        // double hoodVelocity = hoodPID.calculate(hoodRotation);
+        double hoodVelocity = hoodPID.calculate(hoodRotation);
 
         shooter.rotateTurret(turretVelocity);
-        // shooter.rotateHood(hoodVelocity);
+        shooter.rotateHood(hoodVelocity);
 
         // double shooterVelocity = shooter.getVelocity();
         // double deltaVelocity = flyWheelPID.calculate(shooterVelocity);
