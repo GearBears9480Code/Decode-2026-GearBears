@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.35833734939759043,
-        "y": 5.958277108437691
+        "x": 4.37546362339515,
+        "y": 0.5868473609129818
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6206024096385543,
-        "y": 5.81621686746988
+        "x": 8.709914407988586,
+        "y": 0.0563623395149796
       },
       "isLocked": false,
-      "linkedName": "AtDepot"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.2925421686746983,
-        "y": 4.920144578313253
+        "x": 7.830085592011411,
+        "y": 2.993437945791726
       },
       "prevControl": {
-        "x": 2.1538671196183907,
-        "y": 5.128157151897714
+        "x": 7.713637660485022,
+        "y": 3.2263338088445086
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "NewStealAtCenter"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "DepotShoot",
+  "folder": "New Steal",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
