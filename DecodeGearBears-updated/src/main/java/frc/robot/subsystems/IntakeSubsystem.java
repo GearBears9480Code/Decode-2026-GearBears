@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakeSubsystem extends SubsystemBase {
 
 
-    SparkMax armMotor = new SparkMax (1, MotorType.kBrushless);
-    SparkMax vacMotor = new SparkMax(2, MotorType.kBrushless);
+    SparkMax armMotor = new SparkMax (61, MotorType.kBrushed);
+    SparkMax vacMotor = new SparkMax(60, MotorType.kBrushless);
 
 	RelativeEncoder armEncoder = armMotor.getEncoder();
 
@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   
     public void startVacMotor() {
-        vacMotor.set(1);
+        vacMotor.set(-1);
     }
 
     public void stopVacMotor() {
@@ -36,6 +36,6 @@ public class IntakeSubsystem extends SubsystemBase {
    }
 
     public void setArmVelocity(double armVelocity) {
-        
+        armMotor.set(armVelocity);
     }
 }

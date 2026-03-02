@@ -39,7 +39,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
+    configureSwerveInputs();
     configureBindings();
   }
 
@@ -75,8 +75,8 @@ public class RobotContainer {
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
 
-    m_driverController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0.2))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
-    m_driverController.b().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(-0.2))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
+    m_driverController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0.2))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0)));
+    m_driverController.b().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(-0.2))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0)));
     m_driverController.x().onTrue(new InstantCommand(() -> m_IntakeSubsystem.startVacMotor())).onFalse(new InstantCommand(() -> m_IntakeSubsystem.stopVacMotor()));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
