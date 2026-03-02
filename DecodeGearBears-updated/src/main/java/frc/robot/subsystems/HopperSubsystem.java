@@ -18,7 +18,7 @@ public class HopperSubsystem extends SubsystemBase {
 
 
    public void spin() {
-       spindexer.set(1);
+       spindexer.set(0.5);
    }
 
 
@@ -28,7 +28,7 @@ public class HopperSubsystem extends SubsystemBase {
 
 
    public void kick() {
-       kicker.set(1);
+       kicker.set(0.5);
    }
 
 

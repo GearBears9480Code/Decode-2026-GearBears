@@ -39,6 +39,8 @@ public class ActivateShooting extends Command {
     public void end(boolean interupt) {
         finished = false;
         shooter.set(0);
+        hopper.stopSpin();
+        hopper.stopKick();
     }
 
     public boolean isFinished() {

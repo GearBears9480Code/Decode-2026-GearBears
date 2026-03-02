@@ -80,6 +80,8 @@ public class RobotContainer {
     m_driverController.a().onTrue(shooting);
     m_driverController.b().onTrue(new InstantCommand(() -> shooting.stop()));
 
+    m_driverController.x().onTrue(new InstantCommand(() -> m_HopperSubsystem.spin())).onFalse(new InstantCommand(() -> m_HopperSubsystem.stopSpin()));
+
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
