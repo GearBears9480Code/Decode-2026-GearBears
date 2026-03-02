@@ -26,7 +26,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
-  private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
+  public final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
 
   private SwerveInputStream driveAngularVelocity;
   private SwerveInputStream driveDirectAngle;
@@ -75,9 +75,7 @@ public class RobotContainer {
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
 		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
 
-    m_driverController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0.2))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0)));
-    m_driverController.b().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(-0.2))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0)));
-    m_driverController.x().onTrue(new InstantCommand(() -> m_IntakeSubsystem.startVacMotor())).onFalse(new InstantCommand(() -> m_IntakeSubsystem.stopVacMotor()));
+    m_driverController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.changeVelocity(1200))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.pid.changeVelocity(0)));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 

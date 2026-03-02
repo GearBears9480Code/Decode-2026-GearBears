@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -72,6 +73,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
