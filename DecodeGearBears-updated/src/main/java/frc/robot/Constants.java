@@ -16,4 +16,14 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class ClimberConstants {
+    public static final double armKp = 0.1;
+    public static final double armKi = 0.0;
+    public static final double armKd = 0.0;
+    
+    public static final double climbKp = 0.1;
+    public static final double climbKi = 0.0;
+    public static final double climbKd = 0.0;
+  }
 }
