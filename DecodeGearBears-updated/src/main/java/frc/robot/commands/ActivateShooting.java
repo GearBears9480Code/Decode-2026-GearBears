@@ -31,16 +31,14 @@ public class ActivateShooting extends Command {
     public void execute() {
         double currentTime = Timer.getTimestamp();
         if (currentTime - startingTime >= 2.0) {
-            hopper.spin();
-            hopper.kick();
+            hopper.hopperPIDCommand.changeSpindexerSpeed(600);
         }
     }
 
     public void end(boolean interupt) {
         finished = false;
         shooter.set(0);
-        hopper.stopSpin();
-        hopper.stopKick();
+        hopper.hopperPIDCommand.changeSpindexerSpeed(0);
     }
 
     public boolean isFinished() {

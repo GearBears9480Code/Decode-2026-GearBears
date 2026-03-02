@@ -16,4 +16,10 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class HopperConstants {
+    public static final double spinKp = 0.1;
+    public static final double spinKi = 0.0;
+    public static final double spinKd = 0.0;
+  }
 }

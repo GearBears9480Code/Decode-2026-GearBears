@@ -27,7 +27,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
-  private final HopperSubsystem m_HopperSubsystem = new HopperSubsystem();
+  public final HopperSubsystem m_HopperSubsystem = new HopperSubsystem();
 
   private SwerveInputStream driveAngularVelocity;
   private SwerveInputStream driveDirectAngle;
@@ -79,9 +79,6 @@ public class RobotContainer {
     ActivateShooting shooting = new ActivateShooting(m_HopperSubsystem);
     m_driverController.a().onTrue(shooting);
     m_driverController.b().onTrue(new InstantCommand(() -> shooting.stop()));
-
-    m_driverController.x().onTrue(new InstantCommand(() -> m_HopperSubsystem.spin())).onFalse(new InstantCommand(() -> m_HopperSubsystem.stopSpin()));
-
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
