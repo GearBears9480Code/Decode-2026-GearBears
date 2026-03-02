@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.GoToPoint;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -25,6 +26,8 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
 
+  private final GoToPoint goToPoint = new GoToPoint(m_SwerveSubsystem, 2, 0);
+
   private SwerveInputStream driveAngularVelocity;
   private SwerveInputStream driveDirectAngle;
   private SwerveInputStream driveRobotOriented;
@@ -36,7 +39,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    configureBindings();
+    configureSwerveInputs();
     configureBindings();
   }
 
@@ -69,14 +72,17 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    Command driveAngularVelocityCommand = m_SwerveSubsystem.driveFieldOriented(driveAngularVelocity);
     Command driveDirectAngleCommand = m_SwerveSubsystem.driveFieldOriented(driveDirectAngle);
-		m_SwerveSubsystem.setDefaultCommand(driveDirectAngleCommand);
+		m_SwerveSubsystem.setDefaultCommand(driveAngularVelocityCommand);
+
+    m_driverController.a().onTrue(goToPoint);
 
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
+    // cancelling on release
 
   }
 
@@ -87,6 +93,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return m_SwerveSubsystem.getAutonamasCommand("OrbitSteal2Shoot");
   }
 }
