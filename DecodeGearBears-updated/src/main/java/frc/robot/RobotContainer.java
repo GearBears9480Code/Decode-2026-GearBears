@@ -8,11 +8,14 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActivateShooting;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.GoToPoint;
+import frc.robot.commands.ShooterPIDCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
+import frc.robot.subsystems.ClientSubsystem;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -29,12 +32,11 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
   public final HopperSubsystem m_HopperSubsystem = new HopperSubsystem();
-
-  private final GoToPoint goToPoint = new GoToPoint(m_SwerveSubsystem, 2, 0);
+  final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_ClientSubsystem);
+  private final ClientSubsystem m_ClientSubsystem = new ClientSubsystem();
 
   private SwerveInputStream driveAngularVelocity;
   private SwerveInputStream driveDirectAngle;
-  private SwerveInputStream driveRobotOriented;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -60,9 +62,6 @@ public class RobotContainer {
 																					m_driverController::getRightY
 																				)
 																				.headingWhile(true);
-		driveRobotOriented = driveAngularVelocity.copy()
-														.robotRelative(false)
-														.allianceRelativeControl(true);
 	}
 
 
@@ -82,9 +81,6 @@ public class RobotContainer {
 
     m_driverController.a().onTrue(goToPoint);
 
-    ActivateShooting shooting = new ActivateShooting(m_HopperSubsystem);
-    m_driverController.a().onTrue(shooting);
-    m_driverController.b().onTrue(new InstantCommand(() -> shooting.stop()));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
@@ -96,7 +92,7 @@ public class RobotContainer {
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
-   * @return the command to run in autonomous
+   * @return the command to run in autonomous skib idi
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
