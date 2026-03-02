@@ -103,3 +103,5 @@ public class RobotContainer {
     return m_SwerveSubsystem.getAutonamasCommand("OrbitSteal2Shoot");
   }
 }
+
+  public final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();

@@ -100,3 +100,5 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationPeriodic() {}
 }
+
+    CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);

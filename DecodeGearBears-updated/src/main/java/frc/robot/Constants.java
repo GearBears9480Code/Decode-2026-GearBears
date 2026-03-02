@@ -17,6 +17,23 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
+  public static class PhysicalConstants {
+    public static final int neoMaxRPM = 5676;
+  }
+
+  public static class IntakeConstants {
+    // PID CONSTANTS
+    public static final double armMotor_kP = 0.1;
+    public static final double armMotor_kI = 0.0;
+    public static final double armMotor_kD = 0.0;
+
+    public static final double velocityMotor_kP = 0.1;
+    public static final double velocityMotor_kI = 0.0;
+    public static final double velocityMotor_kD = 0.0;
+  }
+  public static class OperatorConstants {
+    public static final int kDriverControllerPort = 0;
+  }
   public static class HopperConstants {
     public static final double spinKp = 0.1;
     public static final double spinKi = 0.0;
@@ -33,3 +50,4 @@ public final class Constants {
     public static final double climbKd = 0.0;
   }
 }
+

@@ -1,3 +1,6 @@
+    public Command getAutonomousCommand(String path) {
+        return new PathPlannerAuto(path);
+    }
 package frc.robot.subsystems;
 
 import java.io.File;
@@ -115,7 +118,4 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.resetOdometry(initialHolonomicPos);
     }
 
-    public Command getAutonamasCommand(String path) {
-        return new PathPlannerAuto(path);
-    }
 }
