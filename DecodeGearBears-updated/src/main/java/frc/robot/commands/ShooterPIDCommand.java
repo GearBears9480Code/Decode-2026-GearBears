@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.PhysicalConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -14,6 +15,7 @@ public class ShooterPIDCommand extends Command {
     private double turretSetpoint = 0;
     private double hoodSetpoint = 0;
     private double flyWheelSetvelocity = 0;
+    private boolean enterManual = true;
 
     private ShooterSubsystem shooter;
 
@@ -39,24 +41,31 @@ public class ShooterPIDCommand extends Command {
         SmartDashboard.putNumber("hood setpoint", angle);
     }
 
+    public void changeSpeed(double velocity) {
+        flyWheelSetvelocity = velocity;
+        flyWheelPID.setSetpoint(flyWheelSetvelocity);
+    }
+
     public void initialize() {
 
     }
 
     public void execute() {
-        double turretPosition = shooter.getRotation();
-        double hoodRotation = shooter.getHoodRotation();
+        if (!enterManual) {
+            double turretPosition = shooter.getRotation();
+            double hoodRotation = shooter.getHoodRotation();
 
-        double turretVelocity = turretPID.calculate(turretPosition);
-        double hoodVelocity = hoodPID.calculate(hoodRotation);
+            double turretVelocity = turretPID.calculate(turretPosition);
+            double hoodVelocity = hoodPID.calculate(hoodRotation);
 
-        shooter.rotateTurret(turretVelocity);
-        shooter.rotateHood(hoodVelocity);
+            shooter.rotateTurret(turretVelocity);
+            shooter.rotateHood(hoodVelocity);
+        }
 
-        // double shooterVelocity = shooter.getVelocity();
-        // double deltaVelocity = flyWheelPID.calculate(shooterVelocity);
+        double shooterVelocity = shooter.getVelocity();
+        double deltaVelocity = flyWheelPID.calculate(shooterVelocity);
         
-        // shooter.shoot(deltaVelocity);
+        shooter.shoot(deltaVelocity / PhysicalConstants.neoMaxRPM);
     }
 
     public void end(boolean interrupted) {

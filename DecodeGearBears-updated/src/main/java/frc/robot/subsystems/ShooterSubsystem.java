@@ -65,11 +65,13 @@ public class ShooterSubsystem extends SubsystemBase {
     public double getVelocity() {
         // equation to convert RPM -> m/s or velocity
         // the encoder reads RPM for velocity not actually m/s
-        return (velocityEncoder.getVelocity() * ShooterConstants.flyWheelCircumfrance) / 60;
+        // return (velocityEncoder.getVelocity() * ShooterConstants.flyWheelCircumfrance) / 60;
+        return velocityEncoder.getVelocity();
     }
     
     // stops the shooter
     public void stop() {
+        velocity = 0;
         shooterMotor.set(0.0);
     }
 
@@ -89,14 +91,14 @@ public class ShooterSubsystem extends SubsystemBase {
         return angle;
     }
 
-    private double getHoodAngle() {
+    public double getHoodAngle() {
         double distance = client.getDistance();
         double time = distance / ShooterConstants.constantHorizontalVelocity;
         double input = ((2 * time * ShooterConstants.height) + (9.8 * (Math.pow(time, 3)))) / (2 * distance * time);
         return Math.toDegrees(Math.atan(input));
     }
 
-    private double getFlywheelVelocity(double angle) {
+    public double getFlywheelVelocity(double angle) {
         return ShooterConstants.constantHorizontalVelocity / Math.cos(angle);
     }
 
@@ -111,9 +113,6 @@ public class ShooterSubsystem extends SubsystemBase {
             angle = maxRotation;
         }
 
-        double hoodRotation = getHoodAngle();
-        double flywheelVelocity = getFlywheelVelocity(hoodRotation);
-
-        pid.changeTurretAngle(angle);
+        // pid.changeTurretAngle(angle);
     }
 }

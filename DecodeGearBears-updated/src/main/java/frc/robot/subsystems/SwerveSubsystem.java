@@ -1,6 +1,3 @@
-    public Command getAutonomousCommand(String path) {
-        return new PathPlannerAuto(path);
-    }
 package frc.robot.subsystems;
 
 import java.io.File;
@@ -41,7 +38,7 @@ public class SwerveSubsystem extends SubsystemBase{
             e.printStackTrace();
         }
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
-
+        
         try {
             config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
@@ -49,67 +46,67 @@ public class SwerveSubsystem extends SubsystemBase{
         }
         configureAutoBuilder();
     }
-
+    
     private void configureAutoBuilder() {
         AutoBuilder.configure(
-                            this::getPose,
-                            this::resetPose, 
-                            this::getRobotChassisSpeeds, 
-                            (speeds, feedforward) -> driveRobotRelative(speeds), 
-                            new PPHolonomicDriveController(
-                                new PIDConstants(5, 0, 0), 
-                                new PIDConstants(5, 0, 0)
-                            ), 
-                            config, 
-                            () -> {
-                                Optional<Alliance> alliance = DriverStation.getAlliance();
-                                if (alliance.isPresent()) {
-                                    return alliance.get() == DriverStation.Alliance.Red;
-                                }
-                                return false;
-                            }, 
-                            this
-                            );
-    }
+            this::getPose,
+            this::resetPose, 
+            this::getRobotChassisSpeeds, 
+            (speeds, feedforward) -> driveRobotRelative(speeds), 
+            new PPHolonomicDriveController(
+                new PIDConstants(5, 0, 0), 
+                new PIDConstants(5, 0, 0)
+                ), 
+                config, 
+                () -> {
+                    Optional<Alliance> alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                }, 
+                this
+                );
+            }
+            
+            public Command getDriveCommand(DoubleSupplier xTranslation, DoubleSupplier yTranslation, DoubleSupplier xHeading, DoubleSupplier yHeading) {
+                return run(() -> {
+                    Translation2d velocity = SwerveMath.scaleTranslation(new Translation2d(
+                        xTranslation.getAsDouble(),
+                        yTranslation.getAsDouble()
+                        ), 0.8);
+                        swerveDrive.driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(velocity.getX(), velocity.getY(),
+                        xHeading.getAsDouble(),
+                        yHeading.getAsDouble(),
+                        swerveDrive.getOdometryHeading().getRadians(),
+                        swerveDrive.getMaximumChassisVelocity()));
+                    });
+                }
+                
+                public Command driveFieldOriented(ChassisSpeeds velocity) {
+                    return run(() -> {
+                        swerveDrive.driveFieldOriented(velocity);
+                    });
+                }
+                
+                public void driveRobotRelative(ChassisSpeeds velocity) {
+                    swerveDrive.drive(velocity);
+                }
 
-    public Command getDriveCommand(DoubleSupplier xTranslation, DoubleSupplier yTranslation, DoubleSupplier xHeading, DoubleSupplier yHeading) {
-        return run(() -> {
-            Translation2d velocity = SwerveMath.scaleTranslation(new Translation2d(
-                                                                                xTranslation.getAsDouble(),
-                                                                                yTranslation.getAsDouble()
-                                                                                ), 0.8);
-            swerveDrive.driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(velocity.getX(), velocity.getY(),
-                                                                                        xHeading.getAsDouble(),
-                                                                                        yHeading.getAsDouble(),
-                                                                                        swerveDrive.getOdometryHeading().getRadians(),
-                                                                                        swerveDrive.getMaximumChassisVelocity()));
-        });
-    }
-
-    public Command driveFieldOriented(ChassisSpeeds velocity) {
-        return run(() -> {
-            swerveDrive.driveFieldOriented(velocity);
-        });
-    }
-
-    public void driveRobotRelative(ChassisSpeeds velocity) {
-        swerveDrive.drive(velocity);
-    }
-
-    public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
-        return run(() -> {
+                public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
+                    return run(() -> {
             swerveDrive.driveFieldOriented(velocity.get());
         });
     }
-
+    
     public ChassisSpeeds getRobotChassisSpeeds() {
         return swerveDrive.getRobotVelocity();
     }
-
+    
     public Pose2d getPose() {
         return swerveDrive.getPose();
     }
-
+    
     public SwerveDrive getDrive() {
         return swerveDrive;
     }
@@ -117,5 +114,8 @@ public class SwerveSubsystem extends SubsystemBase{
     public void resetPose(Pose2d initialHolonomicPos) {
         swerveDrive.resetOdometry(initialHolonomicPos);
     }
-
+    
+    public Command getAutonomousCommand(String path) {
+        return new PathPlannerAuto(path);
+    }
 }

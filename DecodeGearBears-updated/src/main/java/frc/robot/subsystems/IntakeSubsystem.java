@@ -12,7 +12,7 @@ import frc.robot.commands.IntakePIDCommand;
 public class IntakeSubsystem extends SubsystemBase {
 
     SparkMax armMotor = new SparkMax (61, MotorType.kBrushed);
-    SparkMax vacMotor = new SparkMax(60, MotorType.kBrushless);
+    public SparkMax vacMotor = new SparkMax(60, MotorType.kBrushless);
 
     double vacVel = 0;
 
@@ -39,7 +39,6 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
    public IntakeSubsystem(){
-
    }
 
     public void setArmVelocity(double armVelocity) {

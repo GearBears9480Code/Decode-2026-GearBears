@@ -34,6 +34,11 @@ public class IntakePIDCommand extends Command {
     }
 
     public void changeVelocity(double velocity) {
+        if (velocity > 1200) {
+            velocity = 1200;
+        } else if (velocity < -1200) {
+            velocity = -1200;
+        }
         velocityPID.setSetpoint(velocity);
         velocitySetPoint = velocity;
     }
