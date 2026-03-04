@@ -15,7 +15,7 @@ public class ShooterPIDCommand extends Command {
     private double turretSetpoint = 0;
     private double hoodSetpoint = 0;
     private double flyWheelSetvelocity = 0;
-    private boolean enterManual = true;
+    private boolean enterManual = false;
 
     private ShooterSubsystem shooter;
 
@@ -27,6 +27,10 @@ public class ShooterPIDCommand extends Command {
         flyWheelPID.setSetpoint(flyWheelSetvelocity);
 
         addRequirements(shooter);
+    }
+
+    public void manualToggle() {
+        enterManual = !enterManual;
     }
 
     public void changeTurretAngle(double angle) {
@@ -59,7 +63,7 @@ public class ShooterPIDCommand extends Command {
             double hoodVelocity = hoodPID.calculate(hoodRotation);
 
             shooter.rotateTurret(turretVelocity);
-            shooter.rotateHood(hoodVelocity);
+            // shooter.rotateHood(hoodVelocity);
         }
 
         double shooterVelocity = shooter.getVelocity();

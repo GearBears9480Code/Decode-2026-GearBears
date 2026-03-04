@@ -73,7 +73,10 @@ public class RobotContainer {
     ActivateShooting activateShooting = new ActivateShooting(m_HopperSubsystem, m_ShooterSubsystem);
     m_driverController.rightTrigger(0.5).onTrue(activateShooting).onFalse(new InstantCommand(() -> activateShooting.stop()));
     
-    m_mechanismController.a().onTrue(new InstantCommand(() ->m_IntakeSubsystem.vacMotor.set(1))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.vacMotor.set(0)));
+    m_mechanismController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
+
+    // m_mechanismController.y().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeHoodAngle(60)));
+    // m_mechanismController.x().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeHoodAngle(0)));
     
     new Trigger(() -> m_mechanismController.getRightX() > 0.3).onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0.3))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
     new Trigger(() -> m_mechanismController.getRightX() < -0.3).onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(-0.3))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));

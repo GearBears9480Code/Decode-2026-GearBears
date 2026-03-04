@@ -46,13 +46,19 @@ public final class Constants {
 
   public static class IntakeConstants {
     // PID CONSTANTS
-    public static final double armMotor_kP = 0.1;
-    public static final double armMotor_kI = 0.0;
-    public static final double armMotor_kD = 0.0;
+    public static final double armUpMotor_kP = 0.075;
+    public static final double armUpMotor_kI = 0.0;
+    public static final double armUpMotor_kD = 0.015;
+    
+    public static final double armDownMotor_kP = 0.075;
+    public static final double armDownMotor_kI = 0.0;
+    public static final double armDownMotor_kD = 0.0;
 
     public static final double velocityMotor_kP = 0.1;
     public static final double velocityMotor_kI = 0.0;
     public static final double velocityMotor_kD = 0.0;
+
+    public static final double armGearRatio = (double)14/(double)36;
   }
 
   public static class HopperConstants {

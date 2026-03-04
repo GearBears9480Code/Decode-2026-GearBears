@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.PhysicalConstants;
@@ -8,9 +9,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakePIDCommand extends Command {
     private final PIDController armPID = new PIDController(
-            IntakeConstants.armMotor_kP, 
-            IntakeConstants.armMotor_kI, 
-            IntakeConstants.armMotor_kD
+            IntakeConstants.armUpMotor_kP, 
+            IntakeConstants.armUpMotor_kI, 
+            IntakeConstants.armUpMotor_kD
         );
     private final PIDController velocityPID = new PIDController(
             IntakeConstants.velocityMotor_kP, 
@@ -21,11 +22,36 @@ public class IntakePIDCommand extends Command {
     private double setPoint = 0;
     private double velocitySetPoint = 0;
 
+    private double downPosition = 82.25;
+    private double upPosition = 0;
+
+    private boolean up = true;
+
     public IntakePIDCommand(IntakeSubsystem intake) {
         this.intake = intake;
         armPID.setSetpoint(setPoint);
         velocityPID.setSetpoint(velocitySetPoint);
         addRequirements(intake);
+    }
+
+    public void togglePID() {
+        if (!up) {
+            armPID.setPID(
+                IntakeConstants.armDownMotor_kP,
+                IntakeConstants.armDownMotor_kI,
+                IntakeConstants.armDownMotor_kD
+            );
+            changeArmSetpoint(downPosition);
+            up = true;
+        } else {
+            armPID.setPID(
+                IntakeConstants.armUpMotor_kP, 
+                IntakeConstants.armUpMotor_kI, 
+                IntakeConstants.armUpMotor_kD
+            );
+            changeArmSetpoint(upPosition);
+            up = false;
+        }
     }
 
     public void changeArmSetpoint(double angle) {
@@ -49,6 +75,7 @@ public class IntakePIDCommand extends Command {
 
     public void execute() { //test
         double armPosition = intake.getArmPosition();
+        SmartDashboard.putNumber("arm pos", armPosition);
         double armVelocity = armPID.calculate(armPosition);
 
         double intakeVelocity = intake.getVelocity();

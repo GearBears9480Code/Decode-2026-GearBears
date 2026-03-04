@@ -24,7 +24,7 @@ public class ActivateShooting extends Command {
 
     public void initialize() {
         startingTime = Timer.getTimestamp();
-        shooter.pid.changeSpeed(600);
+        shooter.pid.changeSpeed(300);
         finished = false;
     }
 
@@ -33,7 +33,7 @@ public class ActivateShooting extends Command {
         if (currentTime - startingTime >= 1) {
             hopper.hopperPIDCommand.changeSpindexerSpeed(1200);
         } else if (currentTime - startingTime >= 0.5) {
-            hopper.hopperPIDCommand.changeKickerSpeed(3600);
+            hopper.hopperPIDCommand.changeKickerSpeed(4600);
         }
     }
 

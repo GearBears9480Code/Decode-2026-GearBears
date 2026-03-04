@@ -34,18 +34,23 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem(ClientSubsystem cli) {
         // initialize stuff possibly
-        rotationEncoder.setPosition(0);
+        resetPositions();
         rotateTurret(0);
         
         client = cli;
         pid = new ShooterPIDCommand(this);
     }
 
+    public void resetPositions() {
+        rotationEncoder.setPosition(0);
+        hoodEncoder.setPosition(0);
+    }
+
     public void resetMotors() {
         rotationMotor.set(0);
         velocity = 0;
-        // hoodMotor.set(0);
-        // shooterMotor.set(0);
+        hoodMotor.set(0);
+        shooterMotor.set(0);
     }
     
     // used to get rotation of the turret based on the current rotation of the motor
@@ -86,7 +91,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getHoodRotation() {
-        double angle = (hoodEncoder.getPosition() / 4) * -360;
+        double angle = (hoodEncoder.getPosition() * 2) * -360;
         SmartDashboard.putNumber("hood angle", angle);
         return angle;
     }
@@ -112,6 +117,8 @@ public class ShooterSubsystem extends SubsystemBase {
         } else if (angle > maxRotation) {
             angle = maxRotation;
         }
+
+        getHoodRotation();
 
         // pid.changeTurretAngle(angle);
     }

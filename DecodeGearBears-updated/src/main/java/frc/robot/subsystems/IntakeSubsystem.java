@@ -6,6 +6,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.IntakePIDCommand;
 
 
@@ -22,7 +23,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public IntakePIDCommand pid = new IntakePIDCommand(this);
 
     public double getArmPosition() {
-        return armEncoder.getPosition();
+        return (armEncoder.getPosition() / 11.4625) * 360 * IntakeConstants.armGearRatio;
     }
 
     public void setArmRotation(double velocity) {
@@ -39,6 +40,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
    public IntakeSubsystem(){
+    armEncoder.setPosition(0);
    }
 
     public void setArmVelocity(double armVelocity) {
