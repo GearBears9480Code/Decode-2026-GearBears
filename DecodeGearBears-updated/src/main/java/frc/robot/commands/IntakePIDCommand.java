@@ -25,7 +25,7 @@ public class IntakePIDCommand extends Command {
     private double downPosition = 82.25;
     private double upPosition = 0;
 
-    private boolean up = true;
+    private boolean up = false;
 
     public IntakePIDCommand(IntakeSubsystem intake) {
         this.intake = intake;

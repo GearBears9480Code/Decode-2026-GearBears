@@ -3,66 +3,66 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.811036144578313,
-        "y": 2.756457831325301
+        "x": 7.830085592011411,
+        "y": 2.993437945791726
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.057024096385543,
-        "y": 0.8113253012048198
+        "x": 7.830085592011411,
+        "y": 2.743437945791726
       },
       "isLocked": false,
-      "linkedName": "CollectFuelEnd"
+      "linkedName": "NewStealAtCenter"
     },
     {
       "anchor": {
-        "x": 5.647349397590362,
-        "y": 0.6255542168674697
+        "x": 6.368017118402282,
+        "y": 0.7421112696148362
       },
       "prevControl": {
-        "x": 6.324867469879519,
-        "y": 0.6255542168674697
+        "x": 8.145709700427961,
+        "y": 1.0073537803138373
       },
       "nextControl": {
-        "x": 4.8861590684216045,
-        "y": 0.6255542168674698
+        "x": 4.590324536376604,
+        "y": 0.47686875891583497
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.035626506024096,
-        "y": 0.8878192771084343
+        "x": 3.0169044222539223,
+        "y": 0.8844365192582018
       },
       "prevControl": {
-        "x": 3.74095257032753,
-        "y": 0.4821280120481934
+        "x": 3.536873885520684,
+        "y": 0.48131642296718913
       },
       "nextControl": {
-        "x": 2.3303004417206576,
-        "y": 1.293510542168675
+        "x": 2.496934958987161,
+        "y": 1.2875566155492144
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.8663614457831326,
-        "y": 1.6964698795180722
+        "x": 2.2147075606276743,
+        "y": 2.0230385164051357
       },
       "prevControl": {
-        "x": 2.200685110758698,
-        "y": 1.6964698795180722
+        "x": 1.9647075606276743,
+        "y": 2.0230385164051357
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ShootPathEnd"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.3659751037344382,
+      "waypointRelativePos": 0.8315565031982961,
       "rotationDegrees": 90.0
     }
   ],
@@ -82,7 +82,7 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "OldSteal",
+  "folder": "RightTrenchSteal",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0

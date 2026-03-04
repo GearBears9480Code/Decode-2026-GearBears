@@ -15,7 +15,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "GoToCenter"
+                        "pathName": "LeftTrenchGoToCenter"
                       }
                     }
                   ]
@@ -28,7 +28,13 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 0.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeToggle"
                       }
                     }
                   ]
@@ -40,7 +46,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NewStealGoToShoot"
+            "pathName": "LeftTrenchGoToShoot"
           }
         }
       ]

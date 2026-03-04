@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.7459277108433735,
-        "y": 0.5818433734939765
+        "x": 4.37546362339515,
+        "y": 0.5868473609129818
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8991445783132535,
-        "y": 1.0954457831325293
+        "x": 8.709914407988586,
+        "y": 0.0563623395149796
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.8663614457831326,
-        "y": 1.6964698795180722
+        "x": 7.830085592011411,
+        "y": 2.993437945791726
       },
       "prevControl": {
-        "x": 1.848549683286155,
-        "y": 1.4471052045603885
+        "x": 7.713637660485022,
+        "y": 3.2263338088445086
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ShootPathEnd"
+      "linkedName": "NewStealAtCenter"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "OldSteal",
+  "folder": "RightTrenchSteal",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

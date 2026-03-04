@@ -55,7 +55,7 @@ public class ShooterSubsystem extends SubsystemBase {
     
     // used to get rotation of the turret based on the current rotation of the motor
     public double getRotation() {
-        double motorRotation = ((rotationEncoder.getPosition()) * 360);
+        double motorRotation = ((rotationEncoder.getPosition()) * -360);
         SmartDashboard.putNumber("motor angle", motorRotation);
         SmartDashboard.putNumber("turret angle", motorRotation * ShooterConstants.turretRotationGearRatio);
         return motorRotation * ShooterConstants.turretRotationGearRatio;

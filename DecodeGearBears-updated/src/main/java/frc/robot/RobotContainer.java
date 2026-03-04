@@ -12,6 +12,9 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import frc.robot.subsystems.ClientSubsystem;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -33,6 +36,8 @@ public class RobotContainer {
 
   private SwerveInputStream driveAngularVelocity;
 
+  private ActivateShooting activateShooting = new ActivateShooting(m_HopperSubsystem, m_ShooterSubsystem);
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -44,6 +49,10 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureSwerveInputs();
     configureBindings();
+
+    NamedCommands.registerCommand("IntakeToggle", new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
+    NamedCommands.registerCommand("Shoot", activateShooting);
+    NamedCommands.registerCommand("StopShoot", new InstantCommand(() -> activateShooting.stop()));
   }
 
   private void configureSwerveInputs() {
@@ -70,7 +79,6 @@ public class RobotContainer {
     Command driveAngularVelocityCommand = m_SwerveSubsystem.driveFieldOriented(driveAngularVelocity);
 		m_SwerveSubsystem.setDefaultCommand(driveAngularVelocityCommand);
 
-    ActivateShooting activateShooting = new ActivateShooting(m_HopperSubsystem, m_ShooterSubsystem);
     m_driverController.rightTrigger(0.5).onTrue(activateShooting).onFalse(new InstantCommand(() -> activateShooting.stop()));
     
     m_mechanismController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
@@ -91,6 +99,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_SwerveSubsystem.getAutonomousCommand("OrbitSteal2Shoot");
+    return m_SwerveSubsystem.getAutonomousCommand("TestingAuto2");
   }
 }

@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "GoToDepot"
+            "pathName": "testrotatrion"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "GoBackFromDepot"
+            "name": "IntakeToggle"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "test or old autos",
   "choreoAuto": false
 }

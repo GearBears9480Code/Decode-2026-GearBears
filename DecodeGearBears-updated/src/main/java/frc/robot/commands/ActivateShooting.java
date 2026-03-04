@@ -24,14 +24,14 @@ public class ActivateShooting extends Command {
 
     public void initialize() {
         startingTime = Timer.getTimestamp();
-        shooter.pid.changeSpeed(300);
+        shooter.pid.changeSpeed(600);
         finished = false;
     }
 
     public void execute() {
         double currentTime = Timer.getTimestamp();
         if (currentTime - startingTime >= 1) {
-            hopper.hopperPIDCommand.changeSpindexerSpeed(1200);
+            hopper.hopperPIDCommand.changeSpindexerSpeed(4800);
         } else if (currentTime - startingTime >= 0.5) {
             hopper.hopperPIDCommand.changeKickerSpeed(4600);
         }

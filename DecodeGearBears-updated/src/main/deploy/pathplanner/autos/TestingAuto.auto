@@ -5,15 +5,60 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "TestPathGoForward"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "TestPathGoForward"
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Shoot"
+                      }
+                    },
+                    {
+                      "type": "sequential",
+                      "data": {
+                        "commands": [
+                          {
+                            "type": "wait",
+                            "data": {
+                              "waitTime": 5.0
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "StopShoot"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeToggle"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "test or old autos",
   "choreoAuto": false
 }
