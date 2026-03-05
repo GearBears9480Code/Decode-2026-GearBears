@@ -15,7 +15,7 @@ public class ShooterPIDCommand extends Command {
     private double turretSetpoint = 0;
     private double hoodSetpoint = 0;
     private double flyWheelSetvelocity = 0;
-    private boolean enterManual = false;
+    private boolean enterManual = true;
 
     private ShooterSubsystem shooter;
 

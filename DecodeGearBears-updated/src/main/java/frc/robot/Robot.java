@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.m_ShooterSubsystem.resetMotors();
     CommandScheduler.getInstance().schedule(m_robotContainer.m_ShooterSubsystem.pid);
-    CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
+    // CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
