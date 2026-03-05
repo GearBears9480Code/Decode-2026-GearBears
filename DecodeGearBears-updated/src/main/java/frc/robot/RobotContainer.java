@@ -99,6 +99,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_SwerveSubsystem.getAutonomousCommand("TestingAuto2");
+    return m_SwerveSubsystem.getAutonomousCommand("leftstealtest");
   }
 }

@@ -31,6 +31,7 @@ public class IntakePIDCommand extends Command {
         this.intake = intake;
         armPID.setSetpoint(setPoint);
         velocityPID.setSetpoint(velocitySetPoint);
+        armPID.setTolerance(10);
         addRequirements(intake);
     }
 
@@ -50,6 +51,7 @@ public class IntakePIDCommand extends Command {
                 IntakeConstants.armUpMotor_kD
             );
             changeArmSetpoint(upPosition);
+            intake.vacMotor.set(0);
             up = false;
         }
     }
@@ -81,8 +83,12 @@ public class IntakePIDCommand extends Command {
         double intakeVelocity = intake.getVelocity();
         double newVelocity = velocityPID.calculate(intakeVelocity);
 
+        if (up && armPID.atSetpoint()) {
+            intake.vacMotor.set(0.3);
+        }
+
         intake.setArmVelocity(armVelocity);
-        intake.setVelocity(newVelocity/PhysicalConstants.neoMaxRPM);
+        // intake.setVelocity(newVelocity/PhysicalConstants.neoMaxRPM);
     }
 
     public void end(boolean interrupted) {

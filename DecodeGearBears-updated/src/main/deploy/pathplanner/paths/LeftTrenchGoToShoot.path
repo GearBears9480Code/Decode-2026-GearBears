@@ -20,47 +20,36 @@
         "y": 7.366704707560627
       },
       "prevControl": {
-        "x": 7.215886325563115,
-        "y": 7.275825214865737
+        "x": 7.218765105266367,
+        "y": 7.327887700508518
       },
       "nextControl": {
-        "x": 4.543666191155491,
-        "y": 7.483152639087018
+        "x": 4.478972895863052,
+        "y": 7.41845934379458
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.9004564907275316,
-        "y": 6.92679029957204
+        "x": 4.013181169757488,
+        "y": 7.366704707560627
       },
       "prevControl": {
-        "x": 3.6278973974148307,
-        "y": 7.622603340751195
-      },
-      "nextControl": {
-        "x": 2.305278174037089,
-        "y": 6.357489300998573
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 2.072382310984308,
-        "y": 5.089500713266761
-      },
-      "prevControl": {
-        "x": 2.2258674643630387,
-        "y": 5.286838767610842
+        "x": 4.26269431437821,
+        "y": 7.382299279099423
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "LeftTrenchAtShoot"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0362473347547956,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -74,7 +63,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "LeftTrenchSteal",
