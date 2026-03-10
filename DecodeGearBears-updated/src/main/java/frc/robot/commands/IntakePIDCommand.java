@@ -22,10 +22,12 @@ public class IntakePIDCommand extends Command {
     private double setPoint = 0;
     private double velocitySetPoint = 0;
 
-    private double downPosition = 82.25;
+    private double downPosition = 76;
     private double upPosition = 0;
 
     private boolean up = false;
+    private double deadbandArmDown = 15;
+    private double deadbandArmUp = 5;
 
     public IntakePIDCommand(IntakeSubsystem intake) {
         this.intake = intake;
@@ -51,7 +53,6 @@ public class IntakePIDCommand extends Command {
                 IntakeConstants.armUpMotor_kD
             );
             changeArmSetpoint(upPosition);
-            intake.vacMotor.set(0);
             up = false;
         }
     }
@@ -83,9 +84,13 @@ public class IntakePIDCommand extends Command {
         double intakeVelocity = intake.getVelocity();
         double newVelocity = velocityPID.calculate(intakeVelocity);
 
-        if (up && armPID.atSetpoint()) {
-            intake.vacMotor.set(0.3);
+        if (up && Math.abs(armPID.getError()) < deadbandArmDown) {
+            armVelocity = 0;
         }
+        if (!up && Math.abs(armPID.getError()) < deadbandArmUp) {
+            armVelocity = 0;
+        }
+
 
         intake.setArmVelocity(armVelocity);
         // intake.setVelocity(newVelocity/PhysicalConstants.neoMaxRPM);

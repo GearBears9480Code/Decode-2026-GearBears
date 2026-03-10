@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.778330955777461,
-        "y": 4.481383737517832
+        "x": 7.804208273894435,
+        "y": 5.209671897289586
       },
       "isLocked": false,
       "linkedName": "LeftTrench2ndCenter"
@@ -20,20 +20,15 @@
         "y": 7.0
       },
       "prevControl": {
-        "x": 8.013107986869016,
-        "y": 7.597120481927712
+        "x": 7.67990361445783,
+        "y": 7.903409638554217
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "LeftTrenchAtShoot"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.7356076759061814,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -50,7 +45,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "LeftTrenchSteal",
+  "folder": "NewLeftTrench",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0

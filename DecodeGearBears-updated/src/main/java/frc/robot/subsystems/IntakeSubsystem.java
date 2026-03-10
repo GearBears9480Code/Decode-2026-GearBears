@@ -19,11 +19,22 @@ public class IntakeSubsystem extends SubsystemBase {
 
 	RelativeEncoder armEncoder = armMotor.getEncoder();
     RelativeEncoder vacEncoder = vacMotor.getEncoder();
+    boolean vacOn = false;
 
     public IntakePIDCommand pid = new IntakePIDCommand(this);
 
     public double getArmPosition() {
         return (armEncoder.getPosition() / 11.4625) * 360 * IntakeConstants.armGearRatio;
+    }
+
+    public void toggleVacume() {
+        if (vacOn) {
+            vacMotor.set(0);
+            vacOn = false;
+        } else {
+            vacMotor.set(1);
+            vacOn = true;
+        }
     }
 
     public void setArmRotation(double velocity) {

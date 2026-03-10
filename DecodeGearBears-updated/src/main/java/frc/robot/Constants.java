@@ -35,7 +35,7 @@ public final class Constants {
     public static final double hoodKi = 0.0;
     public static final double hoodKd = 0.0;
 
-    public static final double flyWheelKp = 0.1;
+    public static final double flyWheelKp = 10;
     public static final double flyWheelKi = 0.0;
     public static final double flyWheelKd = 0.0;
   }

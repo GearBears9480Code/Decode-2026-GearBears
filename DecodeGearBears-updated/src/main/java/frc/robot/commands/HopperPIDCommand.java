@@ -32,21 +32,11 @@ public class HopperPIDCommand extends Command {
     }
 
     public void changeSpindexerSpeed(double velocity) {
-        if (velocity > 1200) {
-            velocity = 1200;
-        } else if (velocity < -1200) {
-            velocity = -1200;
-        }
         spindexerSpeed = velocity;
         spindexerPID.setSetpoint(velocity);
     }
 
     public void changeKickerSpeed(double velocity) {
-        if (velocity > 1200) {
-            velocity = 1200;
-        } else if (velocity < -1200) {
-            velocity = -1200;
-        }
         kickerSpeed = velocity;
         kickerPID.setSetpoint(velocity);
     }

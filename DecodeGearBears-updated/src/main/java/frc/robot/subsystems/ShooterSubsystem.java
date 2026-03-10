@@ -25,12 +25,16 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterPIDCommand pid;
 
     // angle limits
-    private double minRotation = -90;
-    private double maxRotation = 90;
+    private double minRotationTurret = -90;
+    private double maxRotationTurret = 90;
+    private double minRotationHood = 0;
+    private double maxRotationHood = 468;
 
     private ClientSubsystem client;
 
-    private double velocity = 0;
+    public double velocity = 0;
+    private double turretVelocity = 0;
+    private double hoodVelocity = 0;
 
     public ShooterSubsystem(ClientSubsystem cli) {
         // initialize stuff possibly
@@ -83,11 +87,13 @@ public class ShooterSubsystem extends SubsystemBase {
     public void rotateHood(double velocity) {
         hoodMotor.set(velocity);
         SmartDashboard.putNumber("hood velocity", velocity);
+        hoodVelocity = velocity;
     }
 
     public void rotateTurret(double velocity) {
         SmartDashboard.putNumber("turret velocity", velocity);
         rotationMotor.set(velocity);
+        turretVelocity = velocity;
     }
 
     public double getHoodRotation() {
@@ -112,13 +118,28 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("apriltag-angle", desiredAngle);
         double angle = -1 * (getRotation() + desiredAngle);
         
-        if (angle < minRotation) {
-            angle = minRotation;
-        } else if (angle > maxRotation) {
-            angle = maxRotation;
+        if (angle < minRotationTurret) {
+            angle = minRotationTurret;
+        } else if (angle > maxRotationTurret) {
+            angle = maxRotationTurret;
         }
 
         getHoodRotation();
+
+        if (pid.enterManual && getRotation() >= maxRotationTurret && turretVelocity > 0) {
+            rotateTurret(0);
+        } else if (pid.enterManual && getRotation() <= minRotationTurret && turretVelocity < 0) {
+            rotateTurret(0);
+        }
+        if (pid.enterManual && getHoodRotation() >= maxRotationHood && hoodVelocity > 0) {
+            rotateHood(0);
+        } else if (pid.enterManual && getHoodRotation() <= minRotationHood && hoodVelocity < 0) {
+            rotateHood(0);
+        }
+
+        // System.out.println(getHoodRotation());
+
+
 
         // pid.changeTurretAngle(angle);
     }

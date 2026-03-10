@@ -15,7 +15,7 @@ public class ShooterPIDCommand extends Command {
     private double turretSetpoint = 0;
     private double hoodSetpoint = 0;
     private double flyWheelSetvelocity = 0;
-    private boolean enterManual = true;
+    public boolean enterManual = true;
 
     private ShooterSubsystem shooter;
 
@@ -47,6 +47,7 @@ public class ShooterPIDCommand extends Command {
 
     public void changeSpeed(double velocity) {
         flyWheelSetvelocity = velocity;
+        System.out.println(velocity);
         flyWheelPID.setSetpoint(flyWheelSetvelocity);
     }
 

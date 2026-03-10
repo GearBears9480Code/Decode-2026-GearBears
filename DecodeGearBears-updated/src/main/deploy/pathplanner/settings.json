@@ -4,6 +4,7 @@
   "holonomicMode": true,
   "pathFolders": [
     "LeftTrenchSteal",
+    "NewLeftTrench",
     "OldSteal",
     "RightTrenchSteal",
     "Test Auto"

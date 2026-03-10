@@ -51,16 +51,18 @@ public class RobotContainer {
     configureBindings();
 
     NamedCommands.registerCommand("IntakeToggle", new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
-    NamedCommands.registerCommand("Shoot", activateShooting);
-    NamedCommands.registerCommand("StopShoot", new InstantCommand(() -> activateShooting.stop()));
+    NamedCommands.registerCommand("VacToggle", new InstantCommand(() -> m_IntakeSubsystem.toggleVacume()));
+    NamedCommands.registerCommand("StartHopper", activateShooting);
+    NamedCommands.registerCommand("StopHopper", new InstantCommand(() -> activateShooting.stop()));
+    NamedCommands.registerCommand("ToggleShoot", new InstantCommand(() -> activateShooting.toggleFlywheel()));
   }
 
   private void configureSwerveInputs() {
 		driveAngularVelocity = SwerveInputStream.of(m_SwerveSubsystem.getDrive(),
 													() -> m_driverController.getLeftY() * -1,
 													() -> m_driverController.getLeftX() * -1)
-												.withControllerRotationAxis(m_driverController::getRightX)
-												.deadband(0.5)
+												.withControllerRotationAxis(() -> m_driverController.getRightX() * -1)
+												.deadband(0.1)
 												.scaleTranslation(0.8)
 												.allianceRelativeControl(true);
 	}
@@ -82,12 +84,11 @@ public class RobotContainer {
     m_mechanismController.rightTrigger(0.5).onTrue(activateShooting).onFalse(new InstantCommand(() -> activateShooting.stop()));
     
     m_mechanismController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
+    m_mechanismController.b().onTrue(new InstantCommand(() -> m_IntakeSubsystem.toggleVacume()));
+    m_mechanismController.x().onTrue(new InstantCommand(() -> activateShooting.toggleFlywheel()));
 
     // m_mechanismController.y().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeHoodAngle(60)));
     // m_mechanismController.x().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeHoodAngle(0)));
-
-    m_mechanismController.b().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0.3)));
-    m_mechanismController.x().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(-0.3)));
 
     m_mechanismController.povLeft().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0.1))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
     m_mechanismController.povRight().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(-0.1))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
@@ -107,6 +108,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_SwerveSubsystem.getAutonomousCommand("leftstealtest");
+    return m_SwerveSubsystem.getAutonomousCommand("NewLeftTrench");
   }
 }

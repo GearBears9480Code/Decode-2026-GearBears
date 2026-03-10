@@ -12,35 +12,44 @@ public class ActivateShooting extends Command {
     HopperSubsystem hopper;
     ShooterSubsystem shooter;
 
+    boolean on = false;
+
     public ActivateShooting(HopperSubsystem hop, ShooterSubsystem shoot) {
         hopper = hop;
         shooter = shoot;
     }
 
+    public void toggleFlywheel() {
+        if (on) {
+            shooter.velocity = 0;
+            shooter.pid.changeSpeed(0);
+            on = false;
+        } else {
+            shooter.pid.changeSpeed(335);
+            on = true;
+        }
+    }
+
     public void stop() {
         finished = true;
-        shooter.stop();
     }
 
     public void initialize() {
         startingTime = Timer.getTimestamp();
-        shooter.pid.changeSpeed(600);
+        hopper.hopperPIDCommand.changeKickerSpeed(2700);
         finished = false;
     }
 
     public void execute() {
         double currentTime = Timer.getTimestamp();
         if (currentTime - startingTime >= 1) {
-            hopper.hopperPIDCommand.changeSpindexerSpeed(4800);
-        } else if (currentTime - startingTime >= 0.5) {
-            hopper.hopperPIDCommand.changeKickerSpeed(4600);
+            hopper.hopperPIDCommand.changeSpindexerSpeed(4000);
         }
     }
 
     public void end(boolean interupt) {
         hopper.hopperPIDCommand.changeSpindexerSpeed(0);
         hopper.hopperPIDCommand.changeKickerSpeed(0);
-        shooter.pid.changeSpeed(0);
     }
 
     public boolean isFinished() {
