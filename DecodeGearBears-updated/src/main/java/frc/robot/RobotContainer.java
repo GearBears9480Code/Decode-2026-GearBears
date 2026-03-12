@@ -33,8 +33,8 @@ public class RobotContainer {
   private final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
   public final HopperSubsystem m_HopperSubsystem = new HopperSubsystem();
   private final ClientSubsystem m_ClientSubsystem = new ClientSubsystem();
-  private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem();
   final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_ClientSubsystem);
+  private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem();
 
   private SwerveInputStream driveAngularVelocity;
 

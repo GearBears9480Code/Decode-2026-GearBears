@@ -50,10 +50,8 @@ public class VisionSubsystem extends SubsystemBase {
     private Matrix<N3, N1> currentStdDevs;
 
     double centerOfHub;
-    private ShooterSubsystem shooter;
     
-    public VisionSubsystem(ShooterSubsystem shoot) {
-        shooter = shoot;
+    public VisionSubsystem() {
         if (isRed) {
             centerOfHub = kTagLayout.getTagPose(10).get().getX() + (PhysicalConstants.hubWidth / 2);
         } else {
@@ -63,15 +61,16 @@ public class VisionSubsystem extends SubsystemBase {
         System.out.println("Center of the Hub: " + centerOfHub);
     }
 
-    public double getData(boolean validTarget, PhotonPipelineResult output) {
+    public void getData(boolean validTarget, PhotonPipelineResult output) {
         if (validTarget) {
             target = output.getBestTarget();
             if (kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
                 robotPose3d = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(), kTagLayout.getTagPose(target.getFiducialId()).get(), kRobotToCam);
+                System.out.println(target.getYaw());
             }
+        } else {
+            System.out.println("No Target");
         }
-
-        return target.getYaw();
     }
     
     /*
@@ -105,6 +104,5 @@ public class VisionSubsystem extends SubsystemBase {
 
         boolean hasTargets = camOneResult.hasTargets();
         getData(hasTargets, camOneResult);
-        shooter.rotateTurret(getData(hasTargets, camOneResult));
     }
 }
