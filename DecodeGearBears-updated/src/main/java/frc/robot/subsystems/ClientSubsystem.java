@@ -20,7 +20,7 @@ public class ClientSubsystem extends SubsystemBase {
 
     public ClientSubsystem() {
         NetworkTable limelightData = NetworkTableInstance.getDefault().getTable("limelight");
-        int[] redCrucialID = {2, 8, 9, 10, 11};
+        int[] redCrucialID = {8, 9, 10, 11};
         int[] blueCrucialID = {24, 25, 26, 27};
         Optional<Alliance> alliance = DriverStation.getAlliance();
         boolean isRed = alliance.isPresent() && alliance.get() == Alliance.Red;

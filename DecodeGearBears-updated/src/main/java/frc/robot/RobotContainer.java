@@ -12,6 +12,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import frc.robot.subsystems.ClientSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -32,6 +33,7 @@ public class RobotContainer {
   private final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
   public final HopperSubsystem m_HopperSubsystem = new HopperSubsystem();
   private final ClientSubsystem m_ClientSubsystem = new ClientSubsystem();
+  private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem();
   final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_ClientSubsystem);
 
   private SwerveInputStream driveAngularVelocity;
