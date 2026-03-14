@@ -4,7 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -18,6 +25,17 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 1;
     public static final int kMechanismControllerPort = 0;
+  }
+
+  public static class VisionConstants {
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+
+    // camera one - angle 230 y = -11.5 x =16
+    // camera two - angle 310 x = -3.5 y = -12.5
+
+    public static final Pose2d camOnePose = new Pose2d(Units.inchesToMeters(16), Units.inchesToMeters(-11.5), new Rotation2d(Units.degreesToRadians(230)));
+    public static final Pose2d camTwoPose = new Pose2d(Units.inchesToMeters(-3.5), Units.inchesToMeters(-12.5), new Rotation2d(Units.degreesToRadians(310)));
   }
 
   public static class ShooterConstants {

@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     CommandScheduler.getInstance().schedule(m_robotContainer.m_HopperSubsystem.hopperPIDCommand);
     m_robotContainer.m_ShooterSubsystem.resetMotors();
+    m_robotContainer.m_SwerveSubsystem.resetPose();
     CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
     CommandScheduler.getInstance().schedule(m_robotContainer.m_ShooterSubsystem.pid);
     System.out.println(IntakeConstants.armGearRatio);

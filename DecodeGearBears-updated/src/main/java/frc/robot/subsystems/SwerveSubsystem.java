@@ -12,16 +12,22 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import swervelib.SwerveDrive;
+import swervelib.SwerveModule;
+import swervelib.imu.NavXSwerve;
 import swervelib.math.SwerveMath;
+import swervelib.parser.SwerveModuleConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
@@ -29,7 +35,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveSubsystem extends SubsystemBase{
     public double maxSpeedMeters = 3; 
     File directory = new File(Filesystem.getDeployDirectory(), "swerve"); // grabs the JSON packages for swerve
-    private SwerveDrive swerveDrive;
+    public SwerveDrive swerveDrive;
     private RobotConfig config;
     public SwerveSubsystem() {    
         try { // you need a try catch statement because SwerveParser throws an exception that must be catched
@@ -113,6 +119,15 @@ public class SwerveSubsystem extends SubsystemBase{
 
     public void resetPose(Pose2d initialHolonomicPos) {
         swerveDrive.resetOdometry(initialHolonomicPos);
+    }
+
+    public void periodic() {
+        swerveDrive.updateOdometry();
+        Pose2d pose = swerveDrive.getPose();
+        SmartDashboard.putNumber("swervePosition/x", pose.getX());
+        SmartDashboard.putNumber("swervePosition/y", pose.getY());
+        SmartDashboard.putNumber("swervePosition/angle", pose.getRotation().getDegrees());
+
     }
     
     public Command getAutonomousCommand(String path) {
