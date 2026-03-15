@@ -34,6 +34,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -54,9 +55,8 @@ public class VisionSubsystem extends SubsystemBase {
     Matrix<N3, N1> curStdDevs;
 
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
-    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(Units.inchesToMeters(16), Units.inchesToMeters(10), 0), new Rotation3d(0, Math.toRadians(-50), Math.toRadians(180)));
     public final PhotonPoseEstimator poseEstimator = new PhotonPoseEstimator(kTagLayout, kRobotToCam);
-    private Matrix<N3, N1> currentStdDevs;
 
     double centerOfHub;
     private SwerveSubsystem swervesub;
@@ -67,6 +67,7 @@ public class VisionSubsystem extends SubsystemBase {
         } else {
             centerOfHub = kTagLayout.getTagPose(26).get().getX() + (PhysicalConstants.hubWidth / 2);
         }
+        
         swervesub = swerve;
 
         System.out.println("Center of the Hub: " + centerOfHub);
@@ -77,9 +78,6 @@ public class VisionSubsystem extends SubsystemBase {
             target = output.getBestTarget();
             if (kTagLayout.getTagPose(target.getFiducialId()).isPresent()) {
                 robotPoseTagRelative = target.getBestCameraToTarget();
-                robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(), kTagLayout.getTagPose(target.getFiducialId()).get(), kRobotToCam);
-                tagPose = kTagLayout.getTagPose(target.getFiducialId());
-
                 System.out.println(robotPoseTagRelative.getX());
             }
         }
@@ -88,25 +86,32 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        getVisionMeasurement(camOne, VisionConstants.camOnePose);
-        getVisionMeasurement(camTwo, VisionConstants.camTwoPose);
+        getVisionMeasurement(camOne);
+        // getVisionMeasurement(camTwo, VisionConstants.camTwoPose);
+
+        // var result = camOne.getLatestResult();
+        // getData(result.hasTargets(), result);
     }
 
-    public void getVisionMeasurement(PhotonCamera camera, Pose2d camPos) {
+    public void getVisionMeasurement(PhotonCamera camera) {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
-        for (var result : camera.getAllUnreadResults()) {
-            visionEst = poseEstimator.estimateCoprocMultiTagPose(result);
+        var results = camera.getAllUnreadResults();
+        for (var output : results) {
+            visionEst = poseEstimator.estimateCoprocMultiTagPose(output);
             if (visionEst.isEmpty()) {
-                visionEst = poseEstimator.estimateLowestAmbiguityPose(result);
+                visionEst = poseEstimator.estimateLowestAmbiguityPose(output);
+            }
+            if (!results.isEmpty()) {
+
             }
 
-            updateEstimationStdDevs(visionEst, result.getTargets());
+            updateEstimationStdDevs(visionEst, output.getTargets());
 
             visionEst.ifPresent(
                 est -> {
                     var estStdDevs = getStdDev();
 
-                    swervesub.swerveDrive.addVisionMeasurement(camPos, Timer.getTimestamp(), estStdDevs);
+                    swervesub.swerveDrive.addVisionMeasurement(est.estimatedPose.toPose2d(), Timer.getTimestamp(), estStdDevs);
                 }
             );
         }
@@ -135,7 +140,6 @@ public class VisionSubsystem extends SubsystemBase {
                                 .getTranslation()
                                 .getDistance(estimatedPose.get().estimatedPose.toPose2d().getTranslation());
             }
-
             if (numTags == 0) {
                 // No tags visible. Default to single-tag std devs
                 curStdDevs = VisionConstants.kSingleTagStdDevs;
@@ -157,29 +161,3 @@ public class VisionSubsystem extends SubsystemBase {
         return curStdDevs;
     }
 }
-
-/*
-    public Optional<EstimatdRobotPose> getFieldRelativePose() {
-        Optional<EstimatedRobotPose> visionEst = Optional.empty();
-        List<PhotonPipelineResult> unreadResults = camOne.getAllUnreadResults();
-
-        for (var result : unreadResults) {
-            visionEst = poseEstimator.estimateCoprocMultiTagPose(result);
-            if (visionEst.isEmpty()) {
-                visionEst = poseEstimator.estimateLowestAmbiguityPose(result);
-            }
-            updateEstimationStdDevs(visionEst, result.getTargets());
-        }
-
-        return visionEst;
-    }
-
-    private void updateEstimationStdDevs(Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
-
-    }
-
-    private Matrix<N3, N1> getEstimationStdDevs() {
-        return currentStdDevs;
-    }
-
-*/

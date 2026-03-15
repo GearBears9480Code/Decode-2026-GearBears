@@ -3,6 +3,11 @@ package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
@@ -22,6 +27,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final RelativeEncoder hoodEncoder = hoodMotor.getEncoder();
     private final RelativeEncoder velocityEncoder = shooterMotor.getEncoder();
 
+    Pose2d hubPose;
+
     public ShooterPIDCommand pid;
 
     // angle limits
@@ -36,13 +43,18 @@ public class ShooterSubsystem extends SubsystemBase {
     private double turretVelocity = 0;
     private double hoodVelocity = 0;
 
-    public ShooterSubsystem(ClientSubsystem cli) {
+    private SwerveSubsystem swerve;
+
+    public ShooterSubsystem(ClientSubsystem cli, SwerveSubsystem s) {
         // initialize stuff possibly
         resetPositions();
         rotateTurret(0);
         
         client = cli;
+        swerve = s;
         pid = new ShooterPIDCommand(this);
+
+        hubPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? ShooterConstants.hubBlue : ShooterConstants.hubRed;
     }
 
     public void resetPositions() {
@@ -114,9 +126,20 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void periodic() {
-        double desiredAngle = client.getDesiredAngle(false);
-        SmartDashboard.putNumber("apriltag-angle", desiredAngle);
-        double angle = -1 * (getRotation() + desiredAngle);
+        // double desiredAngle = client.getDesiredAngle(false);
+        // SmartDashboard.putNumber("apriltag-angle", desiredAngle);
+        // double angle = -1 * (getRotation() + desiredAngle);
+
+        // print out desired angle
+        double robotheta = swerve.getPose().getRotation().getRadians();
+        Matrix<N2, N1> turretPosition = swerve.getPointFieldOriented(ShooterConstants.turretX, ShooterConstants.turretY);
+
+        // get angle of 
+        double x = turretPosition.getData()[0] - hubPose.getX();
+        double y = turretPosition.getData()[1] - hubPose.getY();
+
+        double angle = Math.atan2(y, x);
+        System.out.println(Math.toDegrees(angle) + robotheta);
         
         if (angle < minRotationTurret) {
             angle = minRotationTurret;
@@ -124,17 +147,10 @@ public class ShooterSubsystem extends SubsystemBase {
             angle = maxRotationTurret;
         }
 
-        getHoodRotation();
-
         if (pid.enterManual && getRotation() >= maxRotationTurret && turretVelocity > 0) {
             rotateTurret(0);
         } else if (pid.enterManual && getRotation() <= minRotationTurret && turretVelocity < 0) {
             rotateTurret(0);
-        }
-        if (pid.enterManual && getHoodRotation() >= maxRotationHood && hoodVelocity > 0) {
-            rotateHood(0);
-        } else if (pid.enterManual && getHoodRotation() <= minRotationHood && hoodVelocity < 0) {
-            rotateHood(0);
         }
 
         // System.out.println(getHoodRotation());

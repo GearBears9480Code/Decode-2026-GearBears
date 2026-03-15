@@ -12,14 +12,20 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,6 +43,8 @@ public class SwerveSubsystem extends SubsystemBase{
     File directory = new File(Filesystem.getDeployDirectory(), "swerve"); // grabs the JSON packages for swerve
     public SwerveDrive swerveDrive;
     private RobotConfig config;
+    private Field2d field = new Field2d();
+
     public SwerveSubsystem() {    
         try { // you need a try catch statement because SwerveParser throws an exception that must be catched
             swerveDrive = new SwerveParser(directory).createSwerveDrive(maxSpeedMeters);
@@ -51,6 +59,7 @@ public class SwerveSubsystem extends SubsystemBase{
             e.printStackTrace();
         }
         configureAutoBuilder();
+        SmartDashboard.putData("field", field);
     }
     
     private void configureAutoBuilder() {
@@ -128,6 +137,17 @@ public class SwerveSubsystem extends SubsystemBase{
         SmartDashboard.putNumber("swervePosition/y", pose.getY());
         SmartDashboard.putNumber("swervePosition/angle", pose.getRotation().getDegrees());
 
+    }
+
+    public Matrix<N2, N1> getPointFieldOriented(double xMeters, double yMeters) {
+        // get the robot oriented point matrix
+        Matrix<N2, N1> point = VecBuilder.fill(xMeters, yMeters);
+        // rotate the point using rotation matrix
+        double theta = swerveDrive.getPose().getRotation().getRadians();
+        double x = swerveDrive.getPose().getX(); double y = swerveDrive.getPose().getY();
+        point = MatBuilder.fill(N2.instance, N2.instance, Math.cos(theta), -Math.sin(theta), Math.sin(theta), Math.cos(theta)).times(point);
+        point = point.plus(VecBuilder.fill(x, y));
+        return point;
     }
     
     public Command getAutonomousCommand(String path) {
