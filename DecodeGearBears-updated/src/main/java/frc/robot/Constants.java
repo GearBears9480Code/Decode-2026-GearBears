@@ -8,7 +8,6 @@ import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
@@ -28,7 +27,7 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+    public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(0.002, 0.006, 0.002);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.001, 0.001, 0.0008);
 
     // camera one - angle 230 y = -11.5 x =16
@@ -47,12 +46,12 @@ public final class Constants {
     public static final double constantHorizontalVelocity = 2;
     public static final double height = 1.1176;
 
-    public static final double turretKp = 0.005;
+    public static final double turretKp = 0.01;
     public static final double turretKi = 0.0;
-    public static final double turretKd = 0.000;
+    public static final double turretKd = 0.00075;
 
-    public static final double turretX = Units.inchesToMeters(8);
-    public static final double turretY = Units.inchesToMeters(4);
+    public static final double turretX = Units.inchesToMeters(-4);
+    public static final double turretY = Units.inchesToMeters(8);
 
     public static final double hoodKp = 0.1;
     public static final double hoodKi = 0.0;
@@ -85,6 +84,8 @@ public final class Constants {
     public static final double velocityMotor_kP = 0.1;
     public static final double velocityMotor_kI = 0.0;
     public static final double velocityMotor_kD = 0.0;
+
+    public static final double distancePerRotation = 3.25; // inches
 
     public static final double armGearRatio = (double)14/(double)36;
   }

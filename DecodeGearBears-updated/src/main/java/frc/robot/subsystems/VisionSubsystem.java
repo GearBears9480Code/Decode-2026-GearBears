@@ -1,23 +1,15 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.PhysicalConstants;
-import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.Constants.VisionConstants;
-
-import static edu.wpi.first.units.Units.Rotation;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
-import org.ironmaple.simulation.Goal.RotationChecker;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -26,20 +18,17 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionSubsystem extends SubsystemBase {
     Optional<Alliance> alliance = DriverStation.getAlliance();
@@ -55,7 +44,7 @@ public class VisionSubsystem extends SubsystemBase {
     Matrix<N3, N1> curStdDevs;
 
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
-    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(Units.inchesToMeters(16), Units.inchesToMeters(10), 0), new Rotation3d(0, Math.toRadians(-50), Math.toRadians(180)));
+    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(12), 0), new Rotation3d(0, Math.toRadians(30), Math.toRadians(180)));
     public final PhotonPoseEstimator poseEstimator = new PhotonPoseEstimator(kTagLayout, kRobotToCam);
 
     double centerOfHub;
@@ -70,7 +59,7 @@ public class VisionSubsystem extends SubsystemBase {
         
         swervesub = swerve;
 
-        System.out.println("Center of the Hub: " + centerOfHub);
+        SmartDashboard.putBoolean("seeing apriltag", false);
     }
 
     public double getData(boolean validTarget, PhotonPipelineResult output) {
@@ -121,6 +110,7 @@ public class VisionSubsystem extends SubsystemBase {
         if (estimatedPose.isEmpty()) {
             // No pose input. Default to single-tag std devs
             curStdDevs = VisionConstants.kSingleTagStdDevs;
+            SmartDashboard.putBoolean("seeing apriltag", false);
 
         } else {
             // Pose present. Start running Heuristic
@@ -129,6 +119,7 @@ public class VisionSubsystem extends SubsystemBase {
             double avgDist = 0;
 
             // Precalculation - see how many tags we found, and calculate an average-distance metric
+            SmartDashboard.putBoolean("seeing apriltag", true);
             for (var tgt : targets) {
                 var tagPose = poseEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
                 if (tagPose.isEmpty()) continue;
@@ -143,6 +134,7 @@ public class VisionSubsystem extends SubsystemBase {
             if (numTags == 0) {
                 // No tags visible. Default to single-tag std devs
                 curStdDevs = VisionConstants.kSingleTagStdDevs;
+                SmartDashboard.putBoolean("seeing apriltag", false);
             } else {
                 // One or more tags visible, run the full heuristic.
                 avgDist /= numTags;

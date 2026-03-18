@@ -1,10 +1,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 public class ActivateShooting extends Command {
     boolean finished = false;
@@ -18,17 +18,20 @@ public class ActivateShooting extends Command {
     public ActivateShooting(HopperSubsystem hop, ShooterSubsystem shoot) {
         hopper = hop;
         shooter = shoot;
+        SmartDashboard.putBoolean("flywheel on", on);
     }
 
     public void toggleFlywheel() {
         if (on) {
             shooter.velocity = 0;
-            shooter.pid.changeSpeed(0);
+            shooter.shoot(0);
             on = false;
         } else {
-            shooter.pid.changeSpeed(335);
+            shooter.shoot(shooter.getCalcVelocity());
             on = true;
         }
+
+        SmartDashboard.putBoolean("flywheel on", on);
     }
 
     public void stop() {
@@ -37,11 +40,15 @@ public class ActivateShooting extends Command {
 
     public void initialize() {
         startingTime = Timer.getTimestamp();
-        hopper.hopperPIDCommand.changeKickerSpeed(2700);
+        hopper.hopperPIDCommand.changeKickerSpeed(2200);
         finished = false;
     }
 
     public void execute() {
+        if (on) {
+            shooter.shoot(shooter.getEstimatedVelocity());
+        }
+
         double currentTime = Timer.getTimestamp();
         if (currentTime - startingTime >= 1) {
             hopper.hopperPIDCommand.changeSpindexerSpeed(4000);

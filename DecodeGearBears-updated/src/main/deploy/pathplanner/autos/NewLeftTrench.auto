@@ -11,7 +11,19 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "ToggleVision"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "ToggleShoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StartHopper"
                 }
               },
               {
@@ -21,7 +33,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 4.0
                       }
                     },
                     {
@@ -31,48 +43,21 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "StartHopper"
+                              "name": "ToggleVision"
                             }
                           },
                           {
-                            "type": "sequential",
+                            "type": "named",
                             "data": {
-                              "commands": [
-                                {
-                                  "type": "wait",
-                                  "data": {
-                                    "waitTime": 3.0
-                                  }
-                                },
-                                {
-                                  "type": "parallel",
-                                  "data": {
-                                    "commands": [
-                                      {
-                                        "type": "named",
-                                        "data": {
-                                          "name": "ToggleShoot"
-                                        }
-                                      },
-                                      {
-                                        "type": "named",
-                                        "data": {
-                                          "name": "StopHopper"
-                                        }
-                                      }
-                                    ]
-                                  }
-                                }
-                              ]
+                              "name": "ToggleShoot"
                             }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "type": "parallel",
-                      "data": {
-                        "commands": [
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "StopHopper"
+                            }
+                          },
                           {
                             "type": "path",
                             "data": {
@@ -156,25 +141,19 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "StartHopper"
+                }
+              },
+              {
                 "type": "sequential",
                 "data": {
                   "commands": [
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "StartHopper"
-                      }
-                    },
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 3.0
+                        "waitTime": 4.0
                       }
                     },
                     {
@@ -184,13 +163,57 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "StopHopper"
+                              "name": "ToggleVision"
                             }
                           },
                           {
                             "type": "named",
                             "data": {
                               "name": "ToggleShoot"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "StopHopper"
+                            }
+                          },
+                          {
+                            "type": "path",
+                            "data": {
+                              "pathName": "ShootInital"
+                            }
+                          },
+                          {
+                            "type": "sequential",
+                            "data": {
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 1.0
+                                  }
+                                },
+                                {
+                                  "type": "parallel",
+                                  "data": {
+                                    "commands": [
+                                      {
+                                        "type": "named",
+                                        "data": {
+                                          "name": "IntakeToggle"
+                                        }
+                                      },
+                                      {
+                                        "type": "named",
+                                        "data": {
+                                          "name": "VacToggle"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]

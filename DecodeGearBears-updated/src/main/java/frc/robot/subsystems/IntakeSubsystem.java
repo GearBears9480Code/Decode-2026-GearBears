@@ -5,6 +5,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.IntakePIDCommand;
@@ -12,16 +13,19 @@ import frc.robot.commands.IntakePIDCommand;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-    SparkMax armMotor = new SparkMax (61, MotorType.kBrushed);
+    SparkMax armMotor = new SparkMax (61, MotorType.kBrushed); // change to brushless in both code and REV
     public SparkMax vacMotor = new SparkMax(60, MotorType.kBrushless);
-
-    double vacVel = 0;
 
 	RelativeEncoder armEncoder = armMotor.getEncoder();
     RelativeEncoder vacEncoder = vacMotor.getEncoder();
     boolean vacOn = false;
 
     public IntakePIDCommand pid = new IntakePIDCommand(this);
+    
+    public IntakeSubsystem(){
+        armEncoder.setPosition(0);
+        SmartDashboard.putBoolean("vac on", vacOn);
+    }
 
     public double getArmPosition() {
         return (armEncoder.getPosition() / 11.4625) * 360 * IntakeConstants.armGearRatio;
@@ -35,6 +39,7 @@ public class IntakeSubsystem extends SubsystemBase {
             vacMotor.set(1);
             vacOn = true;
         }
+        SmartDashboard.putBoolean("vac on", vacOn);
     }
 
     public void setArmRotation(double velocity) {
@@ -42,19 +47,19 @@ public class IntakeSubsystem extends SubsystemBase {
     }
   
     public void setVelocity(double velocity) {
-        vacVel += velocity;
-        vacMotor.set(vacVel);
+        vacMotor.set(velocity);
     }
 
     public double getVelocity() {
         return vacEncoder.getVelocity();
     }
 
-   public IntakeSubsystem(){
-    armEncoder.setPosition(0);
-   }
 
     public void setArmVelocity(double armVelocity) {
         armMotor.set(armVelocity);
+    }
+
+    public void periodic() {
+        getArmPosition();
     }
 }

@@ -57,6 +57,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("StartHopper", activateShooting);
     NamedCommands.registerCommand("StopHopper", new InstantCommand(() -> activateShooting.stop()));
     NamedCommands.registerCommand("ToggleShoot", new InstantCommand(() -> activateShooting.toggleFlywheel()));
+    NamedCommands.registerCommand("ToggleVision", (new InstantCommand(() -> m_ShooterSubsystem.pid.manualToggle())));
+
+    // SmartDashboard.putData("Shooter subsystem", m_ShooterSubsystem);
   }
 
   private void configureSwerveInputs() {
@@ -83,24 +86,19 @@ public class RobotContainer {
     Command driveAngularVelocityCommand = m_SwerveSubsystem.driveFieldOriented(driveAngularVelocity);
 		m_SwerveSubsystem.setDefaultCommand(driveAngularVelocityCommand);
 
-    m_mechanismController.rightTrigger(0.5).onTrue(activateShooting).onFalse(new InstantCommand(() -> activateShooting.stop()));
+    m_driverController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0.5))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
+    m_driverController.b().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(-30.5))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
+    m_driverController.rightBumper().onTrue(new InstantCommand(() -> m_IntakeSubsystem.toggleVacume()));
     
-    m_mechanismController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
-    m_mechanismController.b().onTrue(new InstantCommand(() -> m_IntakeSubsystem.toggleVacume()));
+    m_mechanismController.a().onTrue(new InstantCommand(() -> m_ShooterSubsystem.resetPositions()));
     m_mechanismController.x().onTrue(new InstantCommand(() -> activateShooting.toggleFlywheel()));
-
-    // m_mechanismController.y().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeHoodAngle(60)));
-    // m_mechanismController.x().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.changeHoodAngle(0)));
+    m_mechanismController.rightBumper().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.manualToggle()));
+    m_mechanismController.rightTrigger(0.5).onTrue(activateShooting).onFalse(new InstantCommand(() -> activateShooting.stop()));
 
     m_mechanismController.povLeft().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0.1))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
     m_mechanismController.povRight().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(-0.1))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
     m_mechanismController.povUp().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0.3))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0)));
     m_mechanismController.povDown().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(-0.3))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0)));
-    
-    // new Trigger(() -> m_mechanismController.getRightX() > 0.3).onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0.3))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
-    // new Trigger(() -> m_mechanismController.getRightX() < -0.3).onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(-0.3))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
-    // new Trigger(() -> m_mechanismController.getLeftY() > 0.5).onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0.5))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0)));
-    // new Trigger(() -> m_mechanismController.getLeftY() < -0.5).onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(-0.5))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0)));
   }
 
   /**

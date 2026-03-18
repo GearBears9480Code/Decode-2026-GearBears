@@ -3,7 +3,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.PhysicalConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -27,10 +26,13 @@ public class ShooterPIDCommand extends Command {
         flyWheelPID.setSetpoint(flyWheelSetvelocity);
 
         addRequirements(shooter);
+        
+        SmartDashboard.putBoolean("manual", true);
     }
 
     public void manualToggle() {
         enterManual = !enterManual;
+        SmartDashboard.putBoolean("manual", enterManual);
     }
 
     public void changeTurretAngle(double angle) {
@@ -58,19 +60,17 @@ public class ShooterPIDCommand extends Command {
     public void execute() {
         if (!enterManual) {
             double turretPosition = shooter.getRotation();
-            double hoodRotation = shooter.getHoodRotation();
 
             double turretVelocity = turretPID.calculate(turretPosition);
-            double hoodVelocity = hoodPID.calculate(hoodRotation);
 
             shooter.rotateTurret(turretVelocity);
             // shooter.rotateHood(hoodVelocity);
         }
 
-        double shooterVelocity = shooter.getVelocity();
-        double deltaVelocity = flyWheelPID.calculate(shooterVelocity);
+        // double shooterVelocity = shooter.getVelocity();
+        // double deltaVelocity = flyWheelPID.calculate(shooterVelocity);
         
-        shooter.shoot(deltaVelocity / PhysicalConstants.neoMaxRPM);
+        // shooter.shoot(deltaVelocity / PhysicalConstants.neoMaxRPM);
     }
 
     public void end(boolean interrupted) {

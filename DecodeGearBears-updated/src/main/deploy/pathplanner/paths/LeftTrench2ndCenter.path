@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.8,
-        "y": 7.0
+        "x": 3.935549215406562,
+        "y": 7.379643366619116
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.8627389443651925,
-        "y": 7.685748930099857
+        "x": 7.998288159771755,
+        "y": 8.065392296718972
       },
       "isLocked": false,
       "linkedName": "LeftTrenchAtShoot"
@@ -47,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "LeftTrenchSteal",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

@@ -30,18 +30,11 @@ public class ShooterSubsystem extends SubsystemBase {
     Pose2d hubPose;
 
     public ShooterPIDCommand pid;
-
-    // angle limits
-    private double minRotationTurret = -90;
-    private double maxRotationTurret = 90;
-    private double minRotationHood = 0;
-    private double maxRotationHood = 468;
+    double distFromHub;
 
     private ClientSubsystem client;
 
     public double velocity = 0;
-    private double turretVelocity = 0;
-    private double hoodVelocity = 0;
 
     private SwerveSubsystem swerve;
 
@@ -59,7 +52,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void resetPositions() {
         rotationEncoder.setPosition(0);
-        hoodEncoder.setPosition(0);
     }
 
     public void resetMotors() {
@@ -79,8 +71,33 @@ public class ShooterSubsystem extends SubsystemBase {
     
     // starts the shooter
     public void shoot(double velocity) {
-        this.velocity += velocity;
-        shooterMotor.set(this.velocity);
+        shooterMotor.set(velocity);
+    }
+
+    public double getCalcVelocity() {
+        if (distFromHub > 2.4) {
+            return (0.0951046 * distFromHub) + 0.325379;
+        } else {
+            return 0;
+        }
+    }
+
+    public double getEstimatedVelocity() {
+        if (distFromHub >= 2.421 && distFromHub < 2.6) {
+            return 0.57;
+        } else if (distFromHub >= 2.6 && distFromHub < 2.9) {
+            return 0.6;
+        } else if (distFromHub >= 2.9 && distFromHub < 3.5) {
+            return 0.65;
+        } else if (distFromHub >= 3.5 && distFromHub < 3.8) {
+            return 0.71;
+        } else if (distFromHub >= 4.0824 && distFromHub < 5.67) {
+            return 0.71;
+        } else if (distFromHub > 5.67) {
+            return 0.9;
+        } else {
+            return 0.0;
+        }
     }
 
     public double getVelocity() {
@@ -99,13 +116,11 @@ public class ShooterSubsystem extends SubsystemBase {
     public void rotateHood(double velocity) {
         hoodMotor.set(velocity);
         SmartDashboard.putNumber("hood velocity", velocity);
-        hoodVelocity = velocity;
     }
 
     public void rotateTurret(double velocity) {
         SmartDashboard.putNumber("turret velocity", velocity);
         rotationMotor.set(velocity);
-        turretVelocity = velocity;
     }
 
     public double getHoodRotation() {
@@ -131,32 +146,46 @@ public class ShooterSubsystem extends SubsystemBase {
         // double angle = -1 * (getRotation() + desiredAngle);
 
         // print out desired angle
-        double robotheta = swerve.getPose().getRotation().getRadians();
         Matrix<N2, N1> turretPosition = swerve.getPointFieldOriented(ShooterConstants.turretX, ShooterConstants.turretY);
 
         // get angle of 
-        double x = turretPosition.getData()[0] - hubPose.getX();
-        double y = turretPosition.getData()[1] - hubPose.getY();
+        double x = hubPose.getX() - turretPosition.getData()[0];
+        double y = hubPose.getY() - turretPosition.getData()[1];
 
-        double angle = Math.atan2(y, x);
-        System.out.println(Math.toDegrees(angle) + robotheta);
-        
-        if (angle < minRotationTurret) {
-            angle = minRotationTurret;
-        } else if (angle > maxRotationTurret) {
-            angle = maxRotationTurret;
+        distFromHub = Math.hypot(x, y);
+        System.out.println(distFromHub);
+
+        double angle = Math.toDegrees(Math.atan2(y, x));
+        double desiredAngle = angle - swerve.getPose().getRotation().getDegrees();
+
+        desiredAngle = desiredAngle % 360;
+
+        if (desiredAngle < 0) {
+            desiredAngle = 360 + desiredAngle;
         }
 
-        if (pid.enterManual && getRotation() >= maxRotationTurret && turretVelocity > 0) {
-            rotateTurret(0);
-        } else if (pid.enterManual && getRotation() <= minRotationTurret && turretVelocity < 0) {
-            rotateTurret(0);
-        }
+    
+        // if (angle < minRotationTurret) {
+        //     angle = minRotationTurret;
+        // } else if (angle > maxRotationTurret) {
+        //     angle = maxRotationTurret;
+        // }
+
+        getRotation();
+
+        // System.out.println(desiredAngle + " " + angle);
+        // pid.changeTurretAngle(desiredAngle);
+
+        // if (pid.enterManual && getRotation() >= maxRotationTurret && turretVelocity > 0) {
+        //     rotateTurret(0);
+        // } else if (pid.enterManual && getRotation() <= minRotationTurret && turretVelocity < 0) {
+        //     rotateTurret(0);
+        // }
 
         // System.out.println(getHoodRotation());
 
 
 
-        // pid.changeTurretAngle(angle);
+        pid.changeTurretAngle(desiredAngle);
     }
 }

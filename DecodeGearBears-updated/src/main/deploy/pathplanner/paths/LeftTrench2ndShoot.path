@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.8,
-        "y": 7.0
+        "x": 3.935549215406562,
+        "y": 7.379643366619116
       },
       "prevControl": {
-        "x": 8.013107986869016,
-        "y": 7.597120481927712
+        "x": 8.14865720227558,
+        "y": 7.976763848546828
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "LeftTrenchSteal",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

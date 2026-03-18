@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 3.8,
-        "y": 7.0
+        "x": 3.935549215406562,
+        "y": 7.379643366619116
       },
       "prevControl": {
-        "x": 4.049513144620722,
-        "y": 7.015594571538796
+        "x": 4.185062360027284,
+        "y": 7.395237938157912
       },
       "nextControl": null,
       "isLocked": false,
@@ -63,7 +63,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "LeftTrenchSteal",

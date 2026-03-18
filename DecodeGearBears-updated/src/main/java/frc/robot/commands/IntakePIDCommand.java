@@ -4,7 +4,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
-import frc.robot.Constants.PhysicalConstants;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakePIDCommand extends Command {
@@ -80,9 +79,6 @@ public class IntakePIDCommand extends Command {
         double armPosition = intake.getArmPosition();
         SmartDashboard.putNumber("arm pos", armPosition);
         double armVelocity = armPID.calculate(armPosition);
-
-        double intakeVelocity = intake.getVelocity();
-        double newVelocity = velocityPID.calculate(intakeVelocity);
 
         if (up && Math.abs(armPID.getError()) < deadbandArmDown) {
             armVelocity = 0;
