@@ -59,9 +59,15 @@
                             }
                           },
                           {
-                            "type": "path",
+                            "type": "named",
                             "data": {
-                              "pathName": "ShootInital"
+                              "name": "IntakeToggle"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "VacToggle"
                             }
                           },
                           {
@@ -71,26 +77,13 @@
                                 {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 1.0
+                                    "waitTime": 0.5
                                   }
                                 },
                                 {
-                                  "type": "parallel",
+                                  "type": "path",
                                   "data": {
-                                    "commands": [
-                                      {
-                                        "type": "named",
-                                        "data": {
-                                          "name": "IntakeToggle"
-                                        }
-                                      },
-                                      {
-                                        "type": "named",
-                                        "data": {
-                                          "name": "VacToggle"
-                                        }
-                                      }
-                                    ]
+                                    "pathName": "ShootInital"
                                   }
                                 }
                               ]
@@ -176,44 +169,6 @@
                             "type": "named",
                             "data": {
                               "name": "StopHopper"
-                            }
-                          },
-                          {
-                            "type": "path",
-                            "data": {
-                              "pathName": "ShootInital"
-                            }
-                          },
-                          {
-                            "type": "sequential",
-                            "data": {
-                              "commands": [
-                                {
-                                  "type": "wait",
-                                  "data": {
-                                    "waitTime": 1.0
-                                  }
-                                },
-                                {
-                                  "type": "parallel",
-                                  "data": {
-                                    "commands": [
-                                      {
-                                        "type": "named",
-                                        "data": {
-                                          "name": "IntakeToggle"
-                                        }
-                                      },
-                                      {
-                                        "type": "named",
-                                        "data": {
-                                          "name": "VacToggle"
-                                        }
-                                      }
-                                    ]
-                                  }
-                                }
-                              ]
                             }
                           }
                         ]

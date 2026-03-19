@@ -42,6 +42,8 @@ public class ShooterSubsystem extends SubsystemBase {
         // initialize stuff possibly
         resetPositions();
         rotateTurret(0);
+
+        SmartDashboard.putBoolean("can shoot", true);
         
         client = cli;
         swerve = s;
@@ -76,8 +78,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public double getCalcVelocity() {
         if (distFromHub > 2.4) {
-            return (0.0951046 * distFromHub) + 0.325379;
+            SmartDashboard.putBoolean("can shoot", true);
+            return (0.0961046 * distFromHub) + 0.325379;
         } else {
+            SmartDashboard.putBoolean("can shoot", false);
             return 0;
         }
     }

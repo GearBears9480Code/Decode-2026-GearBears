@@ -8,9 +8,9 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakePIDCommand extends Command {
     private final PIDController armPID = new PIDController(
-            IntakeConstants.armUpMotor_kP, 
-            IntakeConstants.armUpMotor_kI, 
-            IntakeConstants.armUpMotor_kD
+            IntakeConstants.armMotor_kP, 
+            IntakeConstants.armMotor_kI, 
+            IntakeConstants.armMotor_kD
         );
     private final PIDController velocityPID = new PIDController(
             IntakeConstants.velocityMotor_kP, 
@@ -21,7 +21,7 @@ public class IntakePIDCommand extends Command {
     private double setPoint = 0;
     private double velocitySetPoint = 0;
 
-    private double downPosition = 76;
+    private double downPosition = 1015;
     private double upPosition = 0;
 
     private boolean up = false;
@@ -38,19 +38,9 @@ public class IntakePIDCommand extends Command {
 
     public void togglePID() {
         if (!up) {
-            armPID.setPID(
-                IntakeConstants.armDownMotor_kP,
-                IntakeConstants.armDownMotor_kI,
-                IntakeConstants.armDownMotor_kD
-            );
             changeArmSetpoint(downPosition);
             up = true;
         } else {
-            armPID.setPID(
-                IntakeConstants.armUpMotor_kP, 
-                IntakeConstants.armUpMotor_kI, 
-                IntakeConstants.armUpMotor_kD
-            );
             changeArmSetpoint(upPosition);
             up = false;
         }

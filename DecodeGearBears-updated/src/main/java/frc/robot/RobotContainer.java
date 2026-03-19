@@ -12,6 +12,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 import frc.robot.subsystems.ClientSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -35,6 +36,7 @@ public class RobotContainer {
   private final ClientSubsystem m_ClientSubsystem = new ClientSubsystem();
   final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_ClientSubsystem, m_SwerveSubsystem);
   private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem(m_SwerveSubsystem);
+  private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
 
   private SwerveInputStream driveAngularVelocity;
 
@@ -86,9 +88,15 @@ public class RobotContainer {
     Command driveAngularVelocityCommand = m_SwerveSubsystem.driveFieldOriented(driveAngularVelocity);
 		m_SwerveSubsystem.setDefaultCommand(driveAngularVelocityCommand);
 
-    m_driverController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0.5))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
-    m_driverController.b().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(-30.5))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
+    m_driverController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(1))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
+    m_driverController.b().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(-1))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
+    m_driverController.povUp().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
+    m_driverController.povDown().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(-0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
+    m_driverController.povLeft().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
+    m_driverController.povRight().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(-0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
+
     m_driverController.rightBumper().onTrue(new InstantCommand(() -> m_IntakeSubsystem.toggleVacume()));
+    m_driverController.leftBumper().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
     
     m_mechanismController.a().onTrue(new InstantCommand(() -> m_ShooterSubsystem.resetPositions()));
     m_mechanismController.x().onTrue(new InstantCommand(() -> activateShooting.toggleFlywheel()));
@@ -108,6 +116,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_SwerveSubsystem.getAutonomousCommand("NewLeftTrench");
+    return m_SwerveSubsystem.getAutonomousCommand("TestingAuto2");
   }
 }

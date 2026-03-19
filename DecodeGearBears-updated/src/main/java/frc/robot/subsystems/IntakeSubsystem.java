@@ -28,7 +28,9 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public double getArmPosition() {
-        return (armEncoder.getPosition() / 11.4625) * 360 * IntakeConstants.armGearRatio;
+        double pos =  (armEncoder.getPosition() / 11.4625) * 360 * IntakeConstants.armGearRatio;
+        SmartDashboard.putNumber("intake position", pos);
+        return pos;
     }
 
     public void toggleVacume() {
@@ -36,7 +38,7 @@ public class IntakeSubsystem extends SubsystemBase {
             vacMotor.set(0);
             vacOn = false;
         } else {
-            vacMotor.set(1);
+            vacMotor.set(-1);
             vacOn = true;
         }
         SmartDashboard.putBoolean("vac on", vacOn);
