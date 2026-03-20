@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.778253012048193,
-        "y": 5.084060240963856
+        "x": 4.0,
+        "y": 0.7129759036144572
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.778253012048193,
-        "y": 6.084060240963856
+        "x": 8.458577512605597,
+        "y": 0.7129759036144572
       },
       "isLocked": false,
-      "linkedName": "LeftTrench2ndCenter"
+      "linkedName": "RightAtShoot"
     },
     {
       "anchor": {
-        "x": 3.935549215406562,
-        "y": 7.379643366619116
+        "x": 7.83289156626506,
+        "y": 2.505120481927711
       },
       "prevControl": {
-        "x": 7.7653922967189715,
-        "y": 7.987760342368045
+        "x": 7.83289156626506,
+        "y": 2.255120481927711
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LeftTrenchAtShoot"
+      "linkedName": "RightAtCenter"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "NewLeftTrench",
+  "folder": "NewRightSteal",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

@@ -88,8 +88,8 @@ public class RobotContainer {
     Command driveAngularVelocityCommand = m_SwerveSubsystem.driveFieldOriented(driveAngularVelocity);
 		m_SwerveSubsystem.setDefaultCommand(driveAngularVelocityCommand);
 
-    m_driverController.a().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(1))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
-    m_driverController.b().onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(-1))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmRotation(0)));
+    m_driverController.a().onTrue(new InstantCommand(() -> m_SwerveSubsystem.resetPose(m_VisionSubsystem.getVisionPose())));
+
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(-0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
     m_driverController.povLeft().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
@@ -116,6 +116,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_SwerveSubsystem.getAutonomousCommand("TestingAuto2");
+    return m_SwerveSubsystem.getAutonomousCommand("NewLeftTrench");
   }
 }

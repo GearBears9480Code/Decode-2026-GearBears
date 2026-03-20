@@ -18,6 +18,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -49,6 +50,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     double centerOfHub;
     private SwerveSubsystem swervesub;
+    private Pose2d pos;
     
     public VisionSubsystem(SwerveSubsystem swerve) {
         if (isRed) {
@@ -72,6 +74,10 @@ public class VisionSubsystem extends SubsystemBase {
         }
  
         return robotPoseTagRelative.getX();
+    }
+
+    public Pose2d getVisionPose() {
+        return pos;
     }
 
     public void periodic() {
@@ -99,6 +105,8 @@ public class VisionSubsystem extends SubsystemBase {
             visionEst.ifPresent(
                 est -> {
                     var estStdDevs = getStdDev();
+
+                    pos = est.estimatedPose.toPose2d();
 
                     swervesub.swerveDrive.addVisionMeasurement(est.estimatedPose.toPose2d(), Timer.getTimestamp(), estStdDevs);
                 }

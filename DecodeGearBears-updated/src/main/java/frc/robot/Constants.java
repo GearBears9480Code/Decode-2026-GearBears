@@ -75,7 +75,7 @@ public final class Constants {
     // PID CONSTANTS
     public static final double armMotor_kP = 1;
     public static final double armMotor_kI = 0.0;
-    public static final double armMotor_kD = 0.05;
+    public static final double armMotor_kD = 0.06;
 
     public static final double velocityMotor_kP = 0.1;
     public static final double velocityMotor_kI = 0.0;
