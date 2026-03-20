@@ -36,9 +36,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public double velocity = 0;
 
-    private SwerveSubsystem swerve;
+    private VisionSubsystem vision;
 
-    public ShooterSubsystem(ClientSubsystem cli, SwerveSubsystem s) {
+    public ShooterSubsystem(ClientSubsystem cli, VisionSubsystem v) {
         // initialize stuff possibly
         resetPositions();
         rotateTurret(0);
@@ -46,7 +46,7 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("can shoot", true);
         
         client = cli;
-        swerve = s;
+        vision = v;
         pid = new ShooterPIDCommand(this);
 
         hubPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? ShooterConstants.hubBlue : ShooterConstants.hubRed;
@@ -150,7 +150,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // double angle = -1 * (getRotation() + desiredAngle);
 
         // print out desired angle
-        Matrix<N2, N1> turretPosition = swerve.getPointFieldOriented(ShooterConstants.turretX, ShooterConstants.turretY);
+        Matrix<N2, N1> turretPosition = vision.getPointFieldOriented(ShooterConstants.turretX, ShooterConstants.turretY);
 
         // get angle of 
         double x = hubPose.getX() - turretPosition.getData()[0];
@@ -160,7 +160,7 @@ public class ShooterSubsystem extends SubsystemBase {
         System.out.println(distFromHub);
 
         double angle = Math.toDegrees(Math.atan2(y, x));
-        double desiredAngle = angle - swerve.getPose().getRotation().getDegrees();
+        double desiredAngle = angle - vision.getVisionPose().getRotation().getDegrees();
 
         desiredAngle = desiredAngle % 360;
 

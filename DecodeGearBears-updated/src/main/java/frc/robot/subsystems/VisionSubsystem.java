@@ -16,14 +16,17 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -50,7 +53,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     double centerOfHub;
     private SwerveSubsystem swervesub;
-    private Pose2d pos;
+    private Pose2d pos = new Pose2d(0, 0, new Rotation2d(0));
     
     public VisionSubsystem(SwerveSubsystem swerve) {
         if (isRed) {
@@ -107,11 +110,20 @@ public class VisionSubsystem extends SubsystemBase {
                     var estStdDevs = getStdDev();
 
                     pos = est.estimatedPose.toPose2d();
-
-                    swervesub.swerveDrive.addVisionMeasurement(est.estimatedPose.toPose2d(), Timer.getTimestamp(), estStdDevs);
                 }
             );
         }
+    }
+
+    public Matrix<N2, N1> getPointFieldOriented(double xMeters, double yMeters) {
+        // get the robot oriented point matrix
+        Matrix<N2, N1> point = VecBuilder.fill(xMeters, yMeters);
+        // rotate the point using rotation matrix
+        double theta = pos.getRotation().getRadians();
+        double x = pos.getX(); double y = pos.getY();
+        point = MatBuilder.fill(N2.instance, N2.instance, Math.cos(theta), -Math.sin(theta), Math.sin(theta), Math.cos(theta)).times(point);
+        point = point.plus(VecBuilder.fill(x, y));
+        return point;
     }
 
     private void updateEstimationStdDevs(Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {

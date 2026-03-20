@@ -204,6 +204,18 @@
               }
             ]
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VacToggle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeToggle"
+          }
         }
       ]
     }

@@ -17,6 +17,8 @@ import frc.robot.subsystems.VisionSubsystem;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -34,8 +36,8 @@ public class RobotContainer {
   public final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
   public final HopperSubsystem m_HopperSubsystem = new HopperSubsystem();
   private final ClientSubsystem m_ClientSubsystem = new ClientSubsystem();
-  final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_ClientSubsystem, m_SwerveSubsystem);
   private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem(m_SwerveSubsystem);
+  final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_ClientSubsystem, m_VisionSubsystem);
   private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
 
   private SwerveInputStream driveAngularVelocity;
@@ -88,7 +90,7 @@ public class RobotContainer {
     Command driveAngularVelocityCommand = m_SwerveSubsystem.driveFieldOriented(driveAngularVelocity);
 		m_SwerveSubsystem.setDefaultCommand(driveAngularVelocityCommand);
 
-    m_driverController.a().onTrue(new InstantCommand(() -> m_SwerveSubsystem.resetPose(m_VisionSubsystem.getVisionPose())));
+    // m_driverController.a().onTrue(new InstantCommand(() -> m_SwerveSubsystem.resetPose(new Pose2d(0, 0, new Rotation2d(0)))));
 
     m_driverController.povUp().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
     m_driverController.povDown().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(-0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
@@ -116,6 +118,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_SwerveSubsystem.getAutonomousCommand("NewLeftTrench");
+    // return m_SwerveSubsystem.getAutonomousCommand("NewLeftTrench");
+    return new InstantCommand();
   }
 }
