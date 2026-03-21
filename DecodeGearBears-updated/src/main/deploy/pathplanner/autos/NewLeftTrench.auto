@@ -27,13 +27,19 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "IntakeToggle"
+                }
+              },
+              {
                 "type": "sequential",
                 "data": {
                   "commands": [
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 4.0
+                        "waitTime": 3.0
                       }
                     },
                     {
@@ -56,12 +62,6 @@
                             "type": "named",
                             "data": {
                               "name": "StopHopper"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "IntakeToggle"
                             }
                           },
                           {
@@ -107,18 +107,6 @@
                 "data": {
                   "pathName": "NewLeftBackToShoot"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "VacToggle"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeToggle"
-                }
               }
             ]
           }
@@ -163,18 +151,6 @@
                             "type": "named",
                             "data": {
                               "name": "StopHopper"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "IntakeToggle"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "VacToggle"
                             }
                           },
                           {

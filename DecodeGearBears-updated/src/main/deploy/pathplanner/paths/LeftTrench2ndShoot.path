@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 7.778253012048193,
-        "y": 5.084060240963856
+        "y": 4.701590361445783
       },
       "prevControl": null,
       "nextControl": {
         "x": 7.752375693931219,
-        "y": 5.355772081192102
+        "y": 4.973302201674029
       },
       "isLocked": false,
       "linkedName": "LeftTrench2ndCenter"

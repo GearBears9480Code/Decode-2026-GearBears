@@ -17,19 +17,33 @@
     {
       "anchor": {
         "x": 7.778253012048193,
-        "y": 5.084060240963856
+        "y": 4.701590361445783
       },
       "prevControl": {
-        "x": 7.778253012048193,
-        "y": 4.834060240963856
+        "x": 8.565048192771085,
+        "y": 5.696012048192772
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "LeftTrench2ndCenter"
+      "linkedName": "NLTAtCenter"
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.40000000000000013,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 100.0,
+        "maxAngularAcceleration": 125.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {

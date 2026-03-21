@@ -62,7 +62,6 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_ShooterSubsystem.resetMotors();
     CommandScheduler.getInstance().schedule(m_robotContainer.m_ShooterSubsystem.pid);
     Pose2d previPose2d = m_robotContainer.m_SwerveSubsystem.getPose();
-    m_robotContainer.m_SwerveSubsystem.resetPose(new Pose2d(previPose2d.getX(), previPose2d.getY(), new Rotation2d(0)));
     CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
 
     // schedule the autonomous command (example)
