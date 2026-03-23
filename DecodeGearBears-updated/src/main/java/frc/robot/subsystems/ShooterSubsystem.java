@@ -49,9 +49,12 @@ public class ShooterSubsystem extends SubsystemBase {
         vision = v;
         pid = new ShooterPIDCommand(this);
 
-        hubPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Blue ? ShooterConstants.hubBlue : ShooterConstants.hubRed;
+        hubPose = DriverStation.getAlliance().isPresent() && (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ? ShooterConstants.hubBlue : ShooterConstants.hubRed;
     }
 
+    public void getHubPose() {
+        hubPose = DriverStation.getAlliance().isPresent() && (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ? ShooterConstants.hubBlue : ShooterConstants.hubRed;
+    }
     public void resetPositions() {
         rotationEncoder.setPosition(0);
     }
@@ -63,6 +66,12 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor.set(0);
     }
     
+    public void setRotationEncoder(double degrees) {
+        double r = (degrees / ShooterConstants.turretRotationGearRatio) / (double)-360;
+
+        rotationEncoder.setPosition(r);
+    }
+
     // used to get rotation of the turret based on the current rotation of the motor
     public double getRotation() {
         double motorRotation = ((rotationEncoder.getPosition()) * -360);

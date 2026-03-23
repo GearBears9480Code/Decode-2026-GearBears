@@ -20,6 +20,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -57,6 +58,15 @@ public class RobotContainer {
     configureBindings();
 
     NamedCommands.registerCommand("IntakeToggle", new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
+
+    NamedCommands.registerCommand("ShootAuto", new InstantCommand(() -> {
+      m_ShooterSubsystem.shoot(0.65);
+      m_ShooterSubsystem.setRotationEncoder(190);
+    }));
+    NamedCommands.registerCommand("StopShootAuto", new InstantCommand(() -> {
+      m_ShooterSubsystem.shoot(0);
+    }));
+
     NamedCommands.registerCommand("VacToggle", new InstantCommand(() -> m_IntakeSubsystem.toggleVacume()));
     NamedCommands.registerCommand("StartHopper", activateShooting);
     NamedCommands.registerCommand("StopHopper", new InstantCommand(() -> activateShooting.stop()));
@@ -119,6 +129,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return m_SwerveSubsystem.getAutonomousCommand("NewLeftTrench");
+    // return m_SwerveSubsystem.getAutonomousCommand("TestingAuto2");
     // return new InstantCommand();
   }
 }

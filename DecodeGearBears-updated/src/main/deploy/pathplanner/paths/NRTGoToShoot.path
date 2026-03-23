@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5,
-        "y": 4.015592011412268
+        "x": 7.7345421686746985,
+        "y": 2.701819277108433
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2239229671897287,
-        "y": 4.235549215406562
+        "x": 7.7345421686746985,
+        "y": 1.5619799360927618
       },
       "isLocked": false,
-      "linkedName": "starttest"
+      "linkedName": "NRTAtCenter"
     },
     {
       "anchor": {
-        "x": 2.719315263908701,
-        "y": 5.2059486447931524
+        "x": 4.0,
+        "y": 0.7129759036144572
       },
       "prevControl": {
-        "x": 2.734909835447496,
-        "y": 4.9564355001724305
+        "x": 7.898457831325301,
+        "y": 0.37421686746987914
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "test"
+      "linkedName": "NRTAtShoot"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "NewRightTrench",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

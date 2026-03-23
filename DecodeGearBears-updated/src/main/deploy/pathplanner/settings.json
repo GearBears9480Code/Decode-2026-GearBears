@@ -3,12 +3,12 @@
   "robotLength": 0.768,
   "holonomicMode": true,
   "pathFolders": [
-    "LeftTrenchSteal",
-    "New Folder",
+    "LeftTrenchSteal (OLD)",
+    "MiddleAuto",
     "NewLeftTrench",
-    "NewRightSteal",
+    "NewRightTrench",
     "OldSteal",
-    "RightTrenchSteal",
+    "RightTrenchSteal (OLD)",
     "Test Auto"
   ],
   "autoFolders": [

@@ -11,7 +11,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ShootAuto"
+                  "name": "ToggleVision"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ToggleShoot"
                 }
               },
               {
@@ -43,7 +49,13 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "StopShootAuto"
+                              "name": "ToggleVision"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "ToggleShoot"
                             }
                           },
                           {
@@ -71,7 +83,7 @@
                                 {
                                   "type": "path",
                                   "data": {
-                                    "pathName": "ShootInital"
+                                    "pathName": "RightShootInitial"
                                   }
                                 }
                               ]
@@ -93,7 +105,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "NLTGoToShoot"
+                  "pathName": "NRTGoToShoot"
                 }
               }
             ]
@@ -106,7 +118,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ShootAuto"
+                  "name": "ToggleShoot"
                 }
               },
               {
@@ -132,7 +144,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "StopShootAuto"
+                              "name": "ToggleShoot"
                             }
                           },
                           {
@@ -154,7 +166,7 @@
                                 {
                                   "type": "path",
                                   "data": {
-                                    "pathName": "NLTGoBackToCenter"
+                                    "pathName": "NRTEndInCenter"
                                   }
                                 }
                               ]
@@ -167,6 +179,18 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VacToggle"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeToggle"
           }
         }
       ]

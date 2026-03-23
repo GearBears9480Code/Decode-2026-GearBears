@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    m_robotContainer.m_ShooterSubsystem.resetMotors();
   }
 
   /**
@@ -59,10 +60,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     CommandScheduler.getInstance().schedule(m_robotContainer.m_HopperSubsystem.hopperPIDCommand);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    m_robotContainer.m_ShooterSubsystem.resetMotors();
     CommandScheduler.getInstance().schedule(m_robotContainer.m_ShooterSubsystem.pid);
-    Pose2d previPose2d = m_robotContainer.m_SwerveSubsystem.getPose();
     CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
+    m_robotContainer.m_ShooterSubsystem.getHubPose();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -81,7 +81,6 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     CommandScheduler.getInstance().schedule(m_robotContainer.m_HopperSubsystem.hopperPIDCommand);
-    m_robotContainer.m_ShooterSubsystem.resetMotors();
     CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
     CommandScheduler.getInstance().schedule(m_robotContainer.m_ShooterSubsystem.pid);
     System.out.println(IntakeConstants.armGearRatio);

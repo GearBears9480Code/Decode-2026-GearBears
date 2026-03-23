@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.935549215406562,
-        "y": 7.379643366619116
+        "x": 4.0,
+        "y": 0.7129759036144572
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.575975903614458,
-        "y": 7.684855421686747
+        "x": 9.537614457831324,
+        "y": 0.1993734939759041
       },
       "isLocked": false,
-      "linkedName": "LeftTrenchAtShoot"
+      "linkedName": "NRTAtShoot"
     },
     {
       "anchor": {
-        "x": 7.756397590361445,
-        "y": 4.024072289156626
+        "x": 7.7454698795180725,
+        "y": 3.5323253012048186
       },
       "prevControl": {
-        "x": 8.521337349397589,
-        "y": 4.8982891566265065
+        "x": 8.08422891566265,
+        "y": 2.723674698795181
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.3980148883374686,
+      "minWaypointRelativePos": 0.4774193548387099,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.5,
@@ -56,13 +56,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "NewLeftTrench",
+  "folder": "NewRightTrench",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

@@ -47,6 +47,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "test or old autos",
   "choreoAuto": false
 }

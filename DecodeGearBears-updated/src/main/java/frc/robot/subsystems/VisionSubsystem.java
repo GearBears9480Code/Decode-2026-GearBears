@@ -30,7 +30,6 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -48,7 +47,7 @@ public class VisionSubsystem extends SubsystemBase {
     Matrix<N3, N1> curStdDevs;
 
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
-    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(12), 0), new Rotation3d(0, Math.toRadians(30), Math.toRadians(180)));
+    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(12), 0), new Rotation3d(0, Math.toRadians(22), Math.toRadians(180)));
     public final PhotonPoseEstimator poseEstimator = new PhotonPoseEstimator(kTagLayout, kRobotToCam);
 
     double centerOfHub;
