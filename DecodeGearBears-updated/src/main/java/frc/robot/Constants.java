@@ -49,6 +49,7 @@ public final class Constants {
     public static final double turretKp = 0.01;
     public static final double turretKi = 0.0;
     public static final double turretKd = 0.00075;
+    public static final double turretKs = 0.05; // minimum duty cycle to move
 
     public static final double turretX = Units.inchesToMeters(-4);
     public static final double turretY = Units.inchesToMeters(8);

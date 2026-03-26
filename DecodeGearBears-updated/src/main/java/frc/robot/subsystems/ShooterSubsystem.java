@@ -41,8 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem(ClientSubsystem cli, VisionSubsystem v) {
         // initialize stuff possibly
         resetPositions();
-        rotateTurret(0);
-
+        
         SmartDashboard.putBoolean("can shoot", true);
         
         client = cli;
@@ -58,7 +57,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public void resetPositions() {
         rotationEncoder.setPosition(0);
     }
-
+    
     public void resetMotors() {
         rotationMotor.set(0);
         velocity = 0;
@@ -125,12 +124,12 @@ public class ShooterSubsystem extends SubsystemBase {
         velocity = 0;
         shooterMotor.set(0.0);
     }
-
+    
     public void rotateHood(double velocity) {
         hoodMotor.set(velocity);
         SmartDashboard.putNumber("hood velocity", velocity);
     }
-
+    
     public void rotateTurret(double velocity) {
         SmartDashboard.putNumber("turret velocity", velocity);
         rotationMotor.set(velocity);
@@ -148,36 +147,36 @@ public class ShooterSubsystem extends SubsystemBase {
         double input = ((2 * time * ShooterConstants.height) + (9.8 * (Math.pow(time, 3)))) / (2 * distance * time);
         return Math.toDegrees(Math.atan(input));
     }
-
+    
     public double getFlywheelVelocity(double angle) {
         return ShooterConstants.constantHorizontalVelocity / Math.cos(angle);
     }
-
+    
     public void periodic() {
         // double desiredAngle = client.getDesiredAngle(false);
         // SmartDashboard.putNumber("apriltag-angle", desiredAngle);
         // double angle = -1 * (getRotation() + desiredAngle);
-
+        
         // print out desired angle
         Matrix<N2, N1> turretPosition = vision.getPointFieldOriented(ShooterConstants.turretX, ShooterConstants.turretY);
-
+        
         // get angle of 
         double x = hubPose.getX() - turretPosition.getData()[0];
         double y = hubPose.getY() - turretPosition.getData()[1];
-
+        
         distFromHub = Math.hypot(x, y);
-        System.out.println(distFromHub);
-
+        // System.out.println(distFromHub);
+        
         double angle = Math.toDegrees(Math.atan2(y, x));
+        System.out.println("x: " + x  + ", y: " + y + ", angle: " + angle);
         double desiredAngle = angle - vision.getVisionPose().getRotation().getDegrees();
-
+        
         desiredAngle = desiredAngle % 360;
-
+        
         if (desiredAngle < 0) {
             desiredAngle = 360 + desiredAngle;
         }
-
-    
+        
         // if (angle < minRotationTurret) {
         //     angle = minRotationTurret;
         // } else if (angle > maxRotationTurret) {

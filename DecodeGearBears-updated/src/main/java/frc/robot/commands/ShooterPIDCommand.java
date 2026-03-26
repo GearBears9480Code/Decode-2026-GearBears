@@ -16,6 +16,8 @@ public class ShooterPIDCommand extends Command {
     private double flyWheelSetvelocity = 0;
     public boolean enterManual = true;
 
+    private double speedTolerance = 0.01;
+
     private ShooterSubsystem shooter;
 
     public ShooterPIDCommand(ShooterSubsystem shoot) {
@@ -32,6 +34,7 @@ public class ShooterPIDCommand extends Command {
 
     public void manualToggle() {
         enterManual = !enterManual;
+        shooter.rotateTurret(0);
         SmartDashboard.putBoolean("manual", enterManual);
     }
 
@@ -62,6 +65,10 @@ public class ShooterPIDCommand extends Command {
             double turretPosition = shooter.getRotation();
 
             double turretVelocity = turretPID.calculate(turretPosition);
+
+            if (Math.abs(turretVelocity) > speedTolerance && Math.abs(turretVelocity) < ShooterConstants.turretKs) {
+                turretVelocity = turretVelocity > 0 ? ShooterConstants.turretKs : -ShooterConstants.turretKs;
+            }
 
             shooter.rotateTurret(turretVelocity);
             // shooter.rotateHood(hoodVelocity);

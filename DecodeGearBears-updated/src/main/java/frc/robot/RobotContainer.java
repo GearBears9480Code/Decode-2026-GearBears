@@ -115,8 +115,8 @@ public class RobotContainer {
     m_mechanismController.rightBumper().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.manualToggle()));
     m_mechanismController.rightTrigger(0.5).onTrue(activateShooting).onFalse(new InstantCommand(() -> activateShooting.stop()));
 
-    m_mechanismController.povLeft().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0.1))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
-    m_mechanismController.povRight().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(-0.1))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
+    m_mechanismController.povLeft().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0.05))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
+    m_mechanismController.povRight().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(-0.05))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
     m_mechanismController.povUp().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0.3))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0)));
     m_mechanismController.povDown().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(-0.3))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateHood(0)));
   }
