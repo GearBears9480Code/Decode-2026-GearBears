@@ -139,7 +139,9 @@ public class SwerveSubsystem extends SubsystemBase{
         Matrix<N2, N1> point = VecBuilder.fill(xMeters, yMeters);
         // rotate the point using rotation matrix
         double theta = swerveDrive.getPose().getRotation().getRadians();
-        double x = swerveDrive.getPose().getX(); double y = swerveDrive.getPose().getY();
+        double x = swerveDrive.getPose().getX();
+        double y = swerveDrive.getPose().getY();
+        
         point = MatBuilder.fill(N2.instance, N2.instance, Math.cos(theta), -Math.sin(theta), Math.sin(theta), Math.cos(theta)).times(point);
         point = point.plus(VecBuilder.fill(x, y));
         return point;

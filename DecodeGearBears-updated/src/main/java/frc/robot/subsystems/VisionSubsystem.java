@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
@@ -109,6 +110,11 @@ public class VisionSubsystem extends SubsystemBase {
                     var estStdDevs = getStdDev();
 
                     pos = est.estimatedPose.toPose2d();
+                    Transform2d transform = new Transform2d(
+                        swervesub.swerveDrive.getFieldVelocity().vxMetersPerSecond / 50, 
+                        swervesub.swerveDrive.getFieldVelocity().vyMetersPerSecond / 50, 
+                        new Rotation2d(swervesub.swerveDrive.getFieldVelocity().omegaRadiansPerSecond / 50));
+                    pos.plus(transform);
                 }
             );
         }
@@ -119,7 +125,8 @@ public class VisionSubsystem extends SubsystemBase {
         Matrix<N2, N1> point = VecBuilder.fill(xMeters, yMeters);
         // rotate the point using rotation matrix
         double theta = pos.getRotation().getRadians();
-        double x = pos.getX(); double y = pos.getY();
+        double x = pos.getX();
+        double y = pos.getY();
         point = MatBuilder.fill(N2.instance, N2.instance, Math.cos(theta), -Math.sin(theta), Math.sin(theta), Math.cos(theta)).times(point);
         point = point.plus(VecBuilder.fill(x, y));
         return point;

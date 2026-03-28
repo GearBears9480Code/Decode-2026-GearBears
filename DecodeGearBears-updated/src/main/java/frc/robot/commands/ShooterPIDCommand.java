@@ -16,7 +16,7 @@ public class ShooterPIDCommand extends Command {
     private double flyWheelSetvelocity = 0;
     public boolean enterManual = true;
 
-    private double speedTolerance = 0.01;
+    private double speedTolerance = 0.025;
 
     private ShooterSubsystem shooter;
 
