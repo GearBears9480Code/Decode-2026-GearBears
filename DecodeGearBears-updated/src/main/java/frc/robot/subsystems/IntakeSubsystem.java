@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -12,23 +13,19 @@ import frc.robot.commands.IntakePIDCommand;
 
 
 public class IntakeSubsystem extends SubsystemBase {
-
-    SparkMax armMotor = new SparkMax (61, MotorType.kBrushed); // change to brushless in both code and REV
-    public SparkMax vacMotor = new SparkMax(60, MotorType.kBrushless);
-
-	RelativeEncoder armEncoder = armMotor.getEncoder();
-    RelativeEncoder vacEncoder = vacMotor.getEncoder();
+    private TalonFX vacMotor = new TalonFX(60);
+    private TalonFX slideMotor = new TalonFX(61);
     boolean vacOn = false;
 
     public IntakePIDCommand pid = new IntakePIDCommand(this);
     
     public IntakeSubsystem(){
-        armEncoder.setPosition(0);
         SmartDashboard.putBoolean("vac on", vacOn);
     }
 
     public double getArmPosition() {
-        double pos =  (armEncoder.getPosition() / 11.4625) * 360 * IntakeConstants.armGearRatio;
+        // double pos =  (armEncoder.getPosition() / 11.4625) * 360 * IntakeConstants.armGearRatio;
+        double pos = slideMotor.getPosition().getValueAsDouble();
         SmartDashboard.putNumber("intake position", pos);
         return pos;
     }
@@ -43,22 +40,13 @@ public class IntakeSubsystem extends SubsystemBase {
         }
         SmartDashboard.putBoolean("vac on", vacOn);
     }
-
-    public void setArmRotation(double velocity) {
-        armMotor.set(velocity);
-    }
   
     public void setVelocity(double velocity) {
         vacMotor.set(velocity);
     }
 
-    public double getVelocity() {
-        return vacEncoder.getVelocity();
-    }
-
-
     public void setArmVelocity(double armVelocity) {
-        armMotor.set(armVelocity);
+        slideMotor.set(armVelocity);
     }
 
     public void periodic() {

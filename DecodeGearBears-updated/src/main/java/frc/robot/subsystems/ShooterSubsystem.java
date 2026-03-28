@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 
@@ -21,11 +22,10 @@ public class ShooterSubsystem extends SubsystemBase {
     // motors
     private final SparkMax rotationMotor = new SparkMax(40, MotorType.kBrushless);
     private final SparkMax hoodMotor = new SparkMax(41, MotorType.kBrushed);
-    private final SparkMax shooterMotor = new SparkMax(42, MotorType.kBrushless);
+    private final TalonFX shooterMotor = new TalonFX(42);
     // encoders
     private final RelativeEncoder rotationEncoder = rotationMotor.getAlternateEncoder();
     private final RelativeEncoder hoodEncoder = hoodMotor.getEncoder();
-    private final RelativeEncoder velocityEncoder = shooterMotor.getEncoder();
 
     Pose2d hubPose;
 
@@ -110,13 +110,6 @@ public class ShooterSubsystem extends SubsystemBase {
         } else {
             return 0.0;
         }
-    }
-
-    public double getVelocity() {
-        // equation to convert RPM -> m/s or velocity
-        // the encoder reads RPM for velocity not actually m/s
-        // return (velocityEncoder.getVelocity() * ShooterConstants.flyWheelCircumfrance) / 60;
-        return velocityEncoder.getVelocity();
     }
     
     // stops the shooter
