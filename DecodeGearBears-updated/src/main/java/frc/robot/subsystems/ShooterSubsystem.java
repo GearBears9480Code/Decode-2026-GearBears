@@ -56,6 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     public void resetPositions() {
         rotationEncoder.setPosition(0);
+        hoodEncoder.setPosition(0);
     }
     
     public void resetMotors() {
@@ -85,9 +86,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getCalcVelocity() {
-        if (distFromHub > 2.4) {
+        if (distFromHub > 2.35) {
             SmartDashboard.putBoolean("can shoot", true);
-            return (0.0961046 * distFromHub) + 0.325379;
+            return (0.143885 * distFromHub) + 0.25;
         } else {
             SmartDashboard.putBoolean("can shoot", false);
             return 0;
@@ -111,7 +112,7 @@ public class ShooterSubsystem extends SubsystemBase {
             return 0.0;
         }
     }
-    
+
     // stops the shooter
     public void stop() {
         velocity = 0;
@@ -129,7 +130,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public double getHoodRotation() {
-        double angle = (hoodEncoder.getPosition() * 2) * -360;
+        double angle = (hoodEncoder.getPosition() * ShooterConstants.hoodGearRatio) * -360;
         SmartDashboard.putNumber("hood angle", angle);
         return angle;
     }
@@ -158,10 +159,10 @@ public class ShooterSubsystem extends SubsystemBase {
         double y = hubPose.getY() - turretPosition.getData()[1];
         
         distFromHub = Math.hypot(x, y);
-        // System.out.println(distFromHub);
+        System.out.println(distFromHub);
         
         double angle = Math.toDegrees(Math.atan2(y, x));
-        System.out.println("x: " + x  + ", y: " + y + ", angle: " + angle);
+        // System.out.println("x: " + x  + ", y: " + y + ", angle: " + angle);
         double desiredAngle = angle - vision.getVisionPose().getRotation().getDegrees();
         
         desiredAngle = desiredAngle % 360;
@@ -177,6 +178,7 @@ public class ShooterSubsystem extends SubsystemBase {
         // }
 
         getRotation();
+        getHoodRotation();
 
         // System.out.println(desiredAngle + " " + angle);
         // pid.changeTurretAngle(desiredAngle);
@@ -192,5 +194,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
         pid.changeTurretAngle(desiredAngle);
+        pid.changeHoodAngle(-5);
     }
 }

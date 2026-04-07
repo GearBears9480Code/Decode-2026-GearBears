@@ -40,7 +40,8 @@ public class ActivateShooting extends Command {
 
     public void initialize() {
         startingTime = Timer.getTimestamp();
-        hopper.hopperPIDCommand.changeKickerSpeed(2200);
+        hopper.hopperPIDCommand.changeKickerSpeed(2000);
+        hopper.hopperPIDCommand.changeSpindexerSpeed(3200);
         finished = false;
     }
 
@@ -49,10 +50,10 @@ public class ActivateShooting extends Command {
             shooter.shoot(shooter.getEstimatedVelocity());
         }
 
-        double currentTime = Timer.getTimestamp();
-        if (currentTime - startingTime >= 1) {
-            hopper.hopperPIDCommand.changeSpindexerSpeed(4000);
-        }
+        // double currentTime = Timer.getTimestamp();
+        // if (currentTime - startingTime >= 1) {
+        //     hopper.hopperPIDCommand.changeSpindexerSpeed(4000);
+        // }
     }
 
     public void end(boolean interupt) {

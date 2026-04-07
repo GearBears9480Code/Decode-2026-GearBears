@@ -54,9 +54,11 @@ public final class Constants {
     public static final double turretX = Units.inchesToMeters(-4);
     public static final double turretY = Units.inchesToMeters(8);
 
-    public static final double hoodKp = 0.1;
+    public static final double hoodKp = 0.67;
     public static final double hoodKi = 0.0;
     public static final double hoodKd = 0.0;
+
+    public static final double hoodGearRatio = (double)18/(double)392;
 
     public static final double flyWheelKp = 10;
     public static final double flyWheelKi = 0.0;

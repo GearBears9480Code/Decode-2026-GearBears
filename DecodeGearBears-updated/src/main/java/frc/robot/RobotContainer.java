@@ -80,7 +80,7 @@ public class RobotContainer {
 		driveAngularVelocity = SwerveInputStream.of(m_SwerveSubsystem.getDrive(),
 													() -> m_driverController.getLeftY() * -1,
 													() -> m_driverController.getLeftX() * -1)
-												.withControllerRotationAxis(() -> m_driverController.getRightX() * -1)
+												.withControllerRotationAxis(() -> m_driverController.getRightX() * 1)
 												.deadband(0.1)
 												.scaleTranslation(0.8)
 												.allianceRelativeControl(true);
@@ -111,7 +111,8 @@ public class RobotContainer {
     m_driverController.leftBumper().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
     
     m_mechanismController.a().onTrue(new InstantCommand(() -> m_ShooterSubsystem.resetPositions()));
-    m_mechanismController.x().onTrue(new InstantCommand(() -> activateShooting.toggleFlywheel()));
+    m_mechanismController.x().onTrue(new InstantCommand(() -> m_ShooterSubsystem.shoot(1))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.shoot(0)));
+    // m_mechanismController.x().onTrue(new InstantCommand(() -> activateShooting.toggleFlywheel()));
     m_mechanismController.rightBumper().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.manualToggle()));
     m_mechanismController.rightTrigger(0.5).onTrue(activateShooting).onFalse(new InstantCommand(() -> activateShooting.stop()));
 

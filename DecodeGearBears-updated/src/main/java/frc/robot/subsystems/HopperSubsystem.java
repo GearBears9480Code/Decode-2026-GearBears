@@ -23,6 +23,8 @@ public class HopperSubsystem extends SubsystemBase {
    public final HopperPIDCommand hopperPIDCommand = new HopperPIDCommand(this);
 
    public HopperSubsystem() {
+      spinVel = 0;
+      kickVel = 0;
    }
 
 

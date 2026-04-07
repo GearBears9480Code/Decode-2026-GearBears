@@ -23,7 +23,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
@@ -31,6 +30,7 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -38,8 +38,8 @@ public class VisionSubsystem extends SubsystemBase {
     Optional<Alliance> alliance = DriverStation.getAlliance();
     boolean isRed = alliance.isPresent() && (alliance.get() == Alliance.Red);
     
-    PhotonCamera camOne = new PhotonCamera("Arducam One");
-    PhotonCamera camTwo = new PhotonCamera("Arducam Two");
+    PhotonCamera camOne = new PhotonCamera("Arducam 1");
+    PhotonCamera camTwo = new PhotonCamera("Arducam 2");
 
     Pose3d robotPose;
     Optional<Pose3d> tagPose;
@@ -48,14 +48,24 @@ public class VisionSubsystem extends SubsystemBase {
     Matrix<N3, N1> curStdDevs;
 
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
-    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(Units.inchesToMeters(-11), Units.inchesToMeters(12), 0), new Rotation3d(0, Math.toRadians(22), Math.toRadians(180)));
-    public final PhotonPoseEstimator poseEstimator = new PhotonPoseEstimator(kTagLayout, kRobotToCam);
+
+    public static final Transform3d kRobotToCamTwo = new Transform3d(new Translation3d(Units.inchesToMeters(-10.5), Units.inchesToMeters(13.5), 0), new Rotation3d(0, Math.toRadians(25), Math.toRadians(180)));
+    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(Units.inchesToMeters(4.75), Units.inchesToMeters(14.75), 0), new Rotation3d(0, Math.toRadians(25), Math.toRadians(90)));
+    
+    public final PhotonPoseEstimator poseEstimatorOne = new PhotonPoseEstimator(kTagLayout, kRobotToCam);
+    public final PhotonPoseEstimator poseEstimatorTwo = new PhotonPoseEstimator(kTagLayout, kRobotToCamTwo);
+    
+    private boolean apriltagSeen1 = false;
+    private boolean apriltagSeen2 = false;
 
     double centerOfHub;
     private SwerveSubsystem swervesub;
-    private Pose2d pos = new Pose2d(0, 0, new Rotation2d(0));
+    private Pose2d posOne = new Pose2d(0, 0, new Rotation2d(0));
+    private Pose2d posTwo = new Pose2d(0, 0, new Rotation2d(0));
+    private Pose2d truePos = new Pose2d(0, 0, new Rotation2d(0));
     
     public VisionSubsystem(SwerveSubsystem swerve) {
+        System.out.println(camOne);
         if (isRed) {
             centerOfHub = kTagLayout.getTagPose(10).get().getX() + (PhysicalConstants.hubWidth / 2);
         } else {
@@ -64,7 +74,12 @@ public class VisionSubsystem extends SubsystemBase {
         
         swervesub = swerve;
 
-        SmartDashboard.putBoolean("seeing apriltag", false);
+        SmartDashboard.putBoolean("cam1", false);
+        SmartDashboard.putBoolean("cam2", false);
+
+        SmartDashboard.putNumber("visPosition/angle", 0);
+        SmartDashboard.putNumber("visPosition/x", 0);
+        SmartDashboard.putNumber("visPosition/y", 0);
     }
 
     public double getData(boolean validTarget, PhotonPipelineResult output) {
@@ -80,18 +95,22 @@ public class VisionSubsystem extends SubsystemBase {
     }
 
     public Pose2d getVisionPose() {
-        return pos;
+        return swervesub.getPose();
     }
 
     public void periodic() {
-        getVisionMeasurement(camOne);
-        // getVisionMeasurement(camTwo, VisionConstants.camTwoPose);
+        getVisionMeasurement(camOne, poseEstimatorOne, true);
+        getVisionMeasurement(camTwo, poseEstimatorTwo, false);
+
+        SmartDashboard.putNumber("visPosition/angle", truePos.getRotation().getDegrees());
+        SmartDashboard.putNumber("visPosition/x", truePos.getX());
+        SmartDashboard.putNumber("visPosition/y", truePos.getY());
 
         // var result = camOne.getLatestResult();
         // getData(result.hasTargets(), result);
     }
 
-    public void getVisionMeasurement(PhotonCamera camera) {
+    public void getVisionMeasurement(PhotonCamera camera, PhotonPoseEstimator poseEstimator, boolean cam) {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
         var results = camera.getAllUnreadResults();
         for (var output : results) {
@@ -99,44 +118,50 @@ public class VisionSubsystem extends SubsystemBase {
             if (visionEst.isEmpty()) {
                 visionEst = poseEstimator.estimateLowestAmbiguityPose(output);
             }
-            if (!results.isEmpty()) {
 
-            }
-
-            updateEstimationStdDevs(visionEst, output.getTargets());
+            updateEstimationStdDevs(visionEst, output.getTargets(), poseEstimator, cam);
 
             visionEst.ifPresent(
                 est -> {
-                    var estStdDevs = getStdDev();
-
-                    pos = est.estimatedPose.toPose2d();
-                    Transform2d transform = new Transform2d(
-                        swervesub.swerveDrive.getFieldVelocity().vxMetersPerSecond / 50, 
-                        swervesub.swerveDrive.getFieldVelocity().vyMetersPerSecond / 50, 
-                        new Rotation2d(swervesub.swerveDrive.getFieldVelocity().omegaRadiansPerSecond / 50));
-                    pos.plus(transform);
+                    var estStdDev = getStdDev();
+                    swervesub.swerveDrive.addVisionMeasurement(est.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), estStdDev);
                 }
             );
         }
+    }
+
+    public void getAvgPose() {
+        truePos = new Pose2d((posOne.getX() + posTwo.getX()) / 2, (posOne.getY() + posTwo.getY()) / 2, new Rotation2d((posOne.getRotation().getRadians() + posTwo.getRotation().getRadians()) / 2));
     }
 
     public Matrix<N2, N1> getPointFieldOriented(double xMeters, double yMeters) {
         // get the robot oriented point matrix
         Matrix<N2, N1> point = VecBuilder.fill(xMeters, yMeters);
         // rotate the point using rotation matrix
-        double theta = pos.getRotation().getRadians();
-        double x = pos.getX();
-        double y = pos.getY();
+        Pose2d swervPose2d = swervesub.getPose();
+        double theta = swervPose2d.getRotation().getRadians();
+        double x = swervPose2d.getX();
+        double y = swervPose2d.getY();
         point = MatBuilder.fill(N2.instance, N2.instance, Math.cos(theta), -Math.sin(theta), Math.sin(theta), Math.cos(theta)).times(point);
         point = point.plus(VecBuilder.fill(x, y));
         return point;
     }
 
-    private void updateEstimationStdDevs(Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
+    private void updateShuffleboardValue(boolean cam, boolean value) {
+        if (cam) {
+            apriltagSeen1 = value;
+            SmartDashboard.putBoolean("cam1", value);
+        } else {
+            apriltagSeen2 = value;
+            SmartDashboard.putBoolean("cam2", value);
+        }
+    }
+
+    private void updateEstimationStdDevs(Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets, PhotonPoseEstimator poseEstimator, boolean cam) {
         if (estimatedPose.isEmpty()) {
             // No pose input. Default to single-tag std devs
             curStdDevs = VisionConstants.kSingleTagStdDevs;
-            SmartDashboard.putBoolean("seeing apriltag", false);
+            updateShuffleboardValue(cam, false);
 
         } else {
             // Pose present. Start running Heuristic
@@ -145,7 +170,7 @@ public class VisionSubsystem extends SubsystemBase {
             double avgDist = 0;
 
             // Precalculation - see how many tags we found, and calculate an average-distance metric
-            SmartDashboard.putBoolean("seeing apriltag", true);
+            updateShuffleboardValue(cam, true);
             for (var tgt : targets) {
                 var tagPose = poseEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
                 if (tagPose.isEmpty()) continue;
@@ -160,7 +185,7 @@ public class VisionSubsystem extends SubsystemBase {
             if (numTags == 0) {
                 // No tags visible. Default to single-tag std devs
                 curStdDevs = VisionConstants.kSingleTagStdDevs;
-                SmartDashboard.putBoolean("seeing apriltag", false);
+            updateShuffleboardValue(cam, false);
             } else {
                 // One or more tags visible, run the full heuristic.
                 avgDist /= numTags;

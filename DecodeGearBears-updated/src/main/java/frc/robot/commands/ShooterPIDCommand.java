@@ -35,6 +35,7 @@ public class ShooterPIDCommand extends Command {
     public void manualToggle() {
         enterManual = !enterManual;
         shooter.rotateTurret(0);
+        shooter.rotateHood(0);
         SmartDashboard.putBoolean("manual", enterManual);
     }
 
@@ -69,14 +70,16 @@ public class ShooterPIDCommand extends Command {
             if (Math.abs(turretVelocity) > speedTolerance && Math.abs(turretVelocity) < ShooterConstants.turretKs) {
                 turretVelocity = turretVelocity > 0 ? ShooterConstants.turretKs : -ShooterConstants.turretKs;
             }
+            double hoodPosition = shooter.getHoodRotation();
+            double hoodVelocity = hoodPID.calculate(hoodPosition);
+            
+            shooter.rotateHood(hoodVelocity);
 
-            shooter.rotateTurret(turretVelocity);
-            // shooter.rotateHood(hoodVelocity);
+            // shooter.rotateTurret(turretVelocity);
         }
 
         // double shooterVelocity = shooter.getVelocity();
         // double deltaVelocity = flyWheelPID.calculate(shooterVelocity);
-        
         // shooter.shoot(deltaVelocity / PhysicalConstants.neoMaxRPM);
     }
 
