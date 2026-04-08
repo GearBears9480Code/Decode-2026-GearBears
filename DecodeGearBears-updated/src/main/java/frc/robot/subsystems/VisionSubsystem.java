@@ -49,8 +49,8 @@ public class VisionSubsystem extends SubsystemBase {
 
     public static final AprilTagFieldLayout kTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
 
-    public static final Transform3d kRobotToCamTwo = new Transform3d(new Translation3d(Units.inchesToMeters(-10.5), Units.inchesToMeters(13.5), 0), new Rotation3d(0, Math.toRadians(25), Math.toRadians(180)));
-    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(Units.inchesToMeters(4.75), Units.inchesToMeters(14.75), 0), new Rotation3d(0, Math.toRadians(25), Math.toRadians(90)));
+    public static final Transform3d kRobotToCamTwo = new Transform3d(new Translation3d(Units.inchesToMeters(-12.25), Units.inchesToMeters(13), 0), new Rotation3d(0, Math.toRadians(20), Math.toRadians(180)));
+    public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(Units.inchesToMeters(4.75), Units.inchesToMeters(14.75), 0), new Rotation3d(0, Math.toRadians(20), Math.toRadians(90)));
     
     public final PhotonPoseEstimator poseEstimatorOne = new PhotonPoseEstimator(kTagLayout, kRobotToCam);
     public final PhotonPoseEstimator poseEstimatorTwo = new PhotonPoseEstimator(kTagLayout, kRobotToCamTwo);

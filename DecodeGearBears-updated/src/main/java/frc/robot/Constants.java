@@ -64,7 +64,7 @@ public final class Constants {
     public static final double flyWheelKi = 0.0;
     public static final double flyWheelKd = 0.0;
 
-    public static final Pose2d hubBlue = new Pose2d(Units.inchesToMeters(182.11), Units.inchesToMeters(158.84), new Rotation2d(0));
+    public static final Pose2d hubBlue = new Pose2d(Units.inchesToMeters(182.11 - 24), Units.inchesToMeters(158.84), new Rotation2d(0));
     public static final Pose2d hubRed = new Pose2d(Units.inchesToMeters(182.11 + 287), Units.inchesToMeters(158.84), new Rotation2d(0));
     
   }

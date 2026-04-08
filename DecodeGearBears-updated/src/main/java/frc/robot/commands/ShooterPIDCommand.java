@@ -70,13 +70,14 @@ public class ShooterPIDCommand extends Command {
             if (Math.abs(turretVelocity) > speedTolerance && Math.abs(turretVelocity) < ShooterConstants.turretKs) {
                 turretVelocity = turretVelocity > 0 ? ShooterConstants.turretKs : -ShooterConstants.turretKs;
             }
-            double hoodPosition = shooter.getHoodRotation();
-            double hoodVelocity = hoodPID.calculate(hoodPosition);
-            
-            shooter.rotateHood(hoodVelocity);
 
-            // shooter.rotateTurret(turretVelocity);
+            shooter.rotateTurret(turretVelocity);
         }
+
+        double hoodPosition = shooter.getHoodRotation();
+        double hoodVelocity = hoodPID.calculate(hoodPosition);
+            
+        shooter.rotateHood(hoodVelocity);
 
         // double shooterVelocity = shooter.getVelocity();
         // double deltaVelocity = flyWheelPID.calculate(shooterVelocity);

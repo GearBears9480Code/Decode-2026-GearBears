@@ -38,7 +38,7 @@ public class RobotContainer {
   public final HopperSubsystem m_HopperSubsystem = new HopperSubsystem();
   private final ClientSubsystem m_ClientSubsystem = new ClientSubsystem();
   private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem(m_SwerveSubsystem);
-  final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_ClientSubsystem, m_VisionSubsystem);
+  final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_ClientSubsystem, m_VisionSubsystem, m_HopperSubsystem);
   private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
 
   private SwerveInputStream driveAngularVelocity;
@@ -111,7 +111,7 @@ public class RobotContainer {
     m_driverController.leftBumper().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
     
     m_mechanismController.a().onTrue(new InstantCommand(() -> m_ShooterSubsystem.resetPositions()));
-    m_mechanismController.x().onTrue(new InstantCommand(() -> m_ShooterSubsystem.shoot(1))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.shoot(0)));
+    m_mechanismController.x().onTrue(new InstantCommand(() -> activateShooting.toggleFlywheel()));
     // m_mechanismController.x().onTrue(new InstantCommand(() -> activateShooting.toggleFlywheel()));
     m_mechanismController.rightBumper().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.manualToggle()));
     m_mechanismController.rightTrigger(0.5).onTrue(activateShooting).onFalse(new InstantCommand(() -> activateShooting.stop()));

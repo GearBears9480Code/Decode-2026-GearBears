@@ -31,6 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterPIDCommand pid;
     double distFromHub;
+    HopperSubsystem hopper;
 
     private ClientSubsystem client;
 
@@ -38,13 +39,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private VisionSubsystem vision;
 
-    public ShooterSubsystem(ClientSubsystem cli, VisionSubsystem v) {
+    public ShooterSubsystem(ClientSubsystem cli, VisionSubsystem v, HopperSubsystem hop) {
         // initialize stuff possibly
         resetPositions();
         
         SmartDashboard.putBoolean("can shoot", true);
         
         client = cli;
+        hopper = hop;
         vision = v;
         pid = new ShooterPIDCommand(this);
 
@@ -56,7 +58,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     public void resetPositions() {
         rotationEncoder.setPosition(0);
-        hoodEncoder.setPosition(0);
+        // hoodEncoder.setPosition(0);
     }
     
     public void resetMotors() {
@@ -83,14 +85,26 @@ public class ShooterSubsystem extends SubsystemBase {
     // starts the shooter
     public void shoot(double velocity) {
         shooterMotor.set(velocity);
+        if (velocity != 0) {
+            hopper.hopperPIDCommand.changeKickerSpeed(3000);
+        } else {
+            hopper.hopperPIDCommand.changeKickerSpeed(0);
+        }
+
     }
 
     public double getCalcVelocity() {
-        if (distFromHub > 2.35) {
+        if (distFromHub > 1.989 && distFromHub <= 4.1) {
             SmartDashboard.putBoolean("can shoot", true);
-            return (0.143885 * distFromHub) + 0.25;
+            pid.changeHoodAngle(0);
+            return (0.238314 * distFromHub) - 0.000473725;
+        } else if (distFromHub > 4.1) {
+            SmartDashboard.putBoolean("can shoot", true);
+            pid.changeHoodAngle(5.13);
+            return (0.138599 * distFromHub) + 0.119585;
         } else {
             SmartDashboard.putBoolean("can shoot", false);
+            pid.changeHoodAngle(0);
             return 0;
         }
     }
@@ -194,6 +208,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
         pid.changeTurretAngle(desiredAngle);
-        pid.changeHoodAngle(-5);
+        // pid.changeHoodAngle(-5);
     }
 }

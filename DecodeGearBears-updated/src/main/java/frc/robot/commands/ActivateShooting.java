@@ -24,10 +24,12 @@ public class ActivateShooting extends Command {
     public void toggleFlywheel() {
         if (on) {
             shooter.velocity = 0;
+            hopper.hopperPIDCommand.changeKickerSpeed(0);
             shooter.shoot(0);
             on = false;
         } else {
             shooter.shoot(shooter.getCalcVelocity());
+            hopper.hopperPIDCommand.changeKickerSpeed(3000);
             on = true;
         }
 
@@ -40,14 +42,13 @@ public class ActivateShooting extends Command {
 
     public void initialize() {
         startingTime = Timer.getTimestamp();
-        hopper.hopperPIDCommand.changeKickerSpeed(2000);
-        hopper.hopperPIDCommand.changeSpindexerSpeed(3200);
+        hopper.hopperPIDCommand.changeSpindexerSpeed(1000);
         finished = false;
     }
 
     public void execute() {
         if (on) {
-            shooter.shoot(shooter.getEstimatedVelocity());
+            shooter.shoot(shooter.getCalcVelocity());
         }
 
         // double currentTime = Timer.getTimestamp();
@@ -58,7 +59,6 @@ public class ActivateShooting extends Command {
 
     public void end(boolean interupt) {
         hopper.hopperPIDCommand.changeSpindexerSpeed(0);
-        hopper.hopperPIDCommand.changeKickerSpeed(0);
     }
 
     public boolean isFinished() {
