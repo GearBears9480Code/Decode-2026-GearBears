@@ -12,12 +12,19 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+import edu.wpi.first.math.MatBuilder;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import swervelib.SwerveDrive;
@@ -29,8 +36,10 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveSubsystem extends SubsystemBase{
     public double maxSpeedMeters = 3; 
     File directory = new File(Filesystem.getDeployDirectory(), "swerve"); // grabs the JSON packages for swerve
-    private SwerveDrive swerveDrive;
+    public SwerveDrive swerveDrive;
     private RobotConfig config;
+    private Field2d field = new Field2d();
+
     public SwerveSubsystem() {    
         try { // you need a try catch statement because SwerveParser throws an exception that must be catched
             swerveDrive = new SwerveParser(directory).createSwerveDrive(maxSpeedMeters);
@@ -38,75 +47,76 @@ public class SwerveSubsystem extends SubsystemBase{
             e.printStackTrace();
         }
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
-
+        
         try {
             config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
             e.printStackTrace();
         }
         configureAutoBuilder();
+        SmartDashboard.putData("field", field);
     }
-
+    
     private void configureAutoBuilder() {
         AutoBuilder.configure(
-                            this::getPose,
-                            this::resetPose, 
-                            this::getRobotChassisSpeeds, 
-                            (speeds, feedforward) -> driveRobotRelative(speeds), 
-                            new PPHolonomicDriveController(
-                                new PIDConstants(5, 0, 0), 
-                                new PIDConstants(5, 0, 0)
-                            ), 
-                            config, 
-                            () -> {
-                                Optional<Alliance> alliance = DriverStation.getAlliance();
-                                if (alliance.isPresent()) {
-                                    return alliance.get() == DriverStation.Alliance.Red;
-                                }
-                                return false;
-                            }, 
-                            this
-                            );
-    }
+            this::getPose,
+            this::resetPose, 
+            this::getRobotChassisSpeeds, 
+            (speeds, feedforward) -> driveRobotRelative(speeds), 
+            new PPHolonomicDriveController(
+                new PIDConstants(5, 0, 0), // translational pid
+                new PIDConstants(5, 0, 0) // rotation pid
+                ), 
+                config, 
+                () -> {
+                    Optional<Alliance> alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                }, 
+                this
+                );
+            }
+            
+            public Command getDriveCommand(DoubleSupplier xTranslation, DoubleSupplier yTranslation, DoubleSupplier xHeading, DoubleSupplier yHeading) {
+                return run(() -> {
+                    Translation2d velocity = SwerveMath.scaleTranslation(new Translation2d(
+                        xTranslation.getAsDouble(),
+                        yTranslation.getAsDouble()
+                        ), 0.8);
+                        swerveDrive.driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(velocity.getX(), velocity.getY(),
+                        xHeading.getAsDouble(),
+                        yHeading.getAsDouble(),
+                        swerveDrive.getOdometryHeading().getRadians(),
+                        swerveDrive.getMaximumChassisVelocity()));
+                    });
+                }
+                
+                public Command driveFieldOriented(ChassisSpeeds velocity) {
+                    return run(() -> {
+                        swerveDrive.driveFieldOriented(velocity);
+                    });
+                }
+                
+                public void driveRobotRelative(ChassisSpeeds velocity) {
+                    swerveDrive.drive(velocity);
+                }
 
-    public Command getDriveCommand(DoubleSupplier xTranslation, DoubleSupplier yTranslation, DoubleSupplier xHeading, DoubleSupplier yHeading) {
-        return run(() -> {
-            Translation2d velocity = SwerveMath.scaleTranslation(new Translation2d(
-                                                                                xTranslation.getAsDouble(),
-                                                                                yTranslation.getAsDouble()
-                                                                                ), 0.8);
-            swerveDrive.driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(velocity.getX(), velocity.getY(),
-                                                                                        xHeading.getAsDouble(),
-                                                                                        yHeading.getAsDouble(),
-                                                                                        swerveDrive.getOdometryHeading().getRadians(),
-                                                                                        swerveDrive.getMaximumChassisVelocity()));
-        });
-    }
-
-    public Command driveFieldOriented(ChassisSpeeds velocity) {
-        return run(() -> {
-            swerveDrive.driveFieldOriented(velocity);
-        });
-    }
-
-    public void driveRobotRelative(ChassisSpeeds velocity) {
-        swerveDrive.drive(velocity);
-    }
-
-    public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
-        return run(() -> {
+                public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
+                    return run(() -> {
             swerveDrive.driveFieldOriented(velocity.get());
         });
     }
-
+    
     public ChassisSpeeds getRobotChassisSpeeds() {
         return swerveDrive.getRobotVelocity();
     }
-
+    
     public Pose2d getPose() {
         return swerveDrive.getPose();
     }
-
+    
     public SwerveDrive getDrive() {
         return swerveDrive;
     }
@@ -115,7 +125,29 @@ public class SwerveSubsystem extends SubsystemBase{
         swerveDrive.resetOdometry(initialHolonomicPos);
     }
 
-    public Command getAutonamasCommand(String path) {
+    public void periodic() {
+        swerveDrive.updateOdometry();
+        Pose2d pose = swerveDrive.getPose();
+        SmartDashboard.putNumber("swervePosition/x", pose.getX());
+        SmartDashboard.putNumber("swervePosition/y", pose.getY());
+        SmartDashboard.putNumber("swervePosition/angle", pose.getRotation().getDegrees());
+
+    }
+
+    public Matrix<N2, N1> getPointFieldOriented(double xMeters, double yMeters) {
+        // get the robot oriented point matrix
+        Matrix<N2, N1> point = VecBuilder.fill(xMeters, yMeters);
+        // rotate the point using rotation matrix
+        double theta = swerveDrive.getPose().getRotation().getRadians();
+        double x = swerveDrive.getPose().getX();
+        double y = swerveDrive.getPose().getY();
+        
+        point = MatBuilder.fill(N2.instance, N2.instance, Math.cos(theta), -Math.sin(theta), Math.sin(theta), Math.cos(theta)).times(point);
+        point = point.plus(VecBuilder.fill(x, y));
+        return point;
+    }
+    
+    public Command getAutonomousCommand(String path) {
         return new PathPlannerAuto(path);
     }
 }

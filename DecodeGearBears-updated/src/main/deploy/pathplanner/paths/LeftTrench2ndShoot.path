@@ -1,0 +1,59 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.778253012048193,
+        "y": 4.701590361445783
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.752375693931219,
+        "y": 4.973302201674029
+      },
+      "isLocked": false,
+      "linkedName": "LeftTrench2ndCenter"
+    },
+    {
+      "anchor": {
+        "x": 3.935549215406562,
+        "y": 7.379643366619116
+      },
+      "prevControl": {
+        "x": 8.14865720227558,
+        "y": 7.976763848546828
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "LeftTrenchAtShoot"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7356076759061814,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 100.0,
+    "maxAngularAcceleration": 125.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": "LeftTrenchSteal (OLD)",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

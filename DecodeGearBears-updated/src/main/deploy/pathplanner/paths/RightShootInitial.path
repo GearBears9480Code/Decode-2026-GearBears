@@ -1,0 +1,68 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.0,
+        "y": 0.7129759036144572
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 8.728963855421688,
+        "y": 0.4507108433734948
+      },
+      "isLocked": false,
+      "linkedName": "NRTAtShoot"
+    },
+    {
+      "anchor": {
+        "x": 7.7345421686746985,
+        "y": 2.701819277108433
+      },
+      "prevControl": {
+        "x": 8.226289156626505,
+        "y": 1.3577108433734941
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "NRTAtCenter"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.44764267990074474,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 100.0,
+        "maxAngularAcceleration": 125.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 100.0,
+    "maxAngularAcceleration": 125.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "NewRightTrench",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": true
+}
