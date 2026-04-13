@@ -24,12 +24,12 @@ public class ActivateShooting extends Command {
     public void toggleFlywheel() {
         if (on) {
             shooter.velocity = 0;
-            hopper.hopperPIDCommand.changeKickerSpeed(0);
             shooter.shoot(0);
+            shooter.pid.changeHoodAngle(0);
+            hopper.hopperPIDCommand.changeKickerSpeed(0);
             on = false;
         } else {
             shooter.shoot(shooter.getCalcVelocity());
-            hopper.hopperPIDCommand.changeKickerSpeed(3000);
             on = true;
         }
 

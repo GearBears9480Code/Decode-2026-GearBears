@@ -28,7 +28,7 @@ public final class Constants {
 
   public static class VisionConstants {
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(0.002, 0.006, 0.002);
-    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.001, 0.001, 0.0008);
+    public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.0078, 0.0075, 0.011);
 
     // camera one - angle 230 y = -11.5 x =16
     // camera two - angle 310 x = -3.5 y = -12.5
@@ -51,7 +51,7 @@ public final class Constants {
     public static final double turretKd = 0.0009;
     public static final double turretKs = 0.05; // minimum duty cycle to move
 
-    public static final double turretX = Units.inchesToMeters(-4);
+    public static final double turretX = Units.inchesToMeters(-3);
     public static final double turretY = Units.inchesToMeters(8);
 
     public static final double hoodKp = 0.67;
@@ -64,7 +64,7 @@ public final class Constants {
     public static final double flyWheelKi = 0.0;
     public static final double flyWheelKd = 0.0;
 
-    public static final Pose2d hubBlue = new Pose2d(Units.inchesToMeters(182.11 - 24), Units.inchesToMeters(158.84), new Rotation2d(0));
+    public static final Pose2d hubBlue = new Pose2d(Units.inchesToMeters(182.11), Units.inchesToMeters(158.84), new Rotation2d(0));
     public static final Pose2d hubRed = new Pose2d(Units.inchesToMeters(182.11 + 287), Units.inchesToMeters(158.84), new Rotation2d(0));
     
   }

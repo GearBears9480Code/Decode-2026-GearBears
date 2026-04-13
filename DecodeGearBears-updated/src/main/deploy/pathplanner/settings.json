@@ -5,6 +5,7 @@
   "pathFolders": [
     "LeftTrenchSteal (OLD)",
     "MiddleAuto",
+    "CenterAuto",
     "NewLeftTrench",
     "NewRightTrench",
     "OldSteal",
@@ -19,8 +20,8 @@
   "defaultMaxAngVel": 100.0,
   "defaultMaxAngAccel": 125.0,
   "defaultNominalVoltage": 12.0,
-  "robotMass": 42.63,
-  "robotMOI": 5.0,
+  "robotMass": 50.802,
+  "robotMOI": 10.0,
   "robotTrackwidth": 0.546,
   "driveWheelRadius": 0.048,
   "driveGearing": 5.143,

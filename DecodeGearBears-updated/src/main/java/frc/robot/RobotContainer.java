@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActivateShooting;
 import frc.robot.subsystems.HopperSubsystem;
@@ -60,7 +61,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeToggle", new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
 
     NamedCommands.registerCommand("ShootAuto", new InstantCommand(() -> {
-      m_ShooterSubsystem.shoot(0.65);
+      m_ShooterSubsystem.shoot(0.75);
       m_ShooterSubsystem.setRotationEncoder(190);
     }));
     NamedCommands.registerCommand("StopShootAuto", new InstantCommand(() -> {
@@ -102,17 +103,21 @@ public class RobotContainer {
 
     // m_driverController.a().onTrue(new InstantCommand(() -> m_SwerveSubsystem.resetPose(new Pose2d(0, 0, new Rotation2d(0)))));
 
-    m_driverController.povUp().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
-    m_driverController.povDown().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(-0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
-    m_driverController.povLeft().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
-    m_driverController.povRight().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(-0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
+    m_driverController.y().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(-1))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
+    m_driverController.a().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0.2))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
+    m_driverController.x().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
+    m_driverController.b().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(-0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
 
     m_driverController.rightBumper().onTrue(new InstantCommand(() -> m_IntakeSubsystem.toggleVacume()));
-    m_driverController.leftBumper().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
+    // m_driverController.leftBumper().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
+    m_driverController.leftTrigger(0.2).onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0.75))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0)));
+    m_driverController.rightTrigger(0.2).onTrue(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(-0.75))).onFalse(new InstantCommand(() -> m_IntakeSubsystem.setArmVelocity(0)));
+
+
     
     m_mechanismController.a().onTrue(new InstantCommand(() -> m_ShooterSubsystem.resetPositions()));
+    // m_mechanismController.x().onTrue(new InstantCommand(() -> m_ShooterSubsystem.shoot(0.79))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.shoot(0)));
     m_mechanismController.x().onTrue(new InstantCommand(() -> activateShooting.toggleFlywheel()));
-    // m_mechanismController.x().onTrue(new InstantCommand(() -> activateShooting.toggleFlywheel()));
     m_mechanismController.rightBumper().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.manualToggle()));
     m_mechanismController.rightTrigger(0.5).onTrue(activateShooting).onFalse(new InstantCommand(() -> activateShooting.stop()));
 
@@ -130,7 +135,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return m_SwerveSubsystem.getAutonomousCommand("NewLeftTrench");
-    // return m_SwerveSubsystem.getAutonomousCommand("TestingAuto2");
+    // return m_SwerveSubsystem.getAutonomousCommand("NewRightTrench");
     // return new InstantCommand();
   }
 }

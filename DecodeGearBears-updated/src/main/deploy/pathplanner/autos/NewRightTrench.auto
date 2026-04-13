@@ -11,13 +11,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ToggleVision"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ToggleShoot"
+                  "name": "ShootAuto"
                 }
               },
               {
@@ -49,13 +43,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "ToggleVision"
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "ToggleShoot"
+                              "name": "StopShootAuto"
                             }
                           },
                           {
@@ -118,7 +106,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "ToggleShoot"
+                  "name": "ShootAuto"
                 }
               },
               {
@@ -144,7 +132,7 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "ToggleShoot"
+                              "name": "StopShootAuto"
                             }
                           },
                           {

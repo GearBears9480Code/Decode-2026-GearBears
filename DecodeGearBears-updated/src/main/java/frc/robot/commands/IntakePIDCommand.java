@@ -25,8 +25,11 @@ public class IntakePIDCommand extends Command {
     private double upPosition = 0;
 
     private boolean up = false;
+    boolean on = true;
     private double deadbandArmDown = 15;
     private double deadbandArmUp = 5;
+
+    private final double deadbandVelocityMotor = 90;
 
     public IntakePIDCommand(IntakeSubsystem intake) {
         this.intake = intake;
@@ -34,6 +37,13 @@ public class IntakePIDCommand extends Command {
         velocityPID.setSetpoint(velocitySetPoint);
         armPID.setTolerance(10);
         addRequirements(intake);
+    }
+
+    public void onOffPID() {
+        on = !on;
+        if (!on) {
+            intake.setArmVelocity(0);
+        }
     }
 
     public void togglePID() {
@@ -77,8 +87,20 @@ public class IntakePIDCommand extends Command {
             armVelocity = 0;
         }
 
+        // if (!up && Math.abs(armPID.getError()) < deadbandArmUp && Math.abs(armPID.getError()) < deadbandVelocityMotor) {
+        //     intake.setVelocity(0);
+        //     SmartDashboard.putBoolean("vac on", false);
+        // }
 
-        intake.setArmVelocity(armVelocity);
+        // if ((up && Math.abs(armPID.getError()) > deadbandArmDown && Math.abs(armPID.getError()) > deadbandVelocityMotor) 
+        //     || (!up && Math.abs(armPID.getError()) > deadbandArmUp && Math.abs(armPID.getError()) > deadbandVelocityMotor)) {
+        //     intake.setVelocity(-0.8);
+        //     SmartDashboard.putBoolean("vac on", true);
+        // }
+
+        if (on) {
+            intake.setArmVelocity(armVelocity);
+        }
         // intake.setVelocity(newVelocity/PhysicalConstants.neoMaxRPM);
     }
 

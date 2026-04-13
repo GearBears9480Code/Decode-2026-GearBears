@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ShootInital"
+            "pathName": "MoveBackPath"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootAuto"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "test or old autos",
+  "folder": null,
   "choreoAuto": false
 }

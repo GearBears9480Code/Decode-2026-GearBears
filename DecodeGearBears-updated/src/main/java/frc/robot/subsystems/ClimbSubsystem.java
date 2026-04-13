@@ -5,17 +5,16 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
-
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import swervelib.SwerveInputStream;
 
 
 public class ClimbSubsystem extends SubsystemBase{
-   final SparkMax armMotor = new SparkMax(50, MotorType.kBrushless);
-   final SparkMax climbMotor = new SparkMax(51, MotorType.kBrushless);
-
-
-   RelativeEncoder armEncoder = armMotor.getEncoder();
-   RelativeEncoder climbEncoder = climbMotor.getEncoder();
+   final SparkMax climbMotor = new SparkMax(50, MotorType.kBrushless);
+   final SparkMax armMotor = new SparkMax(51, MotorType.kBrushed);
+   boolean deployed = false;
 
 
    public ClimbSubsystem() {
@@ -32,15 +31,15 @@ public class ClimbSubsystem extends SubsystemBase{
        climbMotor.set(velocity);
    }
 
-
-   public double getArmPosition() {
-       return armEncoder.getPosition();
-   }
-
-
-   public double getClimbPosition() {
-       return climbEncoder.getPosition();
-   }
-
-
+   public SwerveInputStream deploy(SwerveInputStream input) {
+        setArmVelocity(-0.5);
+        SwerveInputStream output;
+        if (!deployed) {
+            deployed = true;
+            output = input.copy().scaleTranslation(0.1);
+        } else {
+            output = input;
+        }
+        return output;
+    }
 }

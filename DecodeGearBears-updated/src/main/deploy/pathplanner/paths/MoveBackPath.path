@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.778253012048193,
-        "y": 4.701590361445783
+        "x": 3.636650602409638,
+        "y": 4.024072289156626
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.778253012048193,
-        "y": 5.701590361445783
+        "x": 2.2051204819277106,
+        "y": 4.024072289156626
       },
       "isLocked": false,
-      "linkedName": "NLTAtCenter"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.936,
-        "y": 7.146747503566334
+        "x": 1.519,
+        "y": 4.024072289156626
       },
       "prevControl": {
-        "x": 7.7658430813124095,
-        "y": 7.754864479315263
+        "x": 2.982836961968424,
+        "y": 4.045920602021827
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "NewLeftTrench",
+  "folder": "CenterAuto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

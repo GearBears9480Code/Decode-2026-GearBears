@@ -97,14 +97,27 @@ public class ShooterSubsystem extends SubsystemBase {
         if (distFromHub > 1.989 && distFromHub <= 4.1) {
             SmartDashboard.putBoolean("can shoot", true);
             pid.changeHoodAngle(0);
+            hopper.hopperPIDCommand.changeKickerSpeed(3000);
             return (0.238314 * distFromHub) - 0.000473725;
-        } else if (distFromHub > 4.1) {
+        } else if (distFromHub > 4.1 && distFromHub <= 4.7) {
+            SmartDashboard.putBoolean("can shoot", true);
+            pid.changeHoodAngle(3);
+            hopper.hopperPIDCommand.changeKickerSpeed(3000);
+            return (0.138599 * distFromHub) + 0.159585;
+        } else if (distFromHub > 4.7 && distFromHub <= 5.12) {
             SmartDashboard.putBoolean("can shoot", true);
             pid.changeHoodAngle(5.13);
+            hopper.hopperPIDCommand.changeKickerSpeed(400);
             return (0.138599 * distFromHub) + 0.119585;
+        } else if (distFromHub > 5.12) {
+            SmartDashboard.putBoolean("can shoot", true);
+            pid.changeHoodAngle(5);
+            hopper.hopperPIDCommand.changeKickerSpeed(800);
+            return (0.138599 * distFromHub) + 0.129585;
         } else {
             SmartDashboard.putBoolean("can shoot", false);
             pid.changeHoodAngle(0);
+            hopper.hopperPIDCommand.changeKickerSpeed(0);
             return 0;
         }
     }

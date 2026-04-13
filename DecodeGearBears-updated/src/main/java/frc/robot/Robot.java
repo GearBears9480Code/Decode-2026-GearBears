@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().schedule(m_robotContainer.m_HopperSubsystem.hopperPIDCommand);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     CommandScheduler.getInstance().schedule(m_robotContainer.m_ShooterSubsystem.pid);
-    CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
+    // CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
     m_robotContainer.m_ShooterSubsystem.getHubPose();
 
     // schedule the autonomous command (example)
@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     CommandScheduler.getInstance().schedule(m_robotContainer.m_HopperSubsystem.hopperPIDCommand);
-    CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
+    // CommandScheduler.getInstance().schedule(m_robotContainer.m_IntakeSubsystem.pid);
     CommandScheduler.getInstance().schedule(m_robotContainer.m_ShooterSubsystem.pid);
     System.out.println(IntakeConstants.armGearRatio);
     if (m_autonomousCommand != null) {
@@ -92,7 +92,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-
   }
 
   @Override
