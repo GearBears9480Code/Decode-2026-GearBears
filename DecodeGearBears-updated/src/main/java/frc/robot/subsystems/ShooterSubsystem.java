@@ -33,19 +33,17 @@ public class ShooterSubsystem extends SubsystemBase {
     double distFromHub;
     HopperSubsystem hopper;
 
-    private ClientSubsystem client;
 
     public double velocity = 0;
 
     private VisionSubsystem vision;
 
-    public ShooterSubsystem(ClientSubsystem cli, VisionSubsystem v, HopperSubsystem hop) {
+    public ShooterSubsystem(VisionSubsystem v, HopperSubsystem hop) {
         // initialize stuff possibly
         resetPositions();
         
         SmartDashboard.putBoolean("can shoot", true);
         
-        client = cli;
         hopper = hop;
         vision = v;
         pid = new ShooterPIDCommand(this);
@@ -82,6 +80,23 @@ public class ShooterSubsystem extends SubsystemBase {
         return motorRotation * ShooterConstants.turretRotationGearRatio;
     }
     
+    public void rotateTurret(double velocity) {
+        SmartDashboard.putNumber("turret velocity", velocity);
+        rotationMotor.set(velocity);
+    }
+
+    public void rotateHood(double velocity) {
+        hoodMotor.set(velocity);
+        SmartDashboard.putNumber("hood velocity", velocity);
+    }
+    
+
+    public double getHoodRotation() {
+        double angle = (hoodEncoder.getPosition() * ShooterConstants.hoodGearRatio) * -360;
+        SmartDashboard.putNumber("hood angle", angle);
+        return angle;
+    }
+
     // starts the shooter
     public void shoot(double velocity) {
         shooterMotor.set(velocity);
@@ -122,63 +137,15 @@ public class ShooterSubsystem extends SubsystemBase {
         }
     }
 
-    public double getEstimatedVelocity() {
-        if (distFromHub >= 2.421 && distFromHub < 2.6) {
-            return 0.57;
-        } else if (distFromHub >= 2.6 && distFromHub < 2.9) {
-            return 0.6;
-        } else if (distFromHub >= 2.9 && distFromHub < 3.5) {
-            return 0.65;
-        } else if (distFromHub >= 3.5 && distFromHub < 3.8) {
-            return 0.71;
-        } else if (distFromHub >= 4.0824 && distFromHub < 5.67) {
-            return 0.71;
-        } else if (distFromHub > 5.67) {
-            return 0.9;
-        } else {
-            return 0.0;
-        }
-    }
-
     // stops the shooter
     public void stop() {
         velocity = 0;
         shooterMotor.set(0.0);
     }
     
-    public void rotateHood(double velocity) {
-        hoodMotor.set(velocity);
-        SmartDashboard.putNumber("hood velocity", velocity);
-    }
-    
-    public void rotateTurret(double velocity) {
-        SmartDashboard.putNumber("turret velocity", velocity);
-        rotationMotor.set(velocity);
-    }
-
-    public double getHoodRotation() {
-        double angle = (hoodEncoder.getPosition() * ShooterConstants.hoodGearRatio) * -360;
-        SmartDashboard.putNumber("hood angle", angle);
-        return angle;
-    }
-
-    public double getHoodAngle() {
-        double distance = client.getDistance();
-        double time = distance / ShooterConstants.constantHorizontalVelocity;
-        double input = ((2 * time * ShooterConstants.height) + (9.8 * (Math.pow(time, 3)))) / (2 * distance * time);
-        return Math.toDegrees(Math.atan(input));
-    }
-    
-    public double getFlywheelVelocity(double angle) {
-        return ShooterConstants.constantHorizontalVelocity / Math.cos(angle);
-    }
     
     public void periodic() {
-        // double desiredAngle = client.getDesiredAngle(false);
-        // SmartDashboard.putNumber("apriltag-angle", desiredAngle);
-        // double angle = -1 * (getRotation() + desiredAngle);
-        
-        // print out desired angle
+        // get the position of the turret in field space
         Matrix<N2, N1> turretPosition = vision.getPointFieldOriented(ShooterConstants.turretX, ShooterConstants.turretY);
         
         // get angle of 
@@ -186,7 +153,7 @@ public class ShooterSubsystem extends SubsystemBase {
         double y = hubPose.getY() - turretPosition.getData()[1];
         
         distFromHub = Math.hypot(x, y);
-        System.out.println(distFromHub);
+        // System.out.println(distFromHub);
         
         double angle = Math.toDegrees(Math.atan2(y, x));
         // System.out.println("x: " + x  + ", y: " + y + ", angle: " + angle);
@@ -197,30 +164,10 @@ public class ShooterSubsystem extends SubsystemBase {
         if (desiredAngle < 0) {
             desiredAngle = 360 + desiredAngle;
         }
-        
-        // if (angle < minRotationTurret) {
-        //     angle = minRotationTurret;
-        // } else if (angle > maxRotationTurret) {
-        //     angle = maxRotationTurret;
-        // }
 
         getRotation();
         getHoodRotation();
 
-        // System.out.println(desiredAngle + " " + angle);
-        // pid.changeTurretAngle(desiredAngle);
-
-        // if (pid.enterManual && getRotation() >= maxRotationTurret && turretVelocity > 0) {
-        //     rotateTurret(0);
-        // } else if (pid.enterManual && getRotation() <= minRotationTurret && turretVelocity < 0) {
-        //     rotateTurret(0);
-        // }
-
-        // System.out.println(getHoodRotation());
-
-
-
         pid.changeTurretAngle(desiredAngle);
-        // pid.changeHoodAngle(-5);
     }
 }

@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.Constants.ClimberConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.ActivateShooting;
 import frc.robot.subsystems.HopperSubsystem;
@@ -12,16 +11,12 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-import frc.robot.subsystems.ClientSubsystem;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -37,9 +32,8 @@ public class RobotContainer {
   public final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
   public final SwerveSubsystem m_SwerveSubsystem = new SwerveSubsystem();
   public final HopperSubsystem m_HopperSubsystem = new HopperSubsystem();
-  private final ClientSubsystem m_ClientSubsystem = new ClientSubsystem();
   private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem(m_SwerveSubsystem);
-  final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_ClientSubsystem, m_VisionSubsystem, m_HopperSubsystem);
+  final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_VisionSubsystem, m_HopperSubsystem);
   private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
 
   private SwerveInputStream driveAngularVelocity;

@@ -14,7 +14,6 @@ import frc.robot.commands.IntakePIDCommand;
 
 public class IntakeSubsystem extends SubsystemBase {
     private TalonFX vacMotor = new TalonFX(60);
-    private TalonFX slideMotor = new TalonFX(61);
     private SparkMax oldSlideMotor = new SparkMax(61, MotorType.kBrushed);
     private RelativeEncoder armEncoder = oldSlideMotor.getEncoder();
     boolean vacOn = false;
@@ -27,7 +26,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public double getArmPosition() {
         double pos =  (armEncoder.getPosition() / 11.4625) * 360 * IntakeConstants.armGearRatio;
-        // double pos = slideMotor.getPosition().getValueAsDouble();
         SmartDashboard.putNumber("intake position", pos);
         return pos;
     }
