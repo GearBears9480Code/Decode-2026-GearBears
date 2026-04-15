@@ -29,8 +29,6 @@ public class IntakePIDCommand extends Command {
     private double deadbandArmDown = 15;
     private double deadbandArmUp = 5;
 
-    private final double deadbandVelocityMotor = 90;
-
     public IntakePIDCommand(IntakeSubsystem intake) {
         this.intake = intake;
         armPID.setSetpoint(setPoint);

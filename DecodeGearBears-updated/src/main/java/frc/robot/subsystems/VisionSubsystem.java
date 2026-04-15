@@ -54,9 +54,6 @@ public class VisionSubsystem extends SubsystemBase {
     
     public final PhotonPoseEstimator poseEstimatorOne = new PhotonPoseEstimator(kTagLayout, kRobotToCam);
     public final PhotonPoseEstimator poseEstimatorTwo = new PhotonPoseEstimator(kTagLayout, kRobotToCamTwo);
-    
-    private boolean apriltagSeen1 = false;
-    private boolean apriltagSeen2 = false;
 
     double centerOfHub;
     private SwerveSubsystem swervesub;
@@ -149,10 +146,8 @@ public class VisionSubsystem extends SubsystemBase {
 
     private void updateShuffleboardValue(boolean cam, boolean value) {
         if (cam) {
-            apriltagSeen1 = value;
             SmartDashboard.putBoolean("cam1", value);
         } else {
-            apriltagSeen2 = value;
             SmartDashboard.putBoolean("cam2", value);
         }
     }
