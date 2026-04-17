@@ -52,7 +52,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void getHubPose() {
-        hubPose = DriverStation.getAlliance().isPresent() && (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ? ShooterConstants.hubBlue : ShooterConstants.hubRed;
+        hubPose = DriverStation.getAlliance().isPresent() && (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) ?
+                 ShooterConstants.hubBlue : ShooterConstants.hubRed;
     }
     public void resetPositions() {
         rotationEncoder.setPosition(0);
