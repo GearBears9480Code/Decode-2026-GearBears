@@ -50,11 +50,6 @@ public class ActivateShooting extends Command {
         if (on) {
             shooter.shoot(shooter.getCalcVelocity());
         }
-
-        // double currentTime = Timer.getTimestamp();
-        // if (currentTime - startingTime >= 1) {
-        //     hopper.hopperPIDCommand.changeSpindexerSpeed(4000);
-        // }
     }
 
     public void end(boolean interupt) {

@@ -73,7 +73,7 @@ public class IntakePIDCommand extends Command {
 
     }
 
-    public void execute() { //test
+    public void execute() {
         double armPosition = intake.getArmPosition();
         SmartDashboard.putNumber("arm pos", armPosition);
         double armVelocity = armPID.calculate(armPosition);
@@ -85,21 +85,9 @@ public class IntakePIDCommand extends Command {
             armVelocity = 0;
         }
 
-        // if (!up && Math.abs(armPID.getError()) < deadbandArmUp && Math.abs(armPID.getError()) < deadbandVelocityMotor) {
-        //     intake.setVelocity(0);
-        //     SmartDashboard.putBoolean("vac on", false);
-        // }
-
-        // if ((up && Math.abs(armPID.getError()) > deadbandArmDown && Math.abs(armPID.getError()) > deadbandVelocityMotor) 
-        //     || (!up && Math.abs(armPID.getError()) > deadbandArmUp && Math.abs(armPID.getError()) > deadbandVelocityMotor)) {
-        //     intake.setVelocity(-0.8);
-        //     SmartDashboard.putBoolean("vac on", true);
-        // }
-
         if (on) {
             intake.setArmVelocity(armVelocity);
         }
-        // intake.setVelocity(newVelocity/PhysicalConstants.neoMaxRPM);
     }
 
     public void end(boolean interrupted) {

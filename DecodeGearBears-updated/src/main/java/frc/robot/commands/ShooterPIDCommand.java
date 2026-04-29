@@ -78,10 +78,6 @@ public class ShooterPIDCommand extends Command {
         double hoodVelocity = hoodPID.calculate(hoodPosition);
             
         shooter.rotateHood(hoodVelocity);
-
-        // double shooterVelocity = shooter.getVelocity();
-        // double deltaVelocity = flyWheelPID.calculate(shooterVelocity);
-        // shooter.shoot(deltaVelocity / PhysicalConstants.neoMaxRPM);
     }
 
     public void end(boolean interrupted) {

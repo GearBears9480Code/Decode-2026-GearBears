@@ -102,9 +102,6 @@ public class VisionSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("visPosition/angle", truePos.getRotation().getDegrees());
         SmartDashboard.putNumber("visPosition/x", truePos.getX());
         SmartDashboard.putNumber("visPosition/y", truePos.getY());
-
-        // var result = camOne.getLatestResult();
-        // getData(result.hasTargets(), result);
     }
 
     public void getVisionMeasurement(PhotonCamera camera, PhotonPoseEstimator poseEstimator, boolean cam) {
