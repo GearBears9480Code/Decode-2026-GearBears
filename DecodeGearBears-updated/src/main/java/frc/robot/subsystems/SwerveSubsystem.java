@@ -79,32 +79,32 @@ public class SwerveSubsystem extends SubsystemBase{
                 );
             }
             
-            public Command getDriveCommand(DoubleSupplier xTranslation, DoubleSupplier yTranslation, DoubleSupplier xHeading, DoubleSupplier yHeading) {
-                return run(() -> {
-                    Translation2d velocity = SwerveMath.scaleTranslation(new Translation2d(
-                        xTranslation.getAsDouble(),
-                        yTranslation.getAsDouble()
-                        ), 0.8);
-                        swerveDrive.driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(velocity.getX(), velocity.getY(),
-                        xHeading.getAsDouble(),
-                        yHeading.getAsDouble(),
-                        swerveDrive.getOdometryHeading().getRadians(),
-                        swerveDrive.getMaximumChassisVelocity()));
-                    });
-                }
-                
-                public Command driveFieldOriented(ChassisSpeeds velocity) {
-                    return run(() -> {
-                        swerveDrive.driveFieldOriented(velocity);
-                    });
-                }
-                
-                public void driveRobotRelative(ChassisSpeeds velocity) {
-                    swerveDrive.drive(velocity);
-                }
+    public Command getDriveCommand(DoubleSupplier xTranslation, DoubleSupplier yTranslation, DoubleSupplier xHeading, DoubleSupplier yHeading) {
+        return run(() -> {
+            Translation2d velocity = SwerveMath.scaleTranslation(new Translation2d(
+                xTranslation.getAsDouble(),
+                yTranslation.getAsDouble()
+                ), 0.8);
+                swerveDrive.driveFieldOriented(swerveDrive.swerveController.getTargetSpeeds(velocity.getX(), velocity.getY(),
+                xHeading.getAsDouble(),
+                yHeading.getAsDouble(),
+                swerveDrive.getOdometryHeading().getRadians(),
+                swerveDrive.getMaximumChassisVelocity()));
+            });
+    }
+    
+    public Command driveFieldOriented(ChassisSpeeds velocity) {
+        return run(() -> {
+            swerveDrive.driveFieldOriented(velocity);
+        });
+    }
+    
+    public void driveRobotRelative(ChassisSpeeds velocity) {
+        swerveDrive.drive(velocity);
+    }
 
-                public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
-                    return run(() -> {
+    public Command driveFieldOriented(Supplier<ChassisSpeeds> velocity) {
+        return run(() -> {
             swerveDrive.driveFieldOriented(velocity.get());
         });
     }
@@ -131,7 +131,6 @@ public class SwerveSubsystem extends SubsystemBase{
         SmartDashboard.putNumber("swervePosition/x", pose.getX());
         SmartDashboard.putNumber("swervePosition/y", pose.getY());
         SmartDashboard.putNumber("swervePosition/angle", pose.getRotation().getDegrees());
-
     }
 
     public Matrix<N2, N1> getPointFieldOriented(double xMeters, double yMeters) {
