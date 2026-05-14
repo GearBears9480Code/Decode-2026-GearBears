@@ -121,6 +121,10 @@ public class VisionSubsystem extends SubsystemBase {
 
             visionEst.ifPresent(
                 est -> {
+                    if (!cam) {
+                        System.out.println(est.estimatedPose.toPose2d().getX());
+                    }
+
                     var estStdDev = getStdDev();
                     swervesub.swerveDrive.addVisionMeasurement(est.estimatedPose.toPose2d(), Timer.getFPGATimestamp(), estStdDev);
                 }
