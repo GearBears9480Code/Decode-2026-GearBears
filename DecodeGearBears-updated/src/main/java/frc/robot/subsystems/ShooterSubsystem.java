@@ -57,7 +57,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     public void resetPositions() {
         rotationEncoder.setPosition(0);
-        // hoodEncoder.setPosition(0);
+        hoodEncoder.setPosition(0);
     }
     
     public void resetMotors() {

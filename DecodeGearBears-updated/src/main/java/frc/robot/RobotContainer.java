@@ -11,7 +11,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-import frc.robot.subsystems.ClimbSubsystem;
+// import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -34,7 +34,7 @@ public class RobotContainer {
   public final HopperSubsystem m_HopperSubsystem = new HopperSubsystem();
   private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem(m_SwerveSubsystem);
   final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem(m_VisionSubsystem, m_HopperSubsystem);
-  private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
+  // private final ClimbSubsystem m_ClimbSubsystem = new ClimbSubsystem();
 
   private SwerveInputStream driveAngularVelocity;
 
@@ -97,10 +97,10 @@ public class RobotContainer {
 
     // m_driverController.a().onTrue(new InstantCommand(() -> m_SwerveSubsystem.resetPose(new Pose2d(0, 0, new Rotation2d(0)))));
 
-    m_driverController.y().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(-1))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
-    m_driverController.a().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0.2))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
-    m_driverController.x().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
-    m_driverController.b().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(-0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
+    // m_driverController.y().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(-1))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
+    // m_driverController.a().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0.2))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setClimbVelocity(0)));
+    // m_driverController.x().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
+    // m_driverController.b().onTrue(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(-0.5))).onFalse(new InstantCommand(() -> m_ClimbSubsystem.setArmVelocity(0)));
 
     m_driverController.rightBumper().onTrue(new InstantCommand(() -> m_IntakeSubsystem.toggleVacume()));
     // m_driverController.leftBumper().onTrue(new InstantCommand(() -> m_IntakeSubsystem.pid.togglePID()));
@@ -113,6 +113,7 @@ public class RobotContainer {
     // m_mechanismController.x().onTrue(new InstantCommand(() -> m_ShooterSubsystem.shoot(0.79))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.shoot(0)));
     m_mechanismController.x().onTrue(new InstantCommand(() -> activateShooting.toggleFlywheel()));
     m_mechanismController.rightBumper().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.manualToggle()));
+    m_mechanismController.leftBumper().onTrue(new InstantCommand(() -> m_ShooterSubsystem.pid.hoodManaulToggle()));
     m_mechanismController.rightTrigger(0.5).onTrue(activateShooting).onFalse(new InstantCommand(() -> activateShooting.stop()));
 
     m_mechanismController.povLeft().onTrue(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0.05))).onFalse(new InstantCommand(() -> m_ShooterSubsystem.rotateTurret(0)));
