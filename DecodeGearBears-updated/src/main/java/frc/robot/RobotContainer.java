@@ -129,8 +129,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_SwerveSubsystem.getAutonomousCommand("NewLeftTrench");
+    // return m_SwerveSubsystem.getAutonomousCommand("NewLeftTrench");
     // return m_SwerveSubsystem.getAutonomousCommand("NewRightTrench");
-    // return new InstantCommand();
+    return new InstantCommand();
   }
 }

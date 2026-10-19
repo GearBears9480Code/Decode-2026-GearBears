@@ -53,7 +53,7 @@ public class VisionSubsystem extends SubsystemBase {
                                                             new Translation3d(Units.inchesToMeters(-12.25), Units.inchesToMeters(13), 0), 
                                                             new Rotation3d(0, Math.toRadians(20), Math.toRadians(180)));
     public static final Transform3d kRobotToCam = new Transform3d(
-                                                        new Translation3d(Units.inchesToMeters(4.75), Units.inchesToMeters(14.75), 0), 
+                                                        new Translation3d(Units.inchesToMeters(4), Units.inchesToMeters(14), 0), 
                                                         new Rotation3d(0, Math.toRadians(20), Math.toRadians(90)));
     
     public final PhotonPoseEstimator poseEstimatorOne = new PhotonPoseEstimator(kTagLayout, kRobotToCam);
