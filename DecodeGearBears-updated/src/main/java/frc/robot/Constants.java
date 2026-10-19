@@ -27,6 +27,7 @@ public final class Constants {
   }
 
   public static class VisionConstants {
+    // you don't need to know how to do this just yet. we'll cover it soon
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(0.002, 0.006, 0.002);
     public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.0078, 0.0075, 0.011);
 
@@ -46,23 +47,10 @@ public final class Constants {
     public static final double constantHorizontalVelocity = 2;
     public static final double height = 1.1176;
 
-    public static final double turretKp = 0.009;
-    public static final double turretKi = 0.0;
-    public static final double turretKd = 0.0009;
-    public static final double turretKs = 0.05; // minimum duty cycle to move
-
     public static final double turretX = Units.inchesToMeters(-3);
     public static final double turretY = Units.inchesToMeters(8);
 
-    public static final double hoodKp = 0.67;
-    public static final double hoodKi = 0.0;
-    public static final double hoodKd = 0.0;
-
     public static final double hoodGearRatio = (double)18/(double)392;
-
-    public static final double flyWheelKp = 10;
-    public static final double flyWheelKi = 0.0;
-    public static final double flyWheelKd = 0.0;
 
     public static final Pose2d hubBlue = new Pose2d(Units.inchesToMeters(182.11), Units.inchesToMeters(158.84), new Rotation2d(0));
     public static final Pose2d hubRed = new Pose2d(Units.inchesToMeters(182.11 + 287), Units.inchesToMeters(158.84), new Rotation2d(0));
@@ -75,39 +63,13 @@ public final class Constants {
   }
 
   public static class IntakeConstants {
-    // PID CONSTANTS
-    public static final double armMotor_kP = 1;
-    public static final double armMotor_kI = 0.0;
-    public static final double armMotor_kD = 0.06;
-
-    public static final double velocityMotor_kP = 0.1;
-    public static final double velocityMotor_kI = 0.0;
-    public static final double velocityMotor_kD = 0.0;
-
     public static final double distancePerRotation = 3.25; // inches
 
     public static final double armGearRatio = (double)14/(double)36;
   }
 
   public static class HopperConstants {
-    public static final double spinKp = 0.1;
-    public static final double spinKi = 0.0;
-    public static final double spinKd = 0.0;
-
-    public static final double kickKp = 0.1;
-    public static final double kickKi = 0.0;
-    public static final double kickKd = 0.0;
-
-  }
-
-  public static class ClimberConstants {
-    public static final double armKp = 0.1;
-    public static final double armKi = 0.0;
-    public static final double armKd = 0.0;
-    
-    public static final double climbKp = 0.1;
-    public static final double climbKi = 0.0;
-    public static final double climbKd = 0.0;
+    // add PID constants here
   }
 }
 
