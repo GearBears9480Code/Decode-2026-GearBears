@@ -26,6 +26,18 @@ public final class Constants {
     public static final int kMechanismControllerPort = 0;
   }
 
+  public static class MotorID {
+    public static final int ShooterTurret = 40;
+    public static final int ShooterHood = 41;
+    public static final int ShooterFlywheel = 42;
+
+    public static final int IntakeVacuum = 60;
+    public static final int IntakeSlide = 61;
+
+    public static final int HopperSpindexer = 48;
+    public static final int HopperKicker = 49;
+  }
+
   public static class VisionConstants {
     // you don't need to know how to do this just yet. we'll cover it soon
     public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(0.002, 0.006, 0.002);
